@@ -11,6 +11,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { CoursesComponent } from './profile/courses/courses.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CheckoutComponent } from './checkout/checkout.component';
     HomeComponent,
     LoginFormComponent,
     ShoppingCartComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    CoursesComponent
   ],
   imports: [
     BrowserModule,
