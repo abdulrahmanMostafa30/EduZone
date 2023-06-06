@@ -1,0 +1,147 @@
+<div class="container-fluid">
+  <div class="">
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-12">
+            <span class="payment-header-text float-start"
+              ><b>Make payment</b></span
+            >
+            <!-- <a class="close-btn-light float-end"
+              ><i class="fa fa-times"></i>
+            </a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-3">
+            <p class="pb-2 payment-header">Select payment gateway</p>
+
+            <div
+              [ngClass]="{'selected' : gatewaySelected == 'stripe'}"
+              class="row payment-gateway stripe-selector"
+              (click)="selectedPaymentGateway('stripe')"
+            >
+              <div class="col-12">
+                <img
+                  [ngClass]="{'selected' : gatewaySelected == 'stripe'}"
+                  class="tick-icon stripe-icon"
+                  src="https://www.shutterstock.com/image-vector/line-icon-check-600w-569502880.jpg"
+                />
+                <img
+                  class="payment-gateway-icon"
+                  src="../../assets/images/stripe.png"
+                />
+              </div>
+            </div>
+
+            <div
+              [ngClass]="{'selected' : gatewaySelected == 'paypal'}"
+              class="row payment-gateway paypal-selector"
+              (click)="selectedPaymentGateway('paypal')"
+            >
+              <div class="col-12">
+                <img
+                  [ngClass]="{'selected' : gatewaySelected == 'paypal'}"
+                  class="tick-icon paypal-icon"
+                  src="https://www.shutterstock.com/image-vector/line-icon-check-600w-569502880.jpg"
+                />
+                <img
+                  class="payment-gateway-icon"
+                  src="../../assets/images/paypal.png"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1"></div>
+
+          <div class="col-md-8">
+            <div class="w-100 d-grid">
+              <p class="pb-2 payment-header">Pay for purchasing course</p>
+              <p class="item float-start mb-0 pb-0">
+                <span class="count-item">1</span>
+                <span class="item-title"
+                  >Introduction and Learn Angular
+                  <span class="item-price"> $359 </span>
+                </span>
+                <span class="by-owner"> By Abdulrahman Mostafa </span>
+              </p>
+              <p class="item float-start mb-0 pb-0">
+                <span class="count-item">2</span>
+                <span class="item-title"
+                  >Introduction and Learn Angular
+                  <span class="item-price"> $359 </span>
+                </span>
+                <span class="by-owner"> By Abdulrahman Mostafa </span>
+              </p>
+              <p class="item float-start mb-0 pb-0">
+                <span class="count-item">3</span>
+                <span class="item-title"
+                  >Introduction and Learn Angular
+                  <span class="item-price"> $359 </span>
+                </span>
+                <span class="by-owner"> By Abdulrahman Mostafa </span>
+              </p>
+              <p class="item float-start mb-0 pb-0">
+                <span class="count-item">4</span>
+                <span class="item-title"
+                  >Introduction and Learn Angular
+                  <span class="item-price"> $359 </span>
+                </span>
+                <span class="by-owner"> By Abdulrahman Mostafa </span>
+              </p>
+            </div>
+            <div class="w-100 float-start mt-4 indicated-price">
+              <div class="float-end total-price">$359</div>
+              <div class="float-end total">Total</div>
+            </div>
+            <div class="w-100 float-start">
+              <hr class="border mb-4" />
+              <div id="stripePaymentResponse" class="text-danger"></div>
+              <!-- Buy button -->
+              <button
+                *ngIf="gatewaySelected == 'stripe'"
+                class="gateway stripe-gateway payment-button float-end"
+                id="stripePayButton"
+              >
+                Pay with stripe
+              </button>
+              <div
+                *ngIf="gatewaySelected == 'paypal'"
+                class="gateway paypal-gateway text-end mt-3"
+                id="paypal-button"
+              >
+                <div
+                  id="zoid-paypal-button"
+                  class="paypal-button paypal-button-context-iframe paypal-button-label-paypal paypal-button-size-large paypal-button-layout-horizontal"
+                  data-paypal-smart-button-version="4.0.338"
+                >
+                  <div
+                    class="zoid-outlet"
+                    style="transition: all 0.5s ease-in-out 0.3s;"
+                  >
+                    <iframe
+                      class="zoid-component-frame zoid-visible"
+                      frameborder="0"
+                      allowtransparency="true"
+                      title="PayPal"
+                      scrolling="no"
+                      allowpaymentrequest="allowpaymentrequest"
+                      src="https://www.paypal.com/smart/button?env=production&amp;style.label=paypal&amp;style.size=large&amp;style.shape=rect&amp;style.color=blue&amp;style.tagline=true&amp;commit=true&amp;"
+                      style="background-color: transparent;"
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

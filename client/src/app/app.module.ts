@@ -8,13 +8,20 @@ import { SliderComponent } from './slider/slider.component';
 import { HomeComponent } from './home/home.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 
+
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SliderComponent,
     HomeComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    ShoppingCartComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
