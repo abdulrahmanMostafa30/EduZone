@@ -12,6 +12,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CoursesComponent } from './profile/courses/courses.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CoursesComponent } from './profile/courses/courses.component';
     LoginFormComponent,
     ShoppingCartComponent,
     CheckoutComponent,
-    CoursesComponent
+    CoursesComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
