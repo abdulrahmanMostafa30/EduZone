@@ -1,10 +1,51 @@
 .box-area{
-  width: 930;
+  width: 98%;
 }
-p{
-  font-family: 'Courier New', Courier, monospace;
+.left-box p{
+  color: #bc9a7d;
+  // font-family: 'Courier New', Courier, monospace;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Righteous', cursive;
 }
-small {
+.left-box small {
+  color: #bc9a7d;
   width: 17rem;
   font-family: 'Courier New', Courier, monospace;
+}
+.right-box h1{
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Righteous', cursive;
+  color: #28576f;
+}
+.right-box h5{
+  color: #8ba6b2;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Righteous', cursive;
+}
+.right-box small {
+  color: black;
+  width: 37rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+input:focus,
+button:focus{
+  border: 1px solid 2px #bc9a7d;
+  box-shadow: none;
+  border-color: #bc9a7d;
+  box-shadow: -1px 1px 20px -11px #faba99;
+}
+.form-check-input:checked{
+  background-color: #bc9a7d;
+  border-color: #bc9a7d;
+}
+.right-box button{
+  background-color: #28576f;
+  color: #def0f1;
+
+}
+.right-box a {
+  color: #28576f;
 }
