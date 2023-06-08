@@ -18,6 +18,7 @@ import { BestSellingComponent } from './best-selling/best-selling.component';
 import { AddCourseComponent } from './profile/courses/add-course/add-course.component';
 import { InstructorComponent } from './instructor/instructor.component';
 import { StudentComponent } from './student/student.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 
@@ -36,7 +37,8 @@ import { StudentComponent } from './student/student.component';
     BestSellingComponent,
     AddCourseComponent,
     InstructorComponent,
-    StudentComponent
+    StudentComponent,
+    SignUpComponent
 
   ],
   imports: [

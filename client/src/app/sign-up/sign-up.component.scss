@@ -1,0 +1,74 @@
+.sign-title h1{
+  font-size: 3rem;
+  font-weight: bold;
+  color: #bc9a7d;
+}
+.sign-title p{
+  font-size: 15px;
+  font-weight: 500;
+  color: #bc9a7d;
+}
+.line{
+  height: 6px;
+  width: 30%;
+  background: #28576f;
+  display: inline-block;
+}
+input, button, select{
+  box-shadow: none;
+  border-color: #bc9a7d;
+}
+::placeholder {
+  color: #bc9a7d;
+  opacity: 1;
+}
+input:focus,
+button:focus,
+select:focus{
+  border: 1px solid 2px #28576f;
+  box-shadow: none;
+  border-color: #28576f;
+  box-shadow: -1px 1px 20px -11px #28576f;
+}
+.form-select-color{
+  color: #bc9a7d;
+}
+.form-select option{
+  color: #28576f;
+  background-color: #bc9a7d;
+}
+.form-select option:hover,
+.form-select option:focus
+.form-select option:checked{
+  background-color: #8ba6b2;
+}
+.user-img{
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin: 15% 5%;
+}
+#photo{
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+#file{
+  display: none;
+}
+#uploadbtn{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  padding: 6px 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #bc9a7d;
+  background-color: #bc9a7d;
+  transform: translateX(-200%);
+  margin-top: 100px;
+  box-shadow: 2px 4px 4p #bc9a7d;
+}
