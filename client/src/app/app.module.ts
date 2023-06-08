@@ -15,6 +15,10 @@ import { CoursesComponent } from './profile/courses/courses.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContactComponent } from './contact/contact.component';
 import { BestSellingComponent } from './best-selling/best-selling.component';
+import { AddCourseComponent } from './profile/courses/add-course/add-course.component';
+import { InstructorComponent } from './instructor/instructor.component';
+import { StudentComponent } from './student/student.component';
+
 
 
 @NgModule({
@@ -29,7 +33,11 @@ import { BestSellingComponent } from './best-selling/best-selling.component';
     CoursesComponent,
     FooterComponent,
     ContactComponent,
-    BestSellingComponent
+    BestSellingComponent,
+    AddCourseComponent,
+    InstructorComponent,
+    StudentComponent
+
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,56 @@
-.text-light .btn{
-    background-color: rgb(189, 154, 122);
+
+/*-------------------- Footer  --------------------*/
+.footer {
+  background: #28576f;
+  padding: 85px 0;
 }
-.footer-div{
-    background-color: rgb(40, 86, 110);
+.single-box{
+  font-size: 16px;
+  font-weight: 700;
+  color:#bc9a7d;
+}
+.single-box .card-area {
+  font-size: 16px;
+  color:#bc9a7d;
+  margin-right: 10px;
+}
+.single-box ul {
+  list-style: none;
+  padding: 0;
+}
+.single-box ul li a{
+  text-decoration: none;
+  color: #bc9a7d;
+  line-height: 2;
+  font-weight: 400;
+}
+.single-box h2{
+  color: #bc9a7d;
+  font-size: 20px;
+  font-weight: 700;
+}
+#basic-addon2 {
+  background: #bc9a7d;
+  color: #28576f;
+  outline: none;
+  border: none;
+}
+input:focus{
+  border: 1px solid 2px #bc9a7d;
+  border-color: #bc9a7d;
+  box-shadow: -1px 1px 20px -11px #faba99;
+}
+.socials i{
+  font-size: 20 px;
+  margin-right: 15px;
+}
+@media (max-width: 767px) {
+  .single-box{
+      margin-bottom: 50px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .single-box{
+      margin-bottom: 50px;
+  }
 }
