@@ -13,6 +13,8 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CoursesComponent } from './profile/courses/courses.component';
 import { FooterComponent } from './footer/footer.component';
+import { ContactComponent } from './contact/contact.component';
+import { BestSellingComponent } from './best-selling/best-selling.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FooterComponent } from './footer/footer.component';
     ShoppingCartComponent,
     CheckoutComponent,
     CoursesComponent,
-    FooterComponent
+    FooterComponent,
+    ContactComponent,
+    BestSellingComponent
   ],
   imports: [
     BrowserModule,

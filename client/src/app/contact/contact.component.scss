@@ -1,0 +1,21 @@
+.custom-textarea {
+    width: 100vh;
+    height: 70vh;
+    padding: 2px;
+    font-size: 16px;
+    border: 1px solid rgb(41, 87, 112);
+    border-radius: 6px;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+    color: rgb(41, 87, 112);
+    display: block;
+  }
+  
+  .custom-textarea:focus {
+    outline: none;
+    border-color: rgb(189, 154, 122);
+    box-shadow: 0 0 5px rgb(250, 236, 224);
+  }
+  .image-div{
+    width: 70vh
+  }
