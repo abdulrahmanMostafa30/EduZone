@@ -1,0 +1,29 @@
+// Title style
+.title h1{
+  font-size: 3rem;
+  font-weight: bold;
+  color: #bc9a7d;
+}
+.title p{
+  font-size: 15px;
+  font-weight: 500;
+  color: #bc9a7d;
+}
+.line{
+  height: 6px;
+  width: 30%;
+  background: #28576f;
+  display: inline-block;
+}
+button{
+  background-color: transparent;
+  color: #28576f;
+  border: 2px solid #28576f;
+  border-radius: 5px;
+}
+button:hover{
+  background-color: #bc9a7d;
+  color: #28576f;
+  border: 2px solid #bc9a7d;
+  border-radius: 5px;
+}

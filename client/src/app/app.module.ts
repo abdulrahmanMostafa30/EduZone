@@ -20,6 +20,7 @@ import { InstructorComponent } from './instructor/instructor.component';
 import { StudentComponent } from './student/student.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { CourseDetailsComponent } from './course-details/course-details.component';
+import { EnrollCourseComponent } from './enroll-course/enroll-course.component';
 
 
 
@@ -40,7 +41,8 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
     InstructorComponent,
     StudentComponent,
     SignUpComponent,
-    CourseDetailsComponent
+    CourseDetailsComponent,
+    EnrollCourseComponent
 
   ],
   imports: [
