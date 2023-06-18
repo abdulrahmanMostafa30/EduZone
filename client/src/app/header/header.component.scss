@@ -24,18 +24,18 @@ header {
 }
 
 
-#navbarSupportedContent #linksUl {
+#navbarSupportedContent #link-ul {
     position: relative;
     padding-left: 50px;
     display: flex;
     gap: 30px;
 }
 
-#navbarSupportedContent #linksUl li {
+#navbarSupportedContent #link-ul li {
     list-style: none;
 }
 
-#navbarSupportedContent #linksUl li a {
+#navbarSupportedContent #link-ul li a {
     position: relative;
     text-decoration: none;
     font-size: 1em;
@@ -44,7 +44,7 @@ header {
     letter-spacing: 0.2em;
 }
 
-#navbarSupportedContent #linksUl li a::before {
+#navbarSupportedContent #link-ul li a::before {
     content: '';
     position: absolute;
     bottom: -3px;
@@ -56,7 +56,7 @@ header {
     transform-origin: right;
 }
 
-#navbarSupportedContent #linksUl li a:hover::before {
+#navbarSupportedContent #link-ul li a:hover::before {
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -70,18 +70,18 @@ header {
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#searchInpt {
+#search-input {
     border: rgb(189, 154, 122) 1px solid;
     border-radius: 8px;
 }
 
-#searchInpt:focus,
+#search-input:focus,
 input:valid {
     outline: none;
     border: 1.5px solid #29576f;
 }
 
-#searchInpt:focus~label,
+#search-input:focus~label,
 input:valid~label {
     transform: translateY(-50%) scale(0.8);
     background-color: #ffffff;

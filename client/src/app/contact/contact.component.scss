@@ -1,21 +1,122 @@
+.container {
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: rgb(41, 87, 112);
+}
+
 .custom-textarea {
-    width: 100vh;
-    height: 70vh;
-    padding: 2px;
-    font-size: 16px;
-    border: 1px solid rgb(41, 87, 112);
+  width: 100%;
+  object-fit: contain;
+    border: 2px dashed rgb(189, 154, 122);
     border-radius: 6px;
     resize: none;
-    font-family: 'Poppins', sans-serif;
     color: rgb(41, 87, 112);
-    display: block;
-  }
-  
-  .custom-textarea:focus {
-    outline: none;
-    border-color: rgb(189, 154, 122);
-    box-shadow: 0 0 5px rgb(250, 236, 224);
-  }
-  .image-div{
-    width: 70vh
-  }
+  //   // display: block;
+}
+
+.custom-textarea:focus {
+  outline: none;
+  border-color: rgb(41, 87, 112);
+  box-shadow: 0 0 5px rgb(250, 236, 224);
+}
+
+.card-img img {
+  object-fit: contain;
+  width: 100%;
+}
+
+.card {
+  border: none;
+  overflow: hidden;
+}
+
+
+.email-label {
+  position: absolute;
+  left: 60px;
+  color: #e8e8e8;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#email-input {
+  border: rgb(189, 154, 122) 1px solid;
+  border-radius: 8px;
+  width: 70%;
+  height: 45px;
+}
+
+#email-input:focus,
+input:valid {
+  outline: none;
+  border: 1.5px solid #29576f;
+}
+
+#email-input:focus~label,
+input:valid~label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: #ffffff;
+  padding: 0 .2em;
+  color: rgb(41, 87, 112);
+}
+
+#send-btn {
+  display: inline-block;
+  padding: 8px 10px;
+  border: 1px solid rgb(41, 87, 112);
+  border-radius: 4px;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  font-size: 15px;
+  color: rgb(41, 87, 112);
+  z-index: 1;
+}
+
+#send-btn:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+#send-btn:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: rgb(189, 154, 122);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+#send-btn:hover {
+  color: #ffffff;
+  border: 1px solid rgb(189, 154, 122);
+}
+
+#send-btn:hover:before {
+  top: -35%;
+  background-color: rgb(189, 154, 122);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+#send-btn:hover:after {
+  top: -45%;
+  background-color: rgb(189, 154, 122);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
