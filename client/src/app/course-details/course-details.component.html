@@ -1,4 +1,4 @@
-<section class="container py-5">
+<section class="container py-3">
   <!-- Frist Row For Title -->
 <div class="row">
   <div class="title container">
@@ -8,91 +8,80 @@
   </div>
 </div>
   <!-- Second Row For Course Details -->
-<div class="row py-5">
+<div class="row py-3">
 <!-- Frist column -->
 <div class="container mb-5 col-lg-8 rounded-4 d-flex justify-content-center algin-item-center flex-column">
-  <div class="card mb-3" style="max-width: 80%;">
-    <div class="row g-0">
-      <div class="col-md-5">
-        <img src="../../assets/images/reactCourse.jpg" class="img-fluid rounded-start" alt="...">
-      </div>
-      <div class="col-md-7">
-        <div class="card-body">
-          <div class="star">
-            <span><i class="bi bi-star-fill"></i></span>
-            <span><i class="bi bi-star-fill"></i></span>
-            <span><i class="bi bi-star-fill"></i></span>
-            <span><i class="bi bi-star-half"></i></span>
-          </div>
-          <h5 class="card-title">The Ultimate React Course 2023: React, Redux & More</h5>
-          <p class="card-text">Master modern React from beginner to advanced! Context API, React Query, Redux Toolkit, Tailwind, advanced patterns</p>
-
-          <p class="card-text">EGP 3000 <s>5000</s></p>
-        </div>
-      </div>
+  <div class="card mb-3">
+    <!-- <img src="../../assets/images/reactCourse.jpg" class="card-img-top" alt="..."> -->
+  <iframe class="card-img-top" height="500"
+    src="https://www.youtube.com/embed/RHsuArdyZUI"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+    <div class="card-body">
+      <h5 class="card-title">React - The Complete Guide 2023 (incl. React Router & Redux)</h5>
+      <p class="card-text">Dive in and learn React.js from scratch! Learn React, Hooks, Redux, React Router, Next.js, Best Practices and way more!</p>
+      <p class="card-text"><small class="text-body-secondary">This course includes: 50.5 hours on-demand video</small></p>
     </div>
   </div>
 </div>
 <!-- Second Column -->
 <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
-<h1> Look to Course Chapters</h1>
-<div class="accordion accordion-flush" id="accordionFlushExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-        Accordion Item #1
-      </button>
-    </h2>
-    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-        Accordion Item #2
-      </button>
-    </h2>
-    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-        Accordion Item #3
-      </button>
-    </h2>
-    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseThree">
-        Accordion Item #4
-      </button>
-    </h2>
-    <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseThree">
-        Accordion Item #5
-      </button>
-    </h2>
-    <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-    </div>
-  </div>
-</div>
+<h1> Course content</h1>
+<ul class="list-group list-group-flush">
+  <button class="list-group-item list-group-item-action" (click)="displayVideo(1)">Welcome To The Course!</button>
+  <button class="list-group-item list-group-item-action" (click)="displayVideo(2)">What is React.js?</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(3)">ReactJS vs "Vanilla JavaScript"</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(4)">Why Use React?</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(5)">Editing Our First React App</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(6)">About This Course & Course Outline</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(7)">The Two Ways (Paths) Of Taking This Course</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(8)">Getting The Most Out Of This Course</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(9)">Creating React Projects</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(10)">Browser-based vs Local Development</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(11)">Creating React Projects Locally</button>
+  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(12)">React Development(No Local Setup Required!) </button>
+</ul>
 </div>
 </div>
 </section>
 
+<!-- --------- Comment and review ---------------------->
 
+<section class="container py-5">
+<div class="row">
+  <!-- Write comment  -->
+<div class="col-lg-8">
+  <div class="row">
+  <div class="group-input ps-5">
+    <input #mycomment class="me-2" required="" type="text" name="comment" id="comment-input">
+    <label class="comment-label">Write a comment</label>
+  </div>
+  <button (click)="onclick()" type="button" id="comment-btn" class="btn comment-btn col-lg-6">Add comment </button>
+  </div>
+  <div class="row">
+    <table class="table mt-3 table-success table-striped">
+      <thead>
+        <tr>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let comment of comments">
+          <td>{{ comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+  <!-- Add Review  -->
+<div class="col-lg-4">
+
+</div>
+</div>
+</section>
 
 
 
