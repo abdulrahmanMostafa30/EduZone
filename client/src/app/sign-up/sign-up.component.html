@@ -13,7 +13,7 @@
   <div class="container col-lg-3 box-one d-flex justify-content-center flex-column">
     <div class="user-img">
       <img src="../../assets/images/user-profile/bt1.png" alt="" id="photo">
-      <input type="file" name="filephoto" id="file">
+      <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)">
       <label for="file" id="uploadbtn"> <i class="bi bi-camera"></i> </label>
     </div>
     <div class="input-group mb-3">
@@ -29,8 +29,10 @@
 <!-- column 02 -->
   <div class="container col-lg-3 box-two d-flex justify-content-center flex-column">
     <div class="row algin-item-center">
+      <div class="input-group mb-1">
+        <label for="" class="form-check-label" id="date-bth">Date of birth</label><br>
+      </div>
       <div class="input-group mb-3">
-        <label for="" class="form-check-label d-flex d-lg-block">Date of birth</label><br>
         <input type="date" class="form-control form-control-lg bg-light fs-6" id="birthDate" placeholder="Date of birth">
       </div>
       <div class="input-group mb-3">
@@ -46,9 +48,12 @@
         <select class="form-select" aria-label="Default select example">
           <option selected>Select your country</option>
           <option value="1">Egypt</option>
-          <option value="2">Egypt</option>
-          <option value="3">Egypt</option>
+          <option value="2">Tunisia</option>
+          <option value="3">Iraq</option>
         </select>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Adress">
       </div>
   </div>
 </div>
@@ -63,10 +68,17 @@
     <div class="input-group mb-3">
       <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Department">
     </div>
+    <div class="input-group mb-1">
+      <label for="exampleFormControlTextarea1" class="form-label">Any Note</label>
+    </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Address">
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
     </div>
   </div>
-
+</div>
+<div class="row mb-5 col-lg-6 m-auto">
+  <div class="input-group mb-5 submit-btn">
+    <button class="btn btn-lg w-100 fs-6">Submit</button>
+  </div>
 </div>
 </section>

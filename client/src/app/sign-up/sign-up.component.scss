@@ -14,7 +14,7 @@
   background: #28576f;
   display: inline-block;
 }
-input, button, select{
+input, button, select, textarea{
   box-shadow: none;
   border-color: #bc9a7d;
 }
@@ -24,7 +24,8 @@ input, button, select{
 }
 input:focus,
 button:focus,
-select:focus{
+select:focus
+textarea:focus{
   border: 1px solid 2px #28576f;
   box-shadow: none;
   border-color: #28576f;
@@ -32,10 +33,6 @@ select:focus{
 }
 .form-select-color{
   color: #bc9a7d;
-}
-.form-select option{
-  color: #28576f;
-  background-color: #bc9a7d;
 }
 .form-select option:hover,
 .form-select option:focus
@@ -50,11 +47,13 @@ select:focus{
   justify-content: center;
   align-items: center;
   margin: 15% 5%;
+
 }
 #photo{
   width: 130px;
   height: 130px;
   border-radius: 50%;
+
 }
 #file{
   display: none;
@@ -67,7 +66,8 @@ select:focus{
   border-radius: 50%;
   cursor: pointer;
   color: #28576f;
-  background-color: #bc9a7d;
+  background-color: white;
+  border: 1px solid #28576f;
   transform: translateX(-200%);
   margin-top: 100px;
   box-shadow: 2px 4px 4p #bc9a7d;
@@ -104,4 +104,19 @@ select:focus{
 
 #myUL li a:hover:not(.header) {
   background-color: #eee; /* Add a hover effect to all links, except for headers */
+}
+label{color: #28576f;}
+.submit-btn button{
+  background-color: #28576f;
+  color: #def0f1;
+
+}
+#exampleFormControlTextarea1:focus{
+  border: 1px solid 2px #28576f;
+  box-shadow: none;
+  border-color: #28576f;
+  box-shadow: -1px 1px 20px -11px #28576f;
+}
+#date-bth{
+  color: #bc9a7d;
 }
