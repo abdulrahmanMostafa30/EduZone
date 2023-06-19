@@ -16,7 +16,9 @@
                     molestias
                     quibusdam rerum quas.
                 </div>
-                <div class="card-footer"><a routerLink="/course/bootstrap" style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View Details</button></a></div>
+                <div class="card-footer"><a routerLink="/course/bootstrap"
+                        style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View
+                            Details</button></a></div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
@@ -27,7 +29,9 @@
                     molestias
                     quibusdam rerum quas.
                 </div>
-                <div class="card-footer"><a routerLink="/course/html" style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View Details</button></a></div>
+                <div class="card-footer"><a routerLink="/course/html"
+                        style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View
+                            Details</button></a></div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
@@ -38,7 +42,9 @@
                     molestias
                     quibusdam rerum quas.
                 </div>
-                <div class="card-footer"><a routerLink="/course/bootstrap" style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View Details</button></a></div>
+                <div class="card-footer"><a routerLink="/course/bootstrap"
+                        style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View
+                            Details</button></a></div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
@@ -49,7 +55,9 @@
                     molestias
                     quibusdam rerum quas.
                 </div>
-                <div class="card-footer"><a routerLink="/course/javascript" style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View Details</button></a></div>
+                <div class="card-footer"><a routerLink="/course/javascript"
+                        style="color:inherit; text-decoration: none;"><button class="btn view-btn" type="button">View
+                            Details</button></a></div>
             </div>
         </div>
     </div>
@@ -61,70 +69,64 @@
             <h6>you can find here a major of different categories</h6>
         </div>
     </div>
-    <div class="row mb-2">
-        <div id="cat-btns" class="col text-center py-3">
-            <button class="btn cat-btn">cat #1</button>
-            <button class="btn cat-btn">cat #2</button>
-            <button class="btn cat-btn">cat #3</button>
-            <button class="btn cat-btn">cat #4</button>
+    <div class="row mb-2 d-flex justify-content-around">
+        <div id="cat-btns" class="col-8 text-center py-3">
+            <div class=" d-inline" *ngFor="let category of getUniqueCategories()">
+                <button ngClass="mb-3" (click)="filterCourses(category)" class="btn cat-btn">{{category}}</button>
+            </div>
+        </div>
+        <div class="col-4">
+            <form class="d-flex ms-auto" role="search">
+                <div class="input-group justify-content-center">
+                    <input class="me-2 d-block text-center" required="" type="text" name="search" id="search-input"
+                        [(ngModel)]="searchQuery" (keyup)="searchCourses()">
+                    <!-- <label class="search-label">Search</label> -->
+                    <!-- <button class="btn" id="search-btn" type="submit">Search</button> -->
+                </div>
+            </form>
         </div>
     </div>
+
     <div class="row mb-3">
-        <div class="col-12 col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Web Hosting</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
+        <ng-container *ngIf="filteredCourses; else noCourses">
+            <ng-container *ngFor="let course of filteredCourses; let i = index;">
+                <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-img h-65">
+                            <img style="object-fit: contain; height: 300px; max-width: 100%;"
+                                [src]="'assets/images/courses/' + course.image" alt="{{course.title}}">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
+                            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
+                            <a href="#" class="btn view-btn">View Courses</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Full-Stack</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
+                <!-- Close the row and start a new row after every third card -->
+                <div class="clearfix d-md-none" *ngIf="(i + 1) % 3 === 0"></div>
+                <div class="clearfix d-none d-md-block" *ngIf="(i + 1) % 3 === 0"></div>
+            </ng-container>
+        </ng-container>
+        <ng-template #noCourses>
+            <ng-container *ngFor="let course of courses; let i = index;">
+                <div class="col-12 col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-img h-65">
+                            <img style="object-fit: contain; height: 300px; max-width: 100%;"
+                                [src]="'assets/images/courses/' + course.image" alt="{{course.title}}">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
+                            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
+                            <a href="#" class="btn view-btn">View Courses</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Time Management</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-12 col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Software Testing</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Teaching</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Soft Skills</h4>
-                    <p class="card-text">Info about category</p>
-                    <a href="#" class="btn view-btn">View Courses</a>
-                </div>
-            </div>
-        </div>
+                <!-- Close the row and start a new row after every third card -->
+                <div class="clearfix d-md-none" *ngIf="(i + 1) % 3 === 0"></div>
+                <div class="clearfix d-none d-md-block" *ngIf="(i + 1) % 3 === 0"></div>
+            </ng-container>
+        </ng-template>
     </div>
 </div>

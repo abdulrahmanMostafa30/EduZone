@@ -7,7 +7,8 @@ import { HeaderComponent } from './header/header.component';
 import { SliderComponent } from './slider/slider.component';
 import { HomeComponent } from './home/home.component';
 import { LoginFormComponent } from './login-form/login-form.component';
-
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
@@ -21,7 +22,7 @@ import { StudentComponent } from './student/student.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { EnrollCourseComponent } from './enroll-course/enroll-course.component';
-
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -47,7 +48,10 @@ import { EnrollCourseComponent } from './enroll-course/enroll-course.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

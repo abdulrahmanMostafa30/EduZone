@@ -1,0 +1,114 @@
+[
+    {
+        "title": "HTML Basics",
+        "description": "Learn the fundamentals of HTML and how to structure web pages.",
+        "category": "Web Development",
+        "price": "$49.99",
+        "image": "html-basics.jpg"
+    },
+    {
+        "title": "Python Programming",
+        "description": "Master the versatile Python programming language for various applications.",
+        "category": "Programming",
+        "price": "$79.99",
+        "image": "python-programming.png"
+    },
+    {
+        "title": "Digital Marketing Fundamentals",
+        "description": "Discover the essentials of digital marketing and how to reach your target audience.",
+        "category": "Marketing",
+        "price": "$59.99",
+        "image": "Digital-Marketing-Fundamentals.png"
+    },
+    {
+        "title": "JavaScript for Beginners",
+        "description": "Learn the basics of JavaScript and enhance your web development skills.",
+        "category": "Web Development",
+        "price": "$69.99",
+        "image": "javascript.png"
+    },
+    {
+        "title": "Data Science Fundamentals",
+        "description": "Explore the field of data science and learn how to extract insights from data.",
+        "category": "Data Science",
+        "price": "$89.99",
+        "image": "data-science.png"
+    },
+    {
+        "title": "CSS for Beginners",
+        "description": "Learn CSS techniques and modern approaches.",
+        "category": "Web Development",
+        "price": "$59.99",
+        "image": "css-Beginners.jpg"
+    },
+    {
+        "title": "CSS Advanced Techniques",
+        "description": "Take your CSS skills to the next level with advanced techniques and modern approaches.",
+        "category": "Web Development",
+        "price": "$59.99",
+        "image": "css-advanced-techniques.jpg"
+    },
+    {
+        "title": "React Fundamentals",
+        "description": "Get started with React programming and build a strong foundation.",
+        "category": "Web Development",
+        "price": "$69.99",
+        "image": "react.png"
+    },
+    {
+        "title": "Social Media Marketing",
+        "description": "Harness the power of social media platforms to grow your business and engage your audience.",
+        "category": "Marketing",
+        "price": "$79.99",
+        "image": "social-media-marketing.png"
+    },
+    {
+        "title": "Machine Learning Essentials",
+        "description": "Dive into the world of machine learning and understand its core concepts and algorithms.",
+        "category": "Data Science",
+        "price": "$99.99",
+        "image": "machine-learning-essentials.png"
+    },
+    {
+        "title": "UI/UX Design Principles",
+        "description": "Learn the principles of user interface and user experience design to create intuitive and engaging digital experiences.",
+        "category": "Design",
+        "price": "$79.99",
+        "image": "ui-ux-design-principles.jpg"
+    },
+    {
+        "title": "Graphic Design Principles",
+        "description": "Learn the principles of graphic design to create intuitive and engaging digital art.",
+        "category": "Design",
+        "price": "$59.99",
+        "image": "graphic-design.PNG"
+    },
+    {
+        "title": "Mobile App Development",
+        "description": "Master the art of building mobile applications for iOS and Android platforms.",
+        "category": "Development",
+        "price": "$89.99",
+        "image": "mobile-app-development.jpg"
+    },
+    {
+        "title": "Effective Communication",
+        "description": "Develop effective communication skills to convey your ideas clearly and confidently.",
+        "category": "Soft Skills",
+        "price": "$49.99",
+        "image": "effective-communication.png"
+    },
+    {
+        "title": "Leadership Essentials",
+        "description": "Learn the fundamental principles of leadership and how to inspire and motivate others.",
+        "category": "Soft Skills",
+        "price": "$59.99",
+        "image": "leadership-essentials.png"
+    },
+    {
+        "title": "Time Management Mastery",
+        "description": "Master the art of managing your time effectively and prioritize tasks for increased productivity.",
+        "category": "Soft Skills",
+        "price": "$39.99",
+        "image": "time-management-mastery.jpg"
+    }
+]
