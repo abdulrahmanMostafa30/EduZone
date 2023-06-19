@@ -15,44 +15,20 @@
   background: #28576f;
   display: inline-block;
 }
-// Card course styles
-.star i {
-  text-align: end;
-  color: orange;
-}
 
 // Review
-.comment-label {
-  position: absolute;
-  left: 60px;
-  color: #e8e8e8;
-  pointer-events: none;
-  transform: translateY(0.5rem);
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+input:focus
+{
+  border: 1px solid 2px #bc9a7d;
+  box-shadow: none;
+  border-color: #bc9a7d;
+  box-shadow: -1px 1px 20px -11px #faba99;
 }
-
-#comment-input {
-  border: rgb(189, 154, 122) 1px solid;
-  border-radius: 8px;
-  width: 70%;
-  height: 45px;
+.form-check-input:checked{
+  background-color: #bc9a7d;
+  border-color: #bc9a7d;
 }
-
-#comment-input:focus,
-input:valid {
-  outline: none;
-  border: 1.5px solid #29576f;
-}
-
-#comment-input:focus~label,
-input:valid~label {
-  transform: translateY(-50%) scale(0.8);
-  background-color: #ffffff;
-  padding: 0 .2em;
-  color: rgb(41, 87, 112);
-}
-
-#comment-btn {
+.review-btn button{
   display: inline-block;
   padding: 8px 10px;
   border: 1px solid rgb(41, 87, 112);
@@ -64,8 +40,7 @@ input:valid~label {
   color: rgb(41, 87, 112);
   z-index: 1;
 }
-
-#comment-btn:before {
+.review-btn button:before{
   content: "";
   position: absolute;
   left: 50%;
@@ -79,8 +54,7 @@ input:valid~label {
   transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
   z-index: -1;
 }
-
-#comment-btn:after {
+.review-btn button:after {
   content: "";
   position: absolute;
   left: 55%;
@@ -94,20 +68,25 @@ input:valid~label {
   transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
   z-index: -1;
 }
-
-#comment-btn:hover {
+.review-btn button:hover {
   color: #ffffff;
   border: 1px solid rgb(189, 154, 122);
 }
 
-#comment-btn:hover:before {
+.review-btn button:hover:before {
   top: -35%;
   background-color: rgb(189, 154, 122);
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
-#comment-btn:hover:after {
+.review-btn button:hover:after {
   top: -45%;
   background-color: rgb(189, 154, 122);
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+th, td {
+  border-color: rgb(189, 154, 122);
+}
+table, th, td{
+  color: #28576f;
 }
