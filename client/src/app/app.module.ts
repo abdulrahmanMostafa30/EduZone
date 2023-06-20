@@ -23,6 +23,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { EnrollCourseComponent } from './enroll-course/enroll-course.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { HttpClientModule } from '@angular/common/http';
     StudentComponent,
     SignUpComponent,
     CourseDetailsComponent,
-    EnrollCourseComponent
+    EnrollCourseComponent,
+    AboutComponent
 
   ],
   imports: [

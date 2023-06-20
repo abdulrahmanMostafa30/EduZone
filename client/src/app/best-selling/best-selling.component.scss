@@ -1,13 +1,17 @@
-.container, .container-fluid{
+.container,
+.container-fluid {
     font-family: 'Poppins', sans-serif;
     color: rgb(41, 87, 112);
 
 }
-.card .card-header{
+
+.card .card-header {
     color: rgb(238, 211, 186);
     background-color: rgb(41, 87, 112);
 }
-.view-btn, .cat-btn {
+
+.view-btn,
+.cat-btn {
     display: inline-block;
     padding: 8px 10px;
     border-radius: 4px;
@@ -19,7 +23,8 @@
     z-index: 1;
 }
 
-.view-btn:before, .cat-btn:before {
+.view-btn:before,
+.cat-btn:before {
     content: "";
     position: absolute;
     left: 50%;
@@ -34,7 +39,8 @@
     z-index: -1;
 }
 
-.view-btn:after, .cat-btn:after {
+.view-btn:after,
+.cat-btn:after {
     content: "";
     position: absolute;
     left: 55%;
@@ -49,26 +55,59 @@
     z-index: -1;
 }
 
-.view-btn:hover, .cat-btn:hover {
+.view-btn:hover,
+.cat-btn:hover {
     color: #ffffff;
     border: 1px solid rgb(189, 154, 122);
 }
 
-.view-btn:hover:before, .cat-btn:hover:before {
+.view-btn:hover:before,
+.cat-btn:hover:before {
     top: -35%;
     background-color: rgb(189, 154, 122);
     transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
-.view-btn:hover:after, .cat-btn:hover:after {
+.view-btn:hover:after,
+.cat-btn:hover:after {
     top: -45%;
     background-color: rgb(189, 154, 122);
     transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
-.cat-btn{
+.cat-btn {
     margin: 0 2px;
     border: 1px solid rgb(189, 154, 122);
     border-radius: 4px;
+}
 
+// doesn't work
+// #cat-btns .cat-btn:active {
+//     color: #ffffff;
+//     border: 1px solid rgb(189, 154, 122);
+//     background-color: rgb(189, 154, 122);
+// }
+
+#search-input {
+    border: rgb(189, 154, 122) 1px solid;
+    border-radius: 8px;
+}
+
+#search-input:focus,
+input:valid {
+    outline: none;
+    border: 1.5px solid #29576f;
+}
+
+#search-input:focus~label,
+input:valid~label {
+    transform: translateY(-50%) scale(0.8);
+    background-color: #ffffff;
+    padding: 0 .2em;
+    color: rgb(41, 87, 112);
+}
+
+.star i {
+    text-align: end;
+    color: orange;
 }
