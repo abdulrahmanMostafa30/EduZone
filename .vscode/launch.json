@@ -13,11 +13,20 @@
       "trace": true
     },
     {
-      "name": "ng test",
-      "type": "chrome",
+      "type": "node",
       "request": "launch",
-      "preLaunchTask": "npm: test",
-      "url": "http://localhost:9876/debug.html"
+      "name": "Server",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceRoot}/server/server.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/server/config.env",
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Client + Server",
+      "configurations": ["Client", "Server"]
     }
   ]
 }

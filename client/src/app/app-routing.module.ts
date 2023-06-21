@@ -10,6 +10,7 @@ import { LoginFormComponent } from "./login-form/login-form.component";
 import { SignUpComponent } from "./sign-up/sign-up.component";
 
 import { HomeComponent } from "./home/home.component";
+import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -17,8 +18,7 @@ const routes: Routes = [
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
   { path: "course/:nameCourse", component: CourseDetailsComponent},
-
-  // { path: "about", component: LoginFormComponent },
+  { path: "instructor-dashboard", component: InstructorComponent },
   // { path: "**", component: PageNotFoundComponent },
 
 ];
