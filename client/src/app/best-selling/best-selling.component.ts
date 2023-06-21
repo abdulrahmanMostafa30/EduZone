@@ -19,8 +19,6 @@ export class BestSellingComponent {
   loadJSON() {
     this.http.get('https://eduzone-om33.onrender.com/course').subscribe(data => {
       this.courses = data;
-      console.log(this.courses[7]['image']);
-
       this.filteredCourses = this.courses;
       // console.log(this.courses);
     });
