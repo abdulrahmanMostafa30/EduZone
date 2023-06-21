@@ -11,14 +11,16 @@ export class BestSellingComponent {
   courses: any;
   filteredCourses: any;
   searchQuery: string = '';
-  
+
   constructor(private http: HttpClient) {
     this.loadJSON();
   }
 
   loadJSON() {
-    this.http.get('assets/jsonFiles/Courses.json').subscribe(data => {
+    this.http.get('https://eduzone-om33.onrender.com/course').subscribe(data => {
       this.courses = data;
+      console.log(this.courses[7]['image']);
+
       this.filteredCourses = this.courses;
       // console.log(this.courses);
     });
