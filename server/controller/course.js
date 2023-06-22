@@ -1,11 +1,10 @@
-const CourseSchema = require("../models/courseModel");
+const Course = require("../models/course");
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
-
 module.exports.getAllCourses = (request, response, next) => {
-  CourseSchema.find({})
+  Course.find({})
     .then((data) => {
       response.status(200).json(data);
     })
@@ -13,14 +12,20 @@ module.exports.getAllCourses = (request, response, next) => {
 };
 
 module.exports.addCourse = (request, response, next) => {
-  let newObject = new CourseSchema({
-    title: request.body.title,
-    description: request.body.description,
-    category: request.body.category,
-    price: request.body.price,
-    image: request.body.image,
+  const title = request.body.title;
+  const description = request.body.description;
+  const category = request.body.category;
+  const price = request.body.price;
+  const image = request.body.image;
+
+  const course = new Course({
+    title: title,
+    description: description,
+    category: category,
+    price: price,
+    image: image,
   });
-  newObject
+  course
     .save()
     .then((data) => {
       response.status(201).json({
@@ -32,25 +37,32 @@ module.exports.addCourse = (request, response, next) => {
 };
 
 module.exports.updateCourse = (request, response, next) => {
-  CourseSchema.updateOne(
-    {
-      _id: new ObjectId(request.params.id),
-    },
-    {
-      $set: { title: request.body.title },
-    }
-  )
+  const title = request.body.title;
+  const description = request.body.description;
+  const category = request.body.category;
+  const price = request.body.price;
+  const image = request.body.image;
+
+  Course.findById(new ObjectId(request.params.id))
+    .then((course) => {
+      course.title = title;
+      course.title = description;
+      course.title = category;
+      course.title = price;
+      course.title = image;
+      course.save();
+    })
     .then((data) => {
       response.status(201).json({
         message: "Done",
         data: data,
       });
     })
-    .catch((error) => {});
+    .catch((error) => next(error));
 };
 
 module.exports.getCourseById = (request, response, next) => {
-  CourseSchema.findOne({ _id: new ObjectId(request.params.id) })
+  Course.findOne({ _id: new ObjectId(request.params.id) })
     .then((data) => {
       if (data == null) throw new Error("Course doesn't exists");
 
@@ -60,9 +72,7 @@ module.exports.getCourseById = (request, response, next) => {
 };
 
 module.exports.delelteCourseById = (request, response, next) => {
-  CourseSchema.deleteOne({
-    _id: new ObjectId(request.params.id),
-  })
+  Course.findOneAndRemove(new ObjectId(request.params.id))
     .then((data) => {
       response.status(201).json({
         message: "Done",

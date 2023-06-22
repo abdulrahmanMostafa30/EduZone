@@ -1,5 +1,5 @@
 
-const courseRoute = require('./routes/courseRoute')
+const courseRoute = require('./routes/course')
 require("dotenv").config({ path: "../server/config.env" });
 const dbo = require("./db/conn");
 
