@@ -61,8 +61,10 @@
         <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="Email address"
         formControlName="email" [class.is-invalid]="email?.invalid && email?.touched">
       </div>
-      <small *ngIf="email?.errors?.['required']">Email is Required </small>
-      <small *ngIf="email?.errors?.['pattern']">Invalid email, make sure it like [name@example.com] </small>
+      <div class="text-danger mb-3" *ngIf="email?.invalid && email?.touched">
+        <small *ngIf="email?.errors?.['required']">Email is Required </small>
+        <small *ngIf="email?.errors?.['pattern']">Invalid email, make sure it like [name@example.com] </small>
+      </div>
       <div class="input-group mb-3">
         <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password"
         formControlName="password" [class.is-invalid]="password?.invalid && password?.touched">
