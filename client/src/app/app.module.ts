@@ -24,7 +24,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
 import { EnrollCourseComponent } from './enroll-course/enroll-course.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,8 @@ import { AboutComponent } from './about/about.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

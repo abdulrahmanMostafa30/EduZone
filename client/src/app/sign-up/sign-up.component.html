@@ -8,22 +8,40 @@
   </div>
 </div>
   <!-- Second Row For Form -->
+<form [formGroup]="registerationForm">
+  <!-- {{registerationForm.value |json}} -->
 <div class="row py-5">
 <!-- column 01 -->
   <div class="container col-lg-3 box-one d-flex justify-content-center flex-column">
     <div class="user-img">
       <img src="../../assets/images/user-profile/bt1.png" alt="" id="photo">
-      <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)">
+      <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)"
+      formControlName="imgUser">
       <label for="file" id="uploadbtn"> <i class="bi bi-camera"></i> </label>
     </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Frist name">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Frist name"
+      formControlName="fname" [class.is-invalid]="fname?.invalid && fname?.touched">
+    </div>
+    <div class="text-danger mb-3" *ngIf="fname?.invalid && fname?.touched">
+      <small *ngIf="fname?.errors?.['required']">Firstname is Required </small>
+      <small *ngIf="fname?.errors?.['minlength']">Firstname must be 3 charachrest at least </small>
     </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Last name">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Last name"
+      formControlName="lname" [class.is-invalid]="lname?.invalid && lname?.touched">
+    </div>
+    <div class="text-danger mb-3" *ngIf="lname?.invalid && lname?.touched">
+      <small *ngIf="lname?.errors?.['required']">Lastname is Required </small>
+      <small *ngIf="lname?.errors?.['minlength']">Lastname must be 3 charachrest at least </small>
     </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Full name">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Full name"
+      formControlName="fullName" [class.is-invalid]="fullName?.invalid && fullName?.touched">
+    </div>
+    <div class="text-danger mb-3" *ngIf="fullName?.invalid && fullName?.touched">
+      <small *ngIf="fullName?.errors?.['required']">Fullname is Required </small>
+      <small *ngIf="fullName?.errors?.['pattern']">Fullname must be contain 4 names at least </small>
     </div>
   </div>
 <!-- column 02 -->
@@ -33,19 +51,36 @@
         <label for="" class="form-check-label" id="date-bth">Date of birth</label><br>
       </div>
       <div class="input-group mb-3">
-        <input type="date" class="form-control form-control-lg bg-light fs-6" id="birthDate" placeholder="Date of birth">
+        <input type="date" class="form-control form-control-lg bg-light fs-6" id="birthDate"
+        placeholder="Date of birth" formControlName="birthDate" [class.is-invalid]="birthDate?.invalid && birthDate?.touched">
+      </div>
+      <div class="text-danger mb-3" *ngIf="birthDate?.invalid && birthDate?.touched">
+        <small *ngIf="birthDate?.errors?.['required']">Birth Date is Required </small>
       </div>
       <div class="input-group mb-3">
-        <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="Email address">
+        <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="Email address"
+        formControlName="email" [class.is-invalid]="email?.invalid && email?.touched">
+      </div>
+      <small *ngIf="email?.errors?.['required']">Email is Required </small>
+      <small *ngIf="email?.errors?.['pattern']">Invalid email, make sure it like [name@example.com] </small>
+      <div class="input-group mb-3">
+        <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password"
+        formControlName="password" [class.is-invalid]="password?.invalid && password?.touched">
+      </div>
+      <div class="text-danger mb-3" *ngIf="password?.invalid && password?.touched">
+        <small *ngIf="password?.errors?.['required']">set password is Required </small>
+        <small *ngIf="password?.errors?.['minlength']">password must be 8 charachrest at least </small>
       </div>
       <div class="input-group mb-3">
-        <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password">
+        <input type="confirmPassword" class="form-control form-control-lg bg-light fs-6"
+        placeholder="Confirm password" formControlName="confirmPassword" [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched">
+      </div>
+      <div class="text-danger mb-3" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+        <small *ngIf="confirmPassword?.errors?.['required']">set confirm password is Required </small>
+        <small *ngIf="confirmPassword?.errors?.['minlength']">password must be 8 charachrest at least </small>
       </div>
       <div class="input-group mb-3">
-        <input type="confirmPassword" class="form-control form-control-lg bg-light fs-6" placeholder="Confirm password">
-      </div>
-      <div class="input-group mb-3">
-        <select class="form-select" aria-label="Default select example">
+        <select class="form-select" aria-label="Default select example" formControlName="country">
           <option selected>Select your country</option>
           <option value="1">Egypt</option>
           <option value="2">Tunisia</option>
@@ -53,26 +88,41 @@
         </select>
       </div>
       <div class="input-group mb-3">
-        <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Adress">
+        <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Adress"
+        formControlName="address" [class.is-invalid]="address?.invalid && address?.touched">
+      </div>
+      <div class="text-danger mb-3" *ngIf="address?.invalid && address?.touched">
+        <small *ngIf="address?.errors?.['required']">Address is Required </small>
       </div>
   </div>
 </div>
 <!-- column 03 -->
   <div class="container col-lg-3 box-three d-flex justify-content-center flex-column">
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="University">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="University"
+      formControlName="university" [class.is-invalid]="university?.invalid && university?.touched">
+    </div>
+    <div class="text-danger mb-3" *ngIf="university?.invalid && university?.touched">
+      <small *ngIf="university?.errors?.['required']">University is Required </small>
     </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Faculty">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Faculty"
+      formControlName="faculty" [class.is-invalid]="faculty?.invalid && faculty?.touched">
+    </div>
+    <div class="text-danger mb-3" *ngIf="faculty?.invalid && faculty?.touched">
+      <small *ngIf="faculty?.errors?.['required']">Address is Required </small>
     </div>
     <div class="input-group mb-3">
-      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Department">
+      <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Department"
+      formControlName="department">
     </div>
     <div class="input-group mb-1">
       <label for="exampleFormControlTextarea1" class="form-label">Any Note</label>
     </div>
     <div class="input-group mb-3">
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="note">
+
+      </textarea>
     </div>
   </div>
 </div>
@@ -81,4 +131,5 @@
     <button class="btn btn-lg w-100 fs-6">Submit</button>
   </div>
 </div>
+</form>
 </section>
