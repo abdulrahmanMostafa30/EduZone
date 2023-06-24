@@ -14,10 +14,9 @@
   <div class="card mb-3">
     <!-- <img src="../../assets/images/reactCourse.jpg" class="card-img-top" alt="..."> -->
   <iframe class="card-img-top" height="500"
-    src="https://www.youtube.com/embed/RHsuArdyZUI"
-    title="YouTube video player" frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
+    [src]="getSafeUrl()"
+    title="YouTube video player">
   </iframe>
     <div class="card-body">
       <h5 class="card-title">React - The Complete Guide 2023 (incl. React Router & Redux)</h5>
@@ -28,20 +27,19 @@
 </div>
 <!-- Second Column -->
 <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
-<h1> Course content</h1>
+<h1> Course content </h1>
 <ul class="list-group list-group-flush">
-  <button class="list-group-item list-group-item-action" (click)="displayVideo(1)">Welcome To The Course!</button>
-  <button class="list-group-item list-group-item-action" (click)="displayVideo(2)">What is React.js?</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(3)">ReactJS vs "Vanilla JavaScript"</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(4)">Why Use React?</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(5)">Editing Our First React App</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(6)">About This Course & Course Outline</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(7)">The Two Ways (Paths) Of Taking This Course</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(8)">Getting The Most Out Of This Course</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(9)">Creating React Projects</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(10)">Browser-based vs Local Development</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(11)">Creating React Projects Locally</button>
-  <button href="#" class="list-group-item list-group-item-action" (click)="displayVideo(12)">React Development(No Local Setup Required!) </button>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(0)">Welcome To The Course!</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(1)">What is React.js?</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(2)">ReactJS vs "Vanilla JavaScript"</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(3)">Why Use React?</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(4)">Editing Our First React App</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(5)">About This Course & Course Outline</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(6)">The Two Ways (Paths) Of Taking This Course</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(7)">Getting The Most Out Of This Course</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(8)">Creating React Projects</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(9)">Browser-based vs Local Development</li>
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(10)">Creating React Projects Locally</li>
 </ul>
 </div>
 </div>

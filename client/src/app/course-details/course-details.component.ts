@@ -1,3 +1,4 @@
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Component ,ViewChild ,ElementRef ,OnInit } from '@angular/core';
 
 @Component({
@@ -33,12 +34,19 @@ export class CourseDetailsComponent implements OnInit {
 
     // url of video
   ];
-  currentVideoUrl: string = this.videoUrls[0]; //  Url of Default video
+  currentVideoIndex: number = 0;
+
+  constructor(private sanitizer: DomSanitizer) {}
 
   displayVideo(videoIndex: number) {
     if (videoIndex >= 0 && videoIndex < this.videoUrls.length) {
-      this.currentVideoUrl = this.videoUrls[videoIndex];
+      this.currentVideoIndex = videoIndex;
     }
+  }
+
+  getSafeUrl(): SafeResourceUrl {
+    const videoUrl = this.videoUrls[this.currentVideoIndex];
+    return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
   }
   ngOnInit() {
     // // in case page refresh saved comments
