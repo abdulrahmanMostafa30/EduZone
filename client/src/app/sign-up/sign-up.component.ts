@@ -7,8 +7,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
+  Country: any = ['Egypt', 'Kuwait', 'Morocco', 'Palestine', 'Saudi Arabia', 'Other'];
 
   constructor(private fb: FormBuilder){ }
+
 // using form builder services
   registerationForm =this.fb.group({
     imgUser: [''],
@@ -49,6 +51,9 @@ export class SignUpComponent implements OnInit {
   get confirmPassword() {
     return this.registerationForm.get('confirmPassword');
   }
+  get country() {
+    return this.registerationForm.get('country');
+  }
   get address() {
     return this.registerationForm.get('address');
   }
@@ -58,6 +63,7 @@ export class SignUpComponent implements OnInit {
   get faculty() {
     return this.registerationForm.get('faculty');
   }
+
   displaySelectedImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
@@ -69,10 +75,16 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  ngOnInit() : void {
-
+  changeCountry(e: any) {
+    this.country?.setValue(e.target.value, {
+      onlySelf: true,
+    });
   }
 
+
+  ngOnInit(): void {
+
+  }
   // getData() {
   //   this.registerationForm.patchValue({
   //   fname: 'Lamia',
@@ -92,6 +104,3 @@ export class SignUpComponent implements OnInit {
   // }
 
 }
-
-
-// Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)

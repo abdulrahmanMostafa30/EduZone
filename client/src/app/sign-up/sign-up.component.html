@@ -82,12 +82,14 @@
         <small *ngIf="confirmPassword?.errors?.['minlength']">password must be 8 charachrest at least </small>
       </div>
       <div class="input-group mb-3">
-        <select class="form-select" aria-label="Default select example" formControlName="country">
-          <option selected>Select your country</option>
-          <option value="1">Egypt</option>
-          <option value="2">Tunisia</option>
-          <option value="3">Iraq</option>
+        <select class="form-select custom-select" (change)="changeCountry($event)" formControlName="country">
+          <option value="">Select your country</option>
+          <option *ngFor="let country of Country" [ngValue]="country">
+            {{ country }}
         </select>
+      </div>
+      <div class="text-danger mb-3" *ngIf="country?.invalid && country?.touched">
+        <small *ngIf="country?.errors?.['required']">Please choose country, is Required </small>
       </div>
       <div class="input-group mb-3">
         <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Adress"

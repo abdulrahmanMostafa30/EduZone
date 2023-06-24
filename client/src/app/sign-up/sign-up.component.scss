@@ -120,3 +120,24 @@ label{color: #28576f;}
 #date-bth{
   color: #bc9a7d;
 }
+// select
+.custom-select {
+  height: auto;
+  padding: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 400;
+  color: rgb(189, 154, 122);
+  background-color: white;
+  border: 1px solid #bc9a7d;
+}
+.custom-select:focus,
+.custom-select:focus {
+  box-shadow: none;
+}
+.custom-select:focus {
+  border: 1px solid 2px #28576f;
+  box-shadow: none;
+  border-color: #28576f;
+  box-shadow: -1px 1px 20px -11px #28576f;
+}
