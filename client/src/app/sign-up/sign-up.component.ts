@@ -63,6 +63,12 @@ export class SignUpComponent implements OnInit {
   get faculty() {
     return this.registerationForm.get('faculty');
   }
+  get department() {
+    return this.registerationForm.get('department');
+  }
+  get note() {
+    return this.registerationForm.get('note');
+  }
 
   displaySelectedImage(event: any) {
     if (event.target.files && event.target.files[0]) {
