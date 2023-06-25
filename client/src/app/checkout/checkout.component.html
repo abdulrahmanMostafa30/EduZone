@@ -108,7 +108,7 @@
                 *ngIf="gatewaySelected == 'stripe'"
                 class="gateway stripe-gateway payment-button float-end"
                 id="stripePayButton"
-              >
+                (click)="makePayment(25)">
                 Pay with stripe
               </button>
               <div

@@ -11,6 +11,7 @@ import { SignUpComponent } from "./sign-up/sign-up.component";
 
 import { HomeComponent } from "./home/home.component";
 import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.component";
+import { ShoppingCartComponent } from "./shopping-cart/shopping-cart.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -19,6 +20,8 @@ const routes: Routes = [
   { path: "contact", component: ContactComponent },
   { path: "course/:nameCourse", component: CourseDetailsComponent},
   { path: "instructor-dashboard", component: InstructorComponent },
+  { path: "checkout", component: CheckoutComponent },
+  { path: "shopping-cart", component: ShoppingCartComponent },
   // { path: "**", component: PageNotFoundComponent },
 
 ];
