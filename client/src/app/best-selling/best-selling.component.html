@@ -41,7 +41,7 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
                             <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
-                            <a href="#" class="btn view-btn">View Courses</a>
+                            <a [routerLink]="['/course/', course._id]" class="btn view-btn">View Courses</a>
                         </div>
                     </div>
                 </div>
