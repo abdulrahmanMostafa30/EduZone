@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+// import { CoursesService } from '../courses.service';
 
 @Component({
   selector: 'app-best-selling',
   templateUrl: './best-selling.component.html',
-  styleUrls: ['./best-selling.component.scss']
+  styleUrls: ['./best-selling.component.scss'],
+  // providers:  [ CoursesService ]
 })
 
 export class BestSellingComponent {
+
   courses: any;
   filteredCourses: any;
   searchQuery: string = '';

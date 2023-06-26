@@ -44,7 +44,7 @@ export class EnrollCourseComponent implements OnInit {
   getCourseById(id: any) {
     this.http.get('https://eduzone-om33.onrender.com/course/' + id).subscribe(data => {
       this.course = data;
-      console.log(data);
+      // console.log(data);
     });
   }
 
