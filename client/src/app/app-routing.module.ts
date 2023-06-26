@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: "login", component: LoginFormComponent },
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
+  { path: "course/:id", component: EnrollCourseComponent},
   { path: "course/:nameCourse", component: CourseDetailsComponent},
   { path: "instructor-dashboard", component: InstructorComponent },
   { path: "checkout", component: CheckoutComponent },
