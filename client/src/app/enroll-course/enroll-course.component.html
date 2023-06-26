@@ -14,19 +14,19 @@
     <div class="card mb-3" style="max-width: 80%;">
       <div class="row g-0">
         <div class="col-md-5">
-          <img src="../../assets/images/reactCourse.jpg" class="img-fluid rounded-start h-100" alt="...">
+          <img [src]="'assets/images/courses/' + course.image" class="img-fluid rounded-start h-100">
         </div>
         <div class="col-md-7">
           <div class="card-body">
-            <div class="star">
+            <div class="star mb-3">
               <span><i class="bi bi-star-fill"></i></span>
               <span><i class="bi bi-star-fill"></i></span>
               <span><i class="bi bi-star-fill"></i></span>
               <span><i class="bi bi-star-half"></i></span>
             </div>
-            <h5 class="card-title">The Ultimate React Course 2023: React, Redux & More</h5>
-            <p class="card-text">Master modern React from beginner to advanced! Context API, React Query, Redux Toolkit, Tailwind, advanced patterns</p>
-            <p class="card-text"> 3000 EGP<s>5000</s></p>
+            <h5 class="card-title">{{course.title}}</h5>
+            <p class="card-text">{{course.description}}</p>
+            <p class="card-text">{{course.price}}</p>
           </div>
         </div>
       </div>

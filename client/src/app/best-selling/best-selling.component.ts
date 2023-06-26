@@ -20,7 +20,6 @@ export class BestSellingComponent {
     this.http.get('https://eduzone-om33.onrender.com/course').subscribe(data => {
       this.courses = data;
       this.filteredCourses = this.courses;
-      // console.log(this.courses);
     });
   }
   getUniqueCategories(): string[] {
@@ -34,7 +33,6 @@ export class BestSellingComponent {
 
   filterCourses(category: string): void {
     this.filteredCourses = this.courses.filter((course: { category: string; }) => course.category === category);
-    console.log("filtered courses");
   }
 
   searchCourses(): void {
