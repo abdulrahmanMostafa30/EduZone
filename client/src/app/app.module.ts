@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    NgxPayPalModule
   ],
   providers: [],
   bootstrap: [AppComponent]
