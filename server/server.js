@@ -23,7 +23,8 @@ const format = json(
 
 app.use(morgan(format));
 app.use(express.json());
-app.use("/images", express.static(path.join("server/images")));
+// app.use("/images", express.static(path.join("server/images")));
+app.use("/images", express.static(path.join("images")));
 
 app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
