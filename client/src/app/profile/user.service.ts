@@ -14,26 +14,26 @@ export class UserService {
   public childToParentEvent = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {}
-  changePassword(passwords:any): Observable<any> {
+  changePassword(passwords: any): Observable<any> {
     return this.http
-      .patch<any>(this.apiUrl +'/updateMyPassword', passwords)
+      .patch<any>(this.apiUrl + "/updateMyPassword", passwords)
       .pipe(catchError(this.handleError));
   }
 
   getUserMe(): Observable<any> {
     return this.http
-      .get<any>(this.apiUrl + '/me')
+      .get<any>(this.apiUrl + "/me")
       .pipe(catchError(this.handleError));
   }
-  updateProfile(user:any): Observable<any> {
+  updateProfile(user: any): Observable<any> {
     let form_data = new FormData();
 
-    for ( var key in user ) {
-        form_data.append(key, user[key]);
+    for (var key in user) {
+      form_data.append(key, user[key]);
     }
-    console.log(form_data)
+    console.log(form_data);
     return this.http
-      .patch<any>(this.apiUrl +'/updateMe', form_data)
+      .patch<any>(this.apiUrl + "/updateMe", form_data)
       .pipe(catchError(this.handleError));
   }
   private handleError(error: HttpErrorResponse) {

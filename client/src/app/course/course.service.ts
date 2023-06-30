@@ -10,7 +10,7 @@ import { ICourse } from "./course";
 export class CourseService {
   // private apiUrl = "http://localhost:5000/api/course";
   private apiUrl = "https://eduzone-om33.onrender.com/api/course";
-
+//
   constructor(private http: HttpClient) {}
 
   getCourses(): Observable<ICourse[]> {

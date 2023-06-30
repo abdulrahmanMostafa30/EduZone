@@ -4,6 +4,7 @@ const userRoute = require('./routes/user')
 const globalErrorHandler = require('./controller/error');
 
 require("dotenv").config({ path: "../server/config.env" });
+require("dotenv").config({ path: "config.env" });
 
 const dbo = require("./db/conn");
 
