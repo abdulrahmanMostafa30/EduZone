@@ -12,7 +12,7 @@
 /client/.angular
 npm-debug.log
 yarn-error.log
-server/images/*
+# server/images/*
 # IDEs and editors
 .idea/
 .project
