@@ -9,20 +9,18 @@ const MIME_TYPE_MAP = {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // const isValid = MIME_TYPE_MAP[file.mimetype];
+    const isValid = MIME_TYPE_MAP[file.mimetype];
     let error = new Error("Invalid mime type");
-    // if (isValid) {
-    //   error = null;
-    // }
+    if (isValid) {
+      error = null;
+    }
     // cb(null, "images");
     cb(null, path.join("server/images"));
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
-    // const ext = MIME_TYPE_MAP[file.mimetype];
-    // cb(null, name + "-" + Date.now() + "." + ext);
-    cb(null, name + "-" + Date.now());
-
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
   },
 });
 
