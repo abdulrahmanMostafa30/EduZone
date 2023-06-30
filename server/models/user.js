@@ -82,13 +82,12 @@ const userSchema = new Schema({
           type: Schema.Types.ObjectId,
           ref: "Course",
         },
-        quantity: Number,
       },
     ],
   },
   role: {
     type: String,
-    enum: ["user", "instructor", "admin"],
+    enum: ["user", "admin"],
     default: "user",
   },
 });

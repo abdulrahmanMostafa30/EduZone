@@ -33,14 +33,10 @@ export class AddCourseComponent {
       postData.append("image", this.selectedFile);
 
     }
-
-    console.log(postData);
     // console.log('Course:', this.course);
-
     this.courseService.addCourse(postData).subscribe({
       next: (response) => {
         console.log(response);
-
       },
       error: (error) => (this.errorMessage = error),
     });

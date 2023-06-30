@@ -6,6 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { AuthService } from "../auth/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-sign-up",
@@ -13,6 +14,8 @@ import { AuthService } from "../auth/auth.service";
   styleUrls: ["./sign-up.component.scss"],
 })
 export class SignUpComponent implements OnInit {
+  errorMessage: any;
+
   Country: any = [
     "Egypt",
     "Kuwait",
@@ -25,7 +28,11 @@ export class SignUpComponent implements OnInit {
   registerationForm: FormGroup | any;
   selectedFile: File | null = null;
 
-  constructor(private fb: FormBuilder, public authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    public authService: AuthService,
+    private router: Router
+  ) {}
   ngOnInit() {
     // using form builder services
     this.registerationForm = this.fb.group({
@@ -97,12 +104,10 @@ export class SignUpComponent implements OnInit {
     return this.registerationForm.get("note");
   }
   get image() {
-    return this.registerationForm.get('image').value
-
+    return this.registerationForm.get("image").value;
   }
 
   displaySelectedImage(event: any) {
-
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
       const reader = new FileReader();
@@ -119,19 +124,18 @@ export class SignUpComponent implements OnInit {
       onlySelf: true,
     });
   }
-  onSignup(e:Event) {
-
+  onSignup(e: Event) {
     e.preventDefault();
 
-    if (this.registerationForm.invalid ) {
+    if (this.registerationForm.invalid) {
       console.log(this.registerationForm.invalid);
 
       return;
     }
-    if(!this.selectedFile){
+    if (!this.selectedFile) {
       return;
     }
-    console.log('onSignup');
+    console.log("onSignup");
 
     this.isLoading = true;
 
@@ -144,16 +148,33 @@ export class SignUpComponent implements OnInit {
       password: this.password.value,
       confirmPassword: this.confirmPassword.value,
       image: this.selectedFile,
-      country:this.country.value.toString(),
+      country: this.country.value.toString(),
       address: this.address.value,
       university: this.university.value,
       faculty: this.faculty.value,
       department: this.department.value,
       note: this.note.value,
     };
-    console.log(user);
 
-    this.authService.createUser(user);
+    this.authService.createUser(user).subscribe({
+      next: (response) => {
+        console.log(response);
+        if(response.token){
+          this.errorMessage = ''
+          this.router.navigate(["/login"]);
+        }
+      },
+      error: (error) => {
+        if (error.status === 500) {
+          this.errorMessage = 'Internal Server Error. Please try again later.';
+        } else {
+          this.errorMessage = error.message;
+        }
+        // Access other properties from the error response
+        // For example, if the error response has a 'errorData' property
+        console.log(error.message);
+      },
+    });
 
     // this.postsService.addPost(
     //   this.fname,

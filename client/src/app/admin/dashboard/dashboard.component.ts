@@ -29,7 +29,6 @@ export class DashboardComponent {
   deleteCourse(courseId:string){
     this.courseService.deleteCourseById(courseId).subscribe({
       next: (data) => {
-        console.log(data);
         this.getCourses()
       },
       error: (error) => (this.errorMessage = error),

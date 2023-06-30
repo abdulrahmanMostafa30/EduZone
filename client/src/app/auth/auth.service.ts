@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Observable, Subject } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { Observable, Subject, throwError } from "rxjs";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
-
+import { catchError } from "rxjs/operators";
 @Injectable()
 export class AuthService {
   private isAuthenticated = false;
@@ -35,7 +35,9 @@ export class AuthService {
   getRole() {
     return this.role;
   }
-  createUser(user: any) {
+  createUser(user: any): Observable<any> {
+
+  // createUser(user: any) {
     const postData = new FormData();
 
     postData.append("fname", user.fname);
@@ -53,11 +55,14 @@ export class AuthService {
     postData.append("department", user.department);
     postData.append("note", user.note);
     console.log(postData);
-
-    this.http.post(`${this.apiUrl}/signup`, postData).subscribe((response) => {
-      console.log(response);
-    });
+    return this.http
+      .post(`${this.apiUrl}/signup`, postData)
+      .pipe(catchError(this.handleError));
   }
+  //   this.http.post(`${this.apiUrl}/signup`, postData).subscribe((response) => {
+  //     console.log(response);
+  //   });
+  // }
   checkToken(token: string) {
     console.log(this.jwtHelper.decodeToken(token));
 
@@ -72,7 +77,7 @@ export class AuthService {
           if (this.checkToken(token)) this.token = token;
           if (token) {
             const role = response.data.user.role;
-            this.role = role
+            this.role = role;
             console.log(role);
 
             const expiresInDuration = this.jwtHelper.decodeToken(token).exp;
@@ -133,14 +138,12 @@ export class AuthService {
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("role", role);
-
   }
 
   private clearAuthData() {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
     localStorage.removeItem("role");
-
   }
 
   private getAuthData() {
@@ -154,7 +157,7 @@ export class AuthService {
     return {
       token: token,
       expirationDate: new Date(expirationDate),
-      role: role
+      role: role,
     };
   }
 
@@ -193,4 +196,14 @@ export class AuthService {
   // removeToken() {
   //   localStorage.removeItem('token');
   // }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = "An error occurred";
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(errorMessage);
+  }
 }
