@@ -12,8 +12,8 @@ export class AuthService {
   private token: string | null = "";
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
-  private apiUrl = "http://localhost:5000/api/users/auth"; // Replace with your actual API URL
-  // private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth"; // Replace with your actual API URL
+  // private apiUrl = "http://localhost:5000/api/users/auth"; // Replace with your actual API URL
+  private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth"; // Replace with your actual API URL
 
   constructor(
     public jwtHelper: JwtHelperService,
