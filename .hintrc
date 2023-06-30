@@ -32,6 +32,7 @@
         "button-name": "off"
       }
     ],
-    "css-prefix-order": "off"
+    "css-prefix-order": "off",
+    "button-type": "off"
   }
 }

@@ -73,7 +73,7 @@
         <small *ngIf="password?.errors?.['minlength']">password must be 8 charachrest at least </small>
       </div>
       <div class="input-group mb-3">
-        <input type="confirmPassword" class="form-control form-control-lg bg-light fs-6"
+        <input type="password" class="form-control form-control-lg bg-light fs-6"
         placeholder="Confirm password" formControlName="confirmPassword" [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched">
       </div>
       <div class="text-danger mb-3" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
