@@ -1,0 +1,47 @@
+.add-course {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.add-course h2 {
+  text-align: center;
+}
+
+.add-course form {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-course .form-group {
+  margin-bottom: 15px;
+}
+
+.add-course .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-course .btn-primary,
+.add-course .btn-success {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.add-course .btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.add-course .btn-success {
+  background-color: #28a745;
+  border: none;
+}

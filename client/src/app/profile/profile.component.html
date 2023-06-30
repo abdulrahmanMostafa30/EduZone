@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="/assets/plugins/feather/feather.css" />
+
+<div class="page-content" style="transform: none;">
+  <div class="container" style="transform: none;">
+    <div class="row" style="transform: none;">
+      <div
+        class="col-xl-3 col-md-4 theiaStickySidebar"
+        style="
+          position: relative;
+          overflow: visible;
+          box-sizing: border-box;
+          min-height: 1px;
+        "
+      >
+        <div
+          class="theiaStickySidebar"
+          style="
+            padding-top: 0px;
+            padding-bottom: 1px;
+            position: static;
+            transform: none;
+            top: 0px;
+            left: 143.5px;
+          "
+        >
+          <div class="settings-widget dash-profile mb-3">
+            <div class="settings-menu p-0">
+              <div class="profile-bg">
+                <h5>{{user?.role == 'admin'? 'Admin': 'Student'}}</h5>
+                <img src="{{ user?.imagePath }}" alt="" />
+                <div class="profile-img">
+                  <div><img src="{{ user?.imagePath }}" alt="" /></div>
+                </div>
+              </div>
+              <div class="profile-group">
+                <div class="profile-name text-center">
+                  <h4>
+                    <div>{{ user?.fname }} {{ user?.lname}}</div>
+                  </h4>
+                  <p>{{user?.role == 'admin'? 'Admin': 'Student'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="settings-widget account-settings" *ngIf="user?.role != 'admin'">
+            <div class="settings-menu">
+              <h3>PROFILE</h3>
+              <ul>
+                <li class="nav-item">
+                  <a routerLink="/profile/courses" routerLinkActive="active" class="nav-link">
+                    <i class="feather-book"></i> My Courses
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="settings-menu">
+              <h3>ACCOUNT SETTINGS</h3>
+              <ul>
+                <li class="nav-item">
+                  <a routerLink="/profile/edit" routerLinkActive="active" class="nav-link">
+                    <i class="feather-settings"></i> Edit Profile
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/profile/security" routerLinkActive="active" class="nav-link">
+                    <i class="feather-user"></i> Security
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/" class="nav-link" (click)="onLogout()">
+                    <i class="feather-power"></i> Sign Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="settings-widget account-settings" *ngIf="user?.role == 'admin'">
+            <div class="settings-menu">
+              <h3>DASHBOARD</h3>
+              <ul>
+                <li class="nav-item">
+                  <a routerLink="/profile/admin/dashboard" routerLinkActive="active" class="nav-link">
+                    <i class="feather-book"></i> Dashboard
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/profile/admin/add-course" routerLinkActive="active" class="nav-link">
+                    <i class="feather-book"></i> Add Course
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/profile/admin/students" routerLinkActive="active" class="nav-link">
+                    <i class="feather-book"></i> Students
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="settings-menu">
+              <h3>ACCOUNT SETTINGS</h3>
+              <ul>
+                <li class="nav-item">
+                  <a routerLink="/profile/edit" routerLinkActive="active" class="nav-link">
+                    <i class="feather-settings"></i> Edit Profile
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/profile/security" routerLinkActive="active" class="nav-link">
+                    <i class="feather-user"></i> Security
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/" class="nav-link" (click)="onLogout()">
+                    <i class="feather-power"></i> Sign Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="resize-sensor"
+            style="
+              position: absolute;
+              inset: 0px;
+              overflow: hidden;
+              z-index: -1;
+              visibility: hidden;
+            "
+          >
+            <div
+              class="resize-sensor-expand"
+              style="
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                overflow: hidden;
+                z-index: -1;
+                visibility: hidden;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  left: 0px;
+                  top: 0px;
+                  transition: all 0s ease 0s;
+                  width: 340px;
+                  height: 764px;
+                "
+              ></div>
+            </div>
+            <div
+              class="resize-sensor-shrink"
+              style="
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                overflow: hidden;
+                z-index: -1;
+                visibility: hidden;
+              "
+            >
+              <div
+                style="
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  transition: 0s;
+                  width: 200%;
+                  height: 200%;
+                "
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-9 col-md-8">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/assets/plugins/feather/feather.min.js"></script>

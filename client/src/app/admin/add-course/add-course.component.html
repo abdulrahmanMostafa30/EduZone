@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="settings-widget profile-details">
+        <div class="add-course">
+          <h2>Add Course</h2>
+          <form (ngSubmit)="addCourse()" #courseForm="ngForm">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" class="form-control" name="title" required [(ngModel)]="course.title">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" name="description" required [(ngModel)]="course.description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" class="form-control" name="category" required [(ngModel)]="course.category">
+            </div>
+            <div class="form-group">
+              <label>Price</label>
+              <input type="text" class="form-control" name="price" required [(ngModel)]="course.price">
+            </div>
+            <div class="form-group">
+              <label>Image</label>
+              <input type="file" name="image" (change)="handleImageUpload($event)" required>
+            </div>
+            <div class="form-group">
+              <label>Video Title</label>
+              <input type="text" class="form-control" name="videoTitle" [(ngModel)]="course.videoTitle">
+            </div>
+            <div class="form-group">
+              <label>Video URL</label>
+              <input type="text" class="form-control" name="videoUrl" [(ngModel)]="course.videoUrl">
+            </div>
+            <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
+            <button type="submit" class="btn btn-success" [disabled]="!courseForm.valid || videos.length === 0">Add Course</button>
+          </form>
+
+          <!-- Display added videos -->
+          <div class="videos-section" *ngIf="videos.length > 0">
+            <h4>Added Videos</h4>
+            <div class="videos-list">
+              <div class="video-item" *ngFor="let video of videos; let i = index">
+                <span>{{ video.title }}</span>
+                <span>{{ video.url }}</span>
+                <button class="btn btn-danger" (click)="removeVideo(i)">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

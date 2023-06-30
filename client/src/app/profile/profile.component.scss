@@ -1,0 +1,372 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap");
+
+.btn-primary {
+  background-color: rgb(41, 87, 112);
+  border: 1px solid rgb(41, 87, 112);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.active,
+.btn-primary:active,
+.open > .dropdown-toggle.btn-primary {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+.btn-primary.active.focus,
+.btn-primary.active:focus,
+.btn-primary.active:hover,
+.btn-primary.focus:active,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.open > .dropdown-toggle.btn-primary.focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.open > .dropdown-toggle.btn-primary:hover {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+.btn-primary.active:not(:disabled):not(.disabled),
+.btn-primary:active:not(:disabled):not(.disabled),
+.show > .btn-primary.dropdown-toggle {
+  background-color: rgb(189, 154, 122);
+  border-color: rgb(189, 154, 122);
+  color: #fff;
+}
+.btn-primary.active:focus:not(:disabled):not(.disabled),
+.btn-primary:active:focus:not(:disabled):not(.disabled),
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: unset;
+}
+.btn-secondary {
+  color: #fff;
+  background: rgb(41, 87, 112);
+  border: 1px solid rgb(41, 87, 112);
+}
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary.active,
+.btn-secondary:active,
+.open > .dropdown-toggle.btn-secondary {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+
+a {
+  color: #22100d;
+  text-decoration: none;
+}
+input,
+button,
+a {
+  transition: all 0.4s ease;
+}
+.form-control {
+  border-color: #dce0eb;
+  color: #26292c;
+  font-size: 15px;
+  min-height: 42px;
+  padding: 6px 15px;
+}
+.form-control::placeholder {
+  color: #6e82a3;
+  font-size: 14px;
+}
+
+/*-----------------
+    Student Profile
+-----------------------*/
+
+.settings-widget {
+  border: 1px solid #e9ecef;
+  margin-bottom: 30px;
+  border-radius: 10px;
+}
+.settings-menu {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+}
+.settings-menu h3 {
+  font-size: 18px;
+  color: rgb(41, 87, 112);
+  font-weight: 600;
+  margin: 5px 0px 20px;
+}
+.settings-menu ul {
+  display: block;
+  border: 0;
+  padding: 0px;
+  margin: 0;
+  list-style: none;
+}
+.settings-menu ul li {
+  border-top: 1px solid rgb(199 199 199 / 25%);
+  position: relative;
+}
+.settings-menu ul li a {
+  color: #303030;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 0;
+  border: 0;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  line-height: normal;
+  padding: 20px;
+}
+.settings-menu ul li:hover,
+.settings-menu ul li:focus {
+  color: #303030;
+  background: rgba(255, 222, 218, 0.25);
+}
+.settings-menu ul li:hover:before {
+  content: "";
+  position: absolute;
+  background: rgb(41, 87, 112);
+  width: 2px;
+  height: 40px;
+  left: 9px;
+  top: 11px;
+  transition: all 0.5s ease;
+  opacity: 1;
+}
+.settings-menu ul li:before {
+  opacity: 0;
+  content: "";
+  position: absolute;
+  background: rgb(41, 87, 112);
+  width: 2px;
+  height: 40px;
+  left: 9px;
+  top: 11px;
+  transition: all 0.5s ease;
+}
+.settings-menu ul li:hover a {
+  color: #303030;
+}
+.settings-menu ul .active {
+  background: rgba(255, 222, 218, 0.25);
+}
+.settings-menu ul li i {
+  color: rgb(41, 87, 112);
+}
+.settings-menu ul .active i {
+  color: rgb(41, 87, 112);
+}
+.settings-menu ul li a i {
+  margin-right: 15px;
+  font-size: 20px;
+}
+.settings-menu ul .active:before {
+  content: "";
+  position: absolute;
+  background: rgb(41, 87, 112);
+  width: 2px;
+  height: 40px;
+  left: 9px;
+  top: 11px;
+  transition: all 0.5s ease;
+  opacity: 1;
+}
+.go-dashboard .btn-primary {
+  background: rgb(41, 87, 112);
+  border: 1px solid rgb(41, 87, 112);
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+  padding: 13px 28px;
+}
+.go-dashboard .btn-primary:hover {
+  opacity: 0.86;
+}
+.profile-bg img {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+}
+.profile-bg {
+  position: relative;
+}
+.profile-bg h5 {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 3px 10px;
+  color: #000000;
+  font-size: 14px;
+  right: 20px;
+  top: 20px;
+  margin: 0;
+}
+.profile-img img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border: 5px solid #ffffff;
+}
+.profile-name h4 {
+  font-size: 20px;
+  color: #22100d;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.profile-name p {
+  color: #685f78;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.profile-group {
+  padding: 30px;
+  padding-top: 70px;
+}
+.profile-heading {
+  padding: 25px;
+  border-bottom: 1px solid rgb(199 199 199 / 25%);
+}
+.profile-heading h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+.profile-heading p {
+  margin-bottom: 0;
+}
+.profile-details .course-group {
+  padding: 25px;
+  border-bottom: 1px solid rgb(199 199 199 / 25%);
+}
+.profile-share {
+  margin-left: auto;
+}
+.profile-share .btn-success {
+  background: transparent;
+  color: #159f46;
+  border: 1px solid #159f46;
+  margin-right: 10px;
+  border-radius: 0;
+  padding: 7px 22px;
+  font-weight: 500;
+  border-radius: 5px;
+}
+.profile-share .btn-success:hover {
+  background: #159f46;
+  color: #fff;
+  border: 1px solid #159f46;
+}
+.profile-share .btn-danger {
+  background: transparent;
+  color: #ff0000;
+  border-radius: 0;
+  padding: 7px 22px;
+  font-weight: 500;
+  border-radius: 5px;
+}
+.profile-share .btn-danger:hover {
+  background: #ff0000;
+  color: #fff;
+  border: 1px solid #ff0000;
+}
+.profile-details .course-name h4 a {
+  color: rgb(41, 87, 112);
+  font-size: 18px;
+  font-weight: 600;
+}
+.profile-details .course-name h4 a:hover {
+  color: #f66962;
+}
+.profile-details .course-name p {
+  color: #303030;
+  font-size: 14px;
+}
+.profile-details .course-group-img img {
+  max-width: 100px;
+  height: 100px;
+  border-radius: 50px;
+}
+.checkout-form.personal-address {
+  padding: 25px;
+  margin-bottom: 0;
+}
+.personal-address h4 {
+  font-size: 20px;
+  color: rgb(41, 87, 112);
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+.personal-address p {
+  font-size: 14px;
+  color: #303030;
+}
+.country-select {
+  color: #c4c4c4;
+  font-size: 14px;
+}
+.update-profile {
+  margin-top: 10px;
+}
+.update-profile .btn-primary {
+  font-size: 16px;
+  padding: 7px 15px;
+  font-weight: 700;
+
+  min-width: 200px;
+}
+.update-profile .btn-primary:hover {
+  background-color: rgb(189, 154, 122);
+  color: #ffff;
+}
+.personal-info-head p span {
+  color: #f66962;
+}
+
+
+.settings-menu .instructor-title {
+  padding-top: 20px;
+}
+.instructor-card {
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+.instructor-inner h6 {
+  font-weight: 600;
+  font-size: 14px;
+  color: #685f78;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.instructor-inner h4 {
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+.instructor-inner .instructor-text-success {
+  color: #159f46;
+}
+.instructor-inner .instructor-text-info {
+  color: #1d9cfd;
+}
+.instructor-inner .instructor-text-warning {
+  color: #ffb54a;
+}
+.instructor-inner p {
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  color: #303030;
+  margin-bottom: 0;
+}
+
+
+  .readonly-input {
+    background-color: #f5f5f5;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    color: #6c757d;
+    font-weight: 400;
+    cursor: not-allowed;
+  }
+

@@ -1,0 +1,185 @@
+<div class="settings-widget profile-details">
+  <div class="settings-menu p-0">
+    <div class="profile-heading">
+      <h3>Profile Details</h3>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+      </p>
+    </div>
+    <div class="course-group mb-0 d-flex">
+      <div class="course-group-img d-flex align-items-center">
+        <div
+          ><img
+            src="{{ user?.imagePath }}"
+            alt=""
+            class="img-fluid m-3"
+            id="photo"
+        /></div>
+        <div class="course-name">
+          <h4>
+            <div>Your avatar</div>
+          </h4>
+          <p>PNG or JPG no bigger than 800px wide and tall.</p>
+        </div>
+      </div>
+      <div
+        class="profile-share d-flex align-items-center justify-content-center"
+      >
+      <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)">
+      <label for="file" id="uploadbtn"> <i class="bi bi-camera"></i> </label>
+      <!-- <input class="btn btn-success" type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)"> -->
+
+        <!-- <div class="btn btn-success" (change)="displaySelectedImage($event)">Update</div> -->
+        <!-- <a href="" class="btn btn-danger">Delete</a> -->
+      </div>
+    </div>
+    <div class="checkout-form personal-address add-course-info">
+      <div class="personal-info-head">
+        <h4>Personal Details</h4>
+        <p>Edit your personal information and address.</p>
+      </div>
+      <form (ngSubmit)="updateProfile()" *ngIf="user">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your first name"
+                name="first_name"
+                required
+                [(ngModel)]="user.fname"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your last name"
+                name="last_name"
+                required
+                [(ngModel)]="user.lname"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your full name"
+                name="full_name"
+                [(ngModel)]="user.fullName"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Birth Date</label>
+              <input
+                type="date"
+                class="form-control"
+                name="birth_date"
+                required
+                [(ngModel)]="user.birthDate"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label">Email</label>
+              <input
+                type="email"
+                class="form-control readonly-input"
+                placeholder="Enter your email"
+                name="email"
+                readonly
+                value="{{ user.email }}"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Country</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your country"
+                name="country"
+                [(ngModel)]="user.country"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your address"
+                name="address"
+                [(ngModel)]="user.address"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">University</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your university"
+                name="university"
+                [(ngModel)]="user.university"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Faculty</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your faculty"
+                name="faculty"
+                [(ngModel)]="user.faculty"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+            <div class="form-group">
+              <label class="form-control-label">Department</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your department"
+                name="department"
+                [(ngModel)]="user.department"
+              />
+            </div>
+          </div>
+          <!-- Update other input fields with the corresponding properties from the user object -->
+          <div class="update-profile">
+            <button type="submit" class="btn btn-primary">
+              Update Profile
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

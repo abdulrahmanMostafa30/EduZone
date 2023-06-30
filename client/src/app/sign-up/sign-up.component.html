@@ -8,7 +8,7 @@
   </div>
 </div>
   <!-- Second Row For Form -->
-<form [formGroup]="registerationForm">
+<form [formGroup]="registerationForm" (submit)="onSignup($event)">
   <!-- {{registerationForm.value | json}} -->
 <div class="row py-5">
 <!-- column 01 -->
