@@ -8,7 +8,9 @@ import { IUser, IUserResponse } from "./user";
   providedIn: "root",
 })
 export class UserService {
-  private apiUrl = "http://localhost:5000/api/users/auth";
+  // private apiUrl = "http://localhost:5000/api/users/auth";
+  private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth";
+
   public childToParentEvent = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {}
