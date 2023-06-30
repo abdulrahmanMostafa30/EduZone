@@ -12,18 +12,23 @@ module.exports.getAllCourses = (request, response, next) => {
 };
 
 module.exports.addCourse = (request, response, next) => {
+  let image = request.body.image;
+  if (request.file) {
+    const url = request.protocol + "://" + request.get("host");
+    image = url + "/images/" + request.file.filename;
+  }
   const title = request.body.title;
   const description = request.body.description;
   const category = request.body.category;
   const price = request.body.price;
-  const image = request.body.image;
-
+  const vid = request.body.vid;
   const course = new Course({
     title: title,
     description: description,
     category: category,
     price: price,
     image: image,
+    vid: vid
   });
   course
     .save()

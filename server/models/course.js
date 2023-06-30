@@ -22,6 +22,7 @@ const courseSchema = new Schema({
     type: String,
     required: [true, 'Please tell us image!']
   },
+  vid: [],
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",

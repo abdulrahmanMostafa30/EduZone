@@ -8,7 +8,9 @@ import { ICourse } from "./course";
   providedIn: "root",
 })
 export class CourseService {
-  private apiUrl = "https://eduzone-om33.onrender.com/api/course";
+  private apiUrl = "http://localhost:5000/api/course";
+
+  // private apiUrl = "https://eduzone-om33.onrender.com/api/course";
 
   constructor(private http: HttpClient) {}
 
@@ -20,6 +22,10 @@ export class CourseService {
   getCourseById(courseId: string): Observable<ICourse> {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.get<ICourse>(url).pipe(catchError(this.handleError));
+  }
+  addCourse(course: any): Observable<any> {
+    const url = `${this.apiUrl}`;
+    return this.http.post<any>(url, course).pipe(catchError(this.handleError));
   }
   deleteCourseById(courseId: string): Observable<ICourse> {
     const url = `${this.apiUrl}/${courseId}`;
