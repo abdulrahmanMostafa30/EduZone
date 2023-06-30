@@ -20,7 +20,7 @@ export class CoursesService {
   }
 
   loadJSON() {
-    this.http.get('https://eduzone-om33.onrender.com/course').subscribe(data => {
+    this.http.get('https://eduzone-om33.onrender.com/api/course').subscribe(data => {
       this.courses = data;
       this.filteredCourses = this.courses;
     });
@@ -50,14 +50,14 @@ export class CoursesService {
   }
 
   // loadJSON() {
-  //   this.http.get('https://eduzone-om33.onrender.com/course').subscribe(data => {
+  //   this.http.get('https://eduzone-om33.onrender.com/api/course').subscribe(data => {
   //     console.log(data);
   //     return data;
   //   });
 
   // }
   //   getCoursesById(id:any) {
-  //     this.http.get('https://eduzone-om33.onrender.com/course'+id).subscribe(data => {
+  //     this.http.get('https://eduzone-om33.onrender.com/api/course'+id).subscribe(data => {
   //       this.course = data;
   //     });
   //   }

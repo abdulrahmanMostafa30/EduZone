@@ -27,9 +27,9 @@ export class EnrollCourseComponent implements OnInit {
   // ngOnInit(): void {
   //   throw new Error('Method not implemented.');
   // }
-  
+
   // getCourseById(id: any) {
-  //   this.http.get('https://eduzone-om33.onrender.com/course/' + id).subscribe(data => {
+  //   this.http.get('https://eduzone-om33.onrender.com/api/course/' + id).subscribe(data => {
   //     this.course = data;
   //     console.log(data);
   //   });
@@ -42,7 +42,7 @@ export class EnrollCourseComponent implements OnInit {
   }
 
   getCourseById(id: any) {
-    this.http.get('https://eduzone-om33.onrender.com/course/' + id).subscribe(data => {
+    this.http.get('https://eduzone-om33.onrender.com/api/course/' + id).subscribe(data => {
       this.course = data;
       // console.log(data);
     });

@@ -8,7 +8,7 @@ import { ICourse } from "./course";
   providedIn: "root",
 })
 export class CourseService {
-  private apiUrl = "https://eduzone-om33.onrender.com/course";
+  private apiUrl = "https://eduzone-om33.onrender.com/api/course";
 
   constructor(private http: HttpClient) {}
 
