@@ -1,6 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router} from "@angular/router";
+import { CourseService } from './../../course/course.service';
 
 @Component({
   selector: "app-edit-course",
@@ -8,68 +9,64 @@ import { Router } from "@angular/router";
   styleUrls: ["./edit-course.component.scss"],
 })
 export class EditCourseComponent {
-  editEmployeeForm: employeeForm = new employeeForm();
+  editCourseForm: CourseForm = new CourseForm();
 
-  @ViewChild("employeeForm")
-  employeeForm!: NgForm;
+  @ViewChild("courseForm")
+  courseForm!: NgForm;
 
   isSubmitted: boolean = false;
-  employeeId: any;
+  courseId: any;
 
-  constructor(private router: Router) {}
+  constructor(private route: ActivatedRoute, private courseService: CourseService) {}
 
   ngOnInit(): void {
-    // this.employeeId = this.route.snapshot.params['employeeId'];
-    // this.getEmployeeDetailById();
+    this.courseId = this.route.snapshot.params['id'];
+    this.getCourseById();
   }
-  getEmployeeDetailById() {
-    // this.httpProvider.getEmployeeDetailById(this.employeeId).subscribe((data: any) => {
-    //   if (data != null && data.body != null) {
-    //     var resultData = data.body;
-    //     if (resultData) {
-    //       this.editEmployeeForm.Id = resultData.id;
-    //       this.editEmployeeForm.FirstName = resultData.firstName;
-    //       this.editEmployeeForm.LastName = resultData.lastName;
-    //       this.editEmployeeForm.Email = resultData.email;
-    //       this.editEmployeeForm.Address = resultData.address;
-    //       this.editEmployeeForm.Phone = resultData.phone;
-    //     }
-    //   }
-    // },
-    //   (error: any) => { });
+  getCourseById() {
+    this.courseService.getCourseById(this.courseId).subscribe((resultData: any) => {
+        if (resultData) {
+          this.editCourseForm.Id = resultData._id;
+          this.editCourseForm.title = resultData.title;
+          this.editCourseForm.description = resultData.description;
+          this.editCourseForm.category = resultData.category;
+          this.editCourseForm.price = resultData.price;
+          this.editCourseForm.image = resultData.image;
+      }
+    },
+      (error: any) => { });
   }
 
-  EditEmployee(isValid: any) {
+  EditCourse(isValid: any) {
     //   this.isSubmitted = true;
     //   if (isValid) {
-    //     this.httpProvider.saveEmployee(this.editEmployeeForm).subscribe(async data => {
+    //     this.courseService.saveCourse(this.editCourseForm).subscribe(async data => {
     //       if (data != null && data.body != null) {
     //         var resultData = data.body;
     //         if (resultData != null && resultData.isSuccess) {
     //           if (resultData != null && resultData.isSuccess) {
-    //             this.toastr.success(resultData.message);
     //             setTimeout(() => {
-    //               this.router.navigate(['/Home']);
+    //               this.router.navigate(['/profile/admin/dashboard']);
     //             }, 500);
     //           }
     //         }
     //       }
     //     },
     //       async error => {
-    //         this.toastr.error(error.message);
+    //         this.error(error.message);
     //         setTimeout(() => {
-    //           this.router.navigate(['/Home']);
+    //           this.navigate(['/Home']);
     //         }, 500);
     //       });
     //   }
-    // }
-  }
 }
-export class employeeForm {
-  Id: number = 0;
-  FirstName: string = "";
-  LastName: string = "";
-  Email: string = "";
-  Address: string = "";
-  Phone: string = "";
+}
+export class CourseForm {
+  Id: string = "";
+  title: string = "";
+  description: string = "";
+  category: string = "";
+  price: string = "";
+  image: string = "";
+  // vid: Array = [ ];
 }
