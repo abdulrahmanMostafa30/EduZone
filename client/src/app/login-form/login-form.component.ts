@@ -13,12 +13,8 @@ export class LoginFormComponent {
   password: string = "";
   rememberme: string = "";
   isLoading = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  errorMessage: any;
+  constructor(private authService: AuthService, private router: Router) {}
   onLogin() {
     const credentials = {
       email: this.email,
@@ -26,6 +22,15 @@ export class LoginFormComponent {
     };
     console.log(credentials);
     this.isLoading = true;
-    this.authService.login(credentials);
+
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        this.router.navigate(["/"]);
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        console.log(this.errorMessage);
+      },
+    });
   }
 }

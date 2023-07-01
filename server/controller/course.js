@@ -23,6 +23,7 @@ module.exports.getAllCourses = (request, response, next) => {
 };
 
 module.exports.addCourse = (request, response, next) => {
+  console.log(request.file);
   let image = request.body.image;
   if (request.file) {
     const url = request.protocol + "://" + request.get("host");

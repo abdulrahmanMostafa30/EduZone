@@ -1,10 +1,11 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Observable, Subject, throwError } from "rxjs";
+import { Observable, Subject, throwError, Observer } from "rxjs";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
+
 @Injectable()
 export class AuthService {
   private isAuthenticated = false;
@@ -12,8 +13,8 @@ export class AuthService {
   private token: string | null = "";
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
-  // private apiUrl = "http://localhost:5000/api/users/auth"; // Replace with your actual API URL
-  private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth"; // Replace with your actual API URL
+  private apiUrl = "http://localhost:5000/api/users/auth"; // Replace with your actual API URL
+  // private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth"; // Replace with your actual API URL
 
   constructor(
     public jwtHelper: JwtHelperService,
@@ -68,34 +69,41 @@ export class AuthService {
 
     return !this.jwtHelper.isTokenExpired(token);
   }
-  login(credentials: AuthData) {
-    this.http
-      .post<{ token: string; data: any }>(`${this.apiUrl}/login`, credentials)
-      .subscribe((response) => {
-        const token = response.token;
-        if (token) {
-          if (this.checkToken(token)) this.token = token;
-          if (token) {
-            const role = response.data.user.role;
-            this.role = role;
-            console.log(role);
 
-            const expiresInDuration = this.jwtHelper.decodeToken(token).exp;
-            this.setAuthTimer(expiresInDuration);
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            const now = new Date();
-            const expirationDate = new Date(
-              now.getTime() + expiresInDuration * 1000
-            );
-            console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, role);
-            this.router.navigate(["/"]);
+  login(credentials: AuthData): Observable<any> {
+    return new Observable((observer: Observer<any>) => {
+      this.http
+        .post<{ token: string; data: any }>(`${this.apiUrl}/login`, credentials)
+        .subscribe(
+          response => {
+            const token = response.token;
+            if (token) {
+              if (this.checkToken(token)) this.token = token;
+              if (token) {
+                const role = response.data.user.role;
+                this.role = role;
+                console.log(role);
+
+                const expiresInDuration = this.jwtHelper.decodeToken(token).exp;
+                this.setAuthTimer(expiresInDuration);
+                this.isAuthenticated = true;
+                this.authStatusListener.next(true);
+                const now = new Date();
+                const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+                console.log(expirationDate);
+                this.saveAuthData(token, expirationDate, role);
+                observer.next({ success: true }); // Emit success status or any other desired data
+              }
+            } else {
+              observer.error(new Error('Token not found in the response')); // Emit an error if token is not available
+            }
+          },
+          error => {
+            observer.error(error); // Emit error if login fails
           }
-        }
-      });
+        );
+    });
   }
-
   autoAuthUser() {
     const authInformation = this.getAuthData();
     console.log(authInformation);
