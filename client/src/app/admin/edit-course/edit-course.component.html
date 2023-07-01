@@ -80,7 +80,7 @@
             </div>
             <div class="col-sm-9">
               <input type="file" class="form-control" id="image" required maxlength="255"
-                [(ngModel)]="editCourseForm.image" name="image" #image="ngModel">
+                [(ngModel)]="editCourseForm.image" name="image" #image="ngModel" (change)="handleImageUpload($event)">
               <div *ngIf="image.errors && isSubmitted" class="alert alert-danger validationError">
                 <div [hidden]="!image.errors?.['required']">
                   image is required

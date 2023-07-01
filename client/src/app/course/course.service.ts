@@ -22,8 +22,20 @@ export class CourseService {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.get<ICourse>(url).pipe(catchError(this.handleError));
   }
-  updateCourseById(courseId: string, data:any): Observable<ICourse> {
+  updateCourseById(courseId: string, data:any, file:File, videos: any[]): Observable<ICourse> {
+
     const url = `${this.apiUrl}/${courseId}`;
+    const postData = new FormData();
+    postData.append('title', data.title);
+    postData.append('description', data.description);
+    postData.append('category', data.category);
+    postData.append('price', data.price);
+    postData.append('image', file);
+    videos.forEach((video, index) => {
+      postData.append(`vid[${index}][title]`, video.title);
+      postData.append(`vid[${index}][url]`, video.url);
+    });
+
     return this.http.patch<ICourse>(url, data).pipe(catchError(this.handleError));
   }
   addCourse(courseData: any, videos: any[], file:File): Observable<any> {
