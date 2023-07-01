@@ -16,8 +16,8 @@ export class EditCourseComponent {
 
   isSubmitted: boolean = false;
   courseId: any;
-
-  constructor(private route: ActivatedRoute, private courseService: CourseService) {}
+  errorMessage:any;
+  constructor(private route: ActivatedRoute, private courseService: CourseService, private router: Router) {}
 
   ngOnInit(): void {
     this.courseId = this.route.snapshot.params['id'];
@@ -38,28 +38,23 @@ export class EditCourseComponent {
   }
 
   EditCourse(isValid: any) {
-    //   this.isSubmitted = true;
-    //   if (isValid) {
-    //     this.courseService.saveCourse(this.editCourseForm).subscribe(async data => {
-    //       if (data != null && data.body != null) {
-    //         var resultData = data.body;
-    //         if (resultData != null && resultData.isSuccess) {
-    //           if (resultData != null && resultData.isSuccess) {
-    //             setTimeout(() => {
-    //               this.router.navigate(['/profile/admin/dashboard']);
-    //             }, 500);
-    //           }
-    //         }
-    //       }
-    //     },
-    //       async error => {
-    //         this.error(error.message);
-    //         setTimeout(() => {
-    //           this.navigate(['/Home']);
-    //         }, 500);
-    //       });
-    //   }
+      this.isSubmitted = true;
+      if (isValid) {
+        this.courseService.updateCourseById(this.courseId, this.editCourseForm)
+        .subscribe({next: (response) => {
+            setTimeout(() => {
+                this.router.navigate(['/profile/admin/dashboard']);
+              }, 500);
+          },
+          error: (error) =>{
+                        setTimeout(() => {
+              this.router.navigate(['/profile/admin/dashboard']);
+            }, 500);
+    }
+  })
 }
+}
+
 }
 export class CourseForm {
   Id: string = "";
