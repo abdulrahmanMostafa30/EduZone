@@ -54,10 +54,16 @@ module.exports.addCourse = (request, response, next) => {
 };
 
 module.exports.updateCourse = catchAsync(async (request, response, next) => {
-
+  let image = request.body.image;
+  if (request.file) {
+    const url = request.protocol + "://" + request.get("host");
+    image = url + "/images/" + request.file.filename;
+  }
+  
   const filteredBody = filterObj(req.body, 'title', 'description', 'category', 'price', 'image', 'vid');
+  filteredBody['image'] = image
 
-  const updatedCourse = await User.findByIdAndUpdate(request.params.id, filteredBody, {
+  const updatedCourse = await Course.findByIdAndUpdate(request.params.id, filteredBody, {
     new: true,
     runValidators: true
   });
@@ -65,7 +71,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      user: updatedCourse
+      course: updatedCourse
     }
   });
 });

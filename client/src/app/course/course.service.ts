@@ -22,6 +22,10 @@ export class CourseService {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.get<ICourse>(url).pipe(catchError(this.handleError));
   }
+  updateCourseById(courseId: string, data:any): Observable<ICourse> {
+    const url = `${this.apiUrl}/${courseId}`;
+    return this.http.patch<ICourse>(url, data).pipe(catchError(this.handleError));
+  }
   addCourse(courseData: any, videos: any[], file:File): Observable<any> {
 
     const url = `${this.apiUrl}`;
@@ -41,6 +45,7 @@ export class CourseService {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.delete<ICourse>(url).pipe(catchError(this.handleError));
   }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = "An error occurred";
     if (error.error instanceof ErrorEvent) {
