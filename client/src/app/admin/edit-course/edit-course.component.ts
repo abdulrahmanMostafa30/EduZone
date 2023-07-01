@@ -1,6 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router} from "@angular/router";
 import { CourseService } from './../../course/course.service';
 
 @Component({
@@ -40,28 +40,26 @@ export class EditCourseComponent {
   EditCourse(isValid: any) {
     //   this.isSubmitted = true;
     //   if (isValid) {
-    //     this.httpProvider.saveEmployee(this.editEmployeeForm).subscribe(async data => {
+    //     this.courseService.saveCourse(this.editCourseForm).subscribe(async data => {
     //       if (data != null && data.body != null) {
     //         var resultData = data.body;
     //         if (resultData != null && resultData.isSuccess) {
     //           if (resultData != null && resultData.isSuccess) {
-    //             this.toastr.success(resultData.message);
     //             setTimeout(() => {
-    //               this.router.navigate(['/Home']);
+    //               this.router.navigate(['/profile/admin/dashboard']);
     //             }, 500);
     //           }
     //         }
     //       }
     //     },
     //       async error => {
-    //         this.toastr.error(error.message);
+    //         this.error(error.message);
     //         setTimeout(() => {
-    //           this.router.navigate(['/Home']);
+    //           this.navigate(['/Home']);
     //         }, 500);
     //       });
     //   }
-    // }
-  }
+}
 }
 export class CourseForm {
   Id: string = "";
