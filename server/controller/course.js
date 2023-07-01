@@ -60,7 +60,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     image = url + "/images/" + request.file.filename;
   }
   
-  const filteredBody = filterObj(req.body, 'title', 'description', 'category', 'price', 'image', 'vid');
+  const filteredBody = filterObj(req.body, 'title', 'description', 'category', 'price', 'vid');
   filteredBody['image'] = image
 
   const updatedCourse = await Course.findByIdAndUpdate(request.params.id, filteredBody, {
