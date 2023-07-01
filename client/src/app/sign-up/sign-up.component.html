@@ -13,11 +13,12 @@
 <div class="row py-5">
 <!-- column 01 -->
   <div class="container col-lg-3 box-one d-flex justify-content-center flex-column">
-    <div class="user-img">
+    <div class="user-img"[class.is-invalid]="fname?.invalid">
       <img src="../../assets/images/user-profile/bt1.png" alt="" id="photo">
       <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)">
       <label for="file" id="uploadbtn"> <i class="bi bi-camera"></i> </label>
-    </div>
+      <small *ngIf="image?.errors?.['required']">Image is Required </small>
+    </div> 
     <div class="input-group mb-3">
       <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Frist name"
       formControlName="fname" [class.is-invalid]="fname?.invalid && fname?.touched">

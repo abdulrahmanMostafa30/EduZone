@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
     // using form builder services
     this.registerationForm = this.fb.group({
-      image: [null],
+      image: [null, [Validators.required]],
       fname: ["", [Validators.required, Validators.minLength(3)]],
       lname: ["", [Validators.required, Validators.minLength(3)]],
       fullName: [

@@ -13,8 +13,9 @@ export class LoginFormComponent {
   password: string = "";
   rememberme: string = "";
   isLoading = false;
+  isLogged = false;
   errorMessage: any;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
   onLogin() {
     const credentials = {
       email: this.email,
@@ -25,10 +26,15 @@ export class LoginFormComponent {
 
     this.authService.login(credentials).subscribe({
       next: (response) => {
-        this.router.navigate(["/"]);
+        this.isLogged = true;
+        this.errorMessage = "";
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 2000);
       },
       error: (error) => {
         this.errorMessage = error.message;
+        this.isLogged = false;
         console.log(this.errorMessage);
       },
     });
