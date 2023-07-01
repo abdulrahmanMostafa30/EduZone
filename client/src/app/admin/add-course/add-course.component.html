@@ -1,81 +1,51 @@
-<div class="add-course">
-  <h2>Add Course</h2>
-  <form (ngSubmit)="addCourse()" #courseForm="ngForm">
-    <div class="form-group">
-      <label>Title</label>
-      <input
-        type="text"
-        class="form-control"
-        name="title"
-        required
-        [(ngModel)]="course.title"
-      />
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea
-        class="form-control"
-        name="description"
-        required
-        [(ngModel)]="course.description"
-      ></textarea>
-    </div>
-    <div class="form-group">
-      <label>Category</label>
-      <input
-        type="text"
-        class="form-control"
-        name="category"
-        required
-        [(ngModel)]="course.category"
-      />
-    </div>
-    <div class="form-group">
-      <label>Price</label>
-      <input
-        type="text"
-        class="form-control"
-        name="price"
-        required
-        [(ngModel)]="course.price"
-      />
-    </div>
-    <div class="form-group">
-      <label>Image</label>
-      <input
-        type="file"
-        name="image"
-        (change)="handleImageUpload($event)"
-        required
-      />
-    </div>
-    <!-- <div class="form-group">
-              <label>Video Title</label>
-              <input type="text" class="form-control" name="title" [(ngModel)]="video.title">
-            </div>
-            <div class="form-group">
-              <label>Video URL</label>
-              <input type="text" class="form-control" name="url" [(ngModel)]="video.url">
-            </div>
-            <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button> -->
-    <button
-      type="submit"
-      class="btn btn-success"
-      [disabled]="!courseForm.valid"
-    >
-      Add Course
-    </button>
-  </form>
+<h2>Add Course</h2>
 
-  <!-- Display added videos -->
-  <!-- <div class="videos-section" *ngIf="videos.length > 0">
-            <h4>Added Videos</h4>
-            <div class="videos-list">
-              <div class="video-item" *ngFor="let video of videos; let i = index">
-                <span>{{ video.title }}</span>
-                <span>{{ video.url }}</span>
-                <button class="btn btn-danger" (click)="removeVideo(i)">Remove</button>
-              </div>
-            </div>
-          </div> -->
+<form (ngSubmit)="addCourse()" #courseForm="ngForm">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title:</label>
+    <input type="text" id="title" name="title" class="form-control" [(ngModel)]="course.title" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Description:</label>
+    <textarea id="description" name="description" class="form-control" [(ngModel)]="course.description" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="category" class="form-label">Category:</label>
+    <input type="text" id="category" name="category" class="form-control" [(ngModel)]="course.category" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="price" class="form-label">Price:</label>
+    <input type="number" id="price" name="price" class="form-control" [(ngModel)]="course.price" required>
+  </div>
+
+  <h3>Videos</h3>
+
+  <div *ngFor="let video of videos; let i = index" [attr.data-index]="i" class="video-field">
+    <div class="row mb-3">
+      <div class="col">
+        <label for="videoTitle{{ i }}" class="form-label">Title:</label>
+        <input type="text" id="videoTitle{{ i }}" name="videoTitle{{ i }}" class="form-control" [(ngModel)]="video.title" required>
+      </div>
+      <div class="col">
+        <label for="videoUrl{{ i }}" class="form-label">URL:</label>
+        <input type="text" id="videoUrl{{ i }}" name="videoUrl{{ i }}" class="form-control" [(ngModel)]="video.url" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo(i)">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons-container">
+
+  <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
+
+  <button type="submit" class="btn btn-success" [disabled]="!courseForm.valid">Add Course</button>
+
 </div>
+</form>
