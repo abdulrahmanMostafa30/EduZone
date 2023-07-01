@@ -20,6 +20,10 @@
     <label for="price" class="form-label">Price:</label>
     <input type="number" id="price" name="price" class="form-control" [(ngModel)]="course.price" required>
   </div>
+  <div class="mb-3">
+    <label for="image" class="form-label">Course Image:</label>
+    <input type="file" id="image" name="image" class="form-control" (change)="handleImageUpload($event)" accept="image/*" required>
+  </div>
 
   <h3>Videos</h3>
 

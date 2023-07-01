@@ -22,7 +22,7 @@ export class CourseService {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.get<ICourse>(url).pipe(catchError(this.handleError));
   }
-  addCourse(courseData: any, videos: any[]): Observable<any> {
+  addCourse(courseData: any, videos: any[], file:File): Observable<any> {
 
     const url = `${this.apiUrl}`;
     const postData = new FormData();
@@ -32,7 +32,7 @@ export class CourseService {
     postData.append('price', courseData.price);
 
     if (courseData.image) {
-      postData.append('image', courseData.image);
+      postData.append('image', file);
     }
 
     videos.forEach((video, index) => {
