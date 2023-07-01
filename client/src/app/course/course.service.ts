@@ -30,11 +30,7 @@ export class CourseService {
     postData.append('description', courseData.description);
     postData.append('category', courseData.category);
     postData.append('price', courseData.price);
-
-    if (courseData.image) {
-      postData.append('image', file);
-    }
-
+    postData.append('image', file);
     videos.forEach((video, index) => {
       postData.append(`vid[${index}][title]`, video.title);
       postData.append(`vid[${index}][url]`, video.url);
