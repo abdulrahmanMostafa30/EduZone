@@ -1,4 +1,15 @@
 const Course = require("../models/course");
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
+
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -41,30 +52,22 @@ module.exports.addCourse = (request, response, next) => {
     .catch((error) => next(error));
 };
 
-module.exports.updateCourse = (request, response, next) => {
-  const title = request.body.title;
-  const description = request.body.description;
-  const category = request.body.category;
-  const price = request.body.price;
-  const image = request.body.image;
+module.exports.updateCourse = catchAsync(async (request, response, next) => {
 
-  Course.findById(new ObjectId(request.params.id))
-    .then((course) => {
-      course.title = title;
-      course.title = description;
-      course.title = category;
-      course.title = price;
-      course.title = image;
-      course.save();
-    })
-    .then((data) => {
-      response.status(201).json({
-        message: "Done",
-        data: data,
-      });
-    })
-    .catch((error) => next(error));
-};
+  const filteredBody = filterObj(req.body, 'title', 'description', 'category', 'price', 'image', 'vid');
+
+  const updatedCourse = await User.findByIdAndUpdate(request.params.id, filteredBody, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedCourse
+    }
+  });
+});
 
 module.exports.getCourseById = (request, response, next) => {
   Course.findOne({ _id: new ObjectId(request.params.id) })
