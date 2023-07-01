@@ -60,7 +60,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     image = url + "/images/" + request.file.filename;
   }
   
-  const filteredBody = filterObj(req.body, 'title', 'description', 'category', 'price', 'vid');
+  const filteredBody = filterObj(request.body, 'title', 'description', 'category', 'price', 'vid');
   filteredBody['image'] = image
 
   const updatedCourse = await Course.findByIdAndUpdate(request.params.id, filteredBody, {
@@ -68,7 +68,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     runValidators: true
   });
 
-  res.status(200).json({
+  response.status(200).json({
     status: 'success',
     data: {
       course: updatedCourse
