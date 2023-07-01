@@ -34,7 +34,7 @@
               <td>{{(course.vid.length)}}</td>
               <td>
                 <div class="btn"><i class='fas fa-eye view' (click)="gotToCourse(course._id)"></i></div>
-                <div class="btn"><i class='fa fa-edit edit' (click)="gotToCourse(course._id)"></i></div>
+                <div class="btn"><i class='fa fa-edit edit' routerLink="/profile/admin/edit-course/{{course._id}}"></i></div>
                 <div class="btn"><i class='fas fa-trash-alt delete' (click)="deleteCourse(course._id)"></i></div>
               </td>
             </tr>
