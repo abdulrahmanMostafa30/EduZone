@@ -18,11 +18,11 @@ import { CoursesService } from '../courses.service';
 export class EnrollCourseComponent implements OnInit {
   id: any;
   course: any;
-  constructor(private route: ActivatedRoute, private http: HttpClient, private courseService: CoursesService) { }
+  constructor(private route: ActivatedRoute, private http: HttpClient, private coursesService: CoursesService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.courseService.getCourseById(this.id).subscribe((data) => {
+    this.coursesService.getCourseById(this.id).subscribe((data) => {
       this.course = data;
     });
   }

@@ -28,7 +28,7 @@
 <!-- Second Column -->
 <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
 <h1> Course content </h1>
-<ul class="list-group list-group-flush" *ngFor="let vid of course; let i = index;">
+<ul class="list-group list-group-flush" *ngFor="let vid of course.vid; let i = index;">
   <li class="list-group-item list-group-item-action" (click)="displayVideo(i)">{{vid.title}}</li>
 </ul>
 </div>

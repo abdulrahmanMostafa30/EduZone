@@ -20,8 +20,7 @@ export class CourseDetailsComponent implements OnInit {
     // Clear the input after adding the comment
     this.myCommentInput.nativeElement.value = '';
   }
-  
-  videoUrls: string[] = [];
+
   course: any = null;
   id: any;
   currentVideoIndex: number = 0;
@@ -30,22 +29,19 @@ export class CourseDetailsComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   displayVideo(videoIndex: number) {
-    this.course.vid.map((vid: any, index: number) => {
-      this.videoUrls[index] = vid[index].url;
-    })
-    if (videoIndex >= 0 && videoIndex < this.videoUrls.length) {
-      this.currentVideoIndex = videoIndex;
-    }
+    this.currentVideoIndex = videoIndex;
   }
 
   getSafeUrl(): SafeResourceUrl {
-    const videoUrl = this.videoUrls[this.currentVideoIndex];
+    const videoUrl = this.course.vid[this.currentVideoIndex].url;
+    console.log(this.currentVideoIndex);
     return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
   }
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id);
-    this.course = this.coursesService.getCourseById(this.id);
-    console.log(this.course);
+    this.coursesService.getCourseById(this.id).subscribe((data) => {
+      this.course = data;
+    });
   }
 }
