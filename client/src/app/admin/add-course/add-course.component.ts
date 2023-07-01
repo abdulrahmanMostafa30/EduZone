@@ -34,7 +34,7 @@ export class AddCourseComponent {
 
     }
     // console.log('Course:', this.course);
-    this.courseService.addCourse(postData).subscribe({
+    this.courseService.addCourse(this.course, this.videos).subscribe({
       next: (response) => {
         console.log(response);
       },

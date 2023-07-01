@@ -22,9 +22,24 @@ export class CourseService {
     const url = `${this.apiUrl}/${courseId}`;
     return this.http.get<ICourse>(url).pipe(catchError(this.handleError));
   }
-  addCourse(course: any): Observable<any> {
+  addCourse(courseData: any, videos: any[]): Observable<any> {
+
     const url = `${this.apiUrl}`;
-    return this.http.post<any>(url, course).pipe(catchError(this.handleError));
+    const postData = new FormData();
+    postData.append('title', courseData.title);
+    postData.append('description', courseData.description);
+    postData.append('category', courseData.category);
+    postData.append('price', courseData.price);
+
+    if (courseData.image) {
+      postData.append('image', courseData.image);
+    }
+
+    videos.forEach((video, index) => {
+      postData.append(`vid[${index}][title]`, video.title);
+      postData.append(`vid[${index}][url]`, video.url);
+    });
+    return this.http.post<any>(url, postData).pipe(catchError(this.handleError));
   }
   deleteCourseById(courseId: string): Observable<ICourse> {
     const url = `${this.apiUrl}/${courseId}`;
