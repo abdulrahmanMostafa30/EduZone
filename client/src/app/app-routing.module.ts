@@ -22,8 +22,8 @@ const routes: Routes = [
   { path: "login", component: LoginFormComponent },
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
+  { path: "course/enroll/:courseName", component: CourseDetailsComponent },
   { path: "course/:id", component: EnrollCourseComponent },
-  { path: "course/:nameCourse", component: CourseDetailsComponent },
   {
     path: "profile",
     loadChildren: () => import("./profile/profile.module").then((m) => m.ProfileModule),

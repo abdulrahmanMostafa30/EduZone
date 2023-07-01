@@ -1,5 +1,7 @@
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Component ,ViewChild ,ElementRef ,OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CoursesService } from '../courses.service';
 
 @Component({
   selector: 'app-course-details',
@@ -18,27 +20,19 @@ export class CourseDetailsComponent implements OnInit {
     // Clear the input after adding the comment
     this.myCommentInput.nativeElement.value = '';
   }
-  videoUrls: string[] = [
-    "https://www.youtube.com/embed/RHsuArdyZUI",
-    "https://www.youtube.com/embed/ogUfVTA5AlA",
-    "https://www.youtube.com/embed/Rj5MXsPslVo",
-    "https://www.youtube.com/embed/ogUfVTA5AlA",
-    "https://www.youtube.com/embed/RHsuArdyZUI",
-    "https://www.youtube.com/embed/ogUfVTA5AlA",
-    "https://www.youtube.com/embed/RHsuArdyZUI",
-    "https://www.youtube.com/embed/ogUfVTA5AlA",
-    "https://www.youtube.com/embed/RHsuArdyZUI",
-    "https://www.youtube.com/embed/ogUfVTA5AlA",
-    "https://www.youtube.com/embed/RHsuArdyZUI",
-    "https://www.youtube.com/embed/ogUfVTA5AlA"
-
-    // url of video
-  ];
+  
+  videoUrls: string[] = [];
+  course: any = null;
+  id: any;
   currentVideoIndex: number = 0;
+  errorMsg: any;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   displayVideo(videoIndex: number) {
+    this.course.vid.map((vid: any, index: number) => {
+      this.videoUrls[index] = vid[index].url;
+    })
     if (videoIndex >= 0 && videoIndex < this.videoUrls.length) {
       this.currentVideoIndex = videoIndex;
     }
@@ -49,10 +43,9 @@ export class CourseDetailsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
   }
   ngOnInit() {
-    // // in case page refresh saved comments
-    // const storedComments = localStorage.getItem('comments');
-    // if (storedComments) {
-    //   this.comments = JSON.parse(storedComments);
-    // }
+    this.id = this.route.snapshot.paramMap.get('id');
+    console.log(this.id);
+    this.course = this.coursesService.getCourseById(this.id);
+    console.log(this.course);
   }
 }

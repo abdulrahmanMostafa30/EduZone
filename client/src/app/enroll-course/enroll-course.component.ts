@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CoursesService } from '../courses.service';
 // import { CoursesService } from '../courses.service';
 
 @Component({
@@ -17,35 +18,20 @@ import { ActivatedRoute } from '@angular/router';
 export class EnrollCourseComponent implements OnInit {
   id: any;
   course: any;
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient, private courseService: CoursesService) { }
 
-  //   this.id = this.route.snapshot.paramMap.get("id");
-  //   console.log(this.id);
-  //   this.getCourseById(this.id);
-  // }
-
-  // ngOnInit(): void {
-  //   throw new Error('Method not implemented.');
-  // }
+  ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.courseService.getCourseById(this.id).subscribe((data) => {
+      this.course = data;
+    });
+  }
 
   // getCourseById(id: any) {
   //   this.http.get('https://eduzone-om33.onrender.com/api/course/' + id).subscribe(data => {
   //     this.course = data;
-  //     console.log(data);
+  //     // console.log(data);
   //   });
   // }
-
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id);
-    this.getCourseById(this.id);
-  }
-
-  getCourseById(id: any) {
-    this.http.get('https://eduzone-om33.onrender.com/api/course/' + id).subscribe(data => {
-      this.course = data;
-      // console.log(data);
-    });
-  }
 
 }

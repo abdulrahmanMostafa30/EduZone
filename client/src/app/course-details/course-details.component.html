@@ -19,8 +19,8 @@
     title="YouTube video player">
   </iframe>
     <div class="card-body">
-      <h5 class="card-title">React - The Complete Guide 2023 (incl. React Router & Redux)</h5>
-      <p class="card-text">Dive in and learn React.js from scratch! Learn React, Hooks, Redux, React Router, Next.js, Best Practices and way more!</p>
+      <h5 class="card-title">{{course.title}}</h5>
+      <p class="card-text">{{course.description}}</p>
       <p class="card-text"><small class="text-body-secondary">This course includes: 50.5 hours on-demand video</small></p>
     </div>
   </div>
@@ -28,18 +28,8 @@
 <!-- Second Column -->
 <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
 <h1> Course content </h1>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(0)">Welcome To The Course!</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(1)">What is React.js?</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(2)">ReactJS vs "Vanilla JavaScript"</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(3)">Why Use React?</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(4)">Editing Our First React App</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(5)">About This Course & Course Outline</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(6)">The Two Ways (Paths) Of Taking This Course</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(7)">Getting The Most Out Of This Course</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(8)">Creating React Projects</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(9)">Browser-based vs Local Development</li>
-  <li class="list-group-item list-group-item-action" (click)="displayVideo(10)">Creating React Projects Locally</li>
+<ul class="list-group list-group-flush" *ngFor="let vid of course; let i = index;">
+  <li class="list-group-item list-group-item-action" (click)="displayVideo(i)">{{vid.title}}</li>
 </ul>
 </div>
 </div>
