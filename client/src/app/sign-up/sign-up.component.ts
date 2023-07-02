@@ -15,7 +15,6 @@ import { Router } from "@angular/router";
 })
 export class SignUpComponent implements OnInit {
   errorMessage: any;
-
   Country: any = [
     "Egypt",
     "Kuwait",
@@ -25,6 +24,7 @@ export class SignUpComponent implements OnInit {
     "Other",
   ];
   isLoading = false;
+  isSignedup = false;
   registerationForm: FormGroup | any;
   selectedFile: File | null = null;
 
@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
     // using form builder services
     this.registerationForm = this.fb.group({
-      image: [null, [Validators.required]],
+      image: [""],
       fname: ["", [Validators.required, Validators.minLength(3)]],
       lname: ["", [Validators.required, Validators.minLength(3)]],
       fullName: [
@@ -129,7 +129,6 @@ export class SignUpComponent implements OnInit {
 
     if (this.registerationForm.invalid) {
       console.log(this.registerationForm.invalid);
-
       return;
     }
     if (!this.selectedFile) {
@@ -147,7 +146,7 @@ export class SignUpComponent implements OnInit {
       email: this.email.value,
       password: this.password.value,
       confirmPassword: this.confirmPassword.value,
-      image: this.selectedFile,
+      image: this.image.value,
       country: this.country.value.toString(),
       address: this.address.value,
       university: this.university.value,
@@ -160,8 +159,11 @@ export class SignUpComponent implements OnInit {
       next: (response) => {
         console.log(response);
         if(response.token){
-          this.errorMessage = ''
-          this.router.navigate(["/login"]);
+          this.isSignedup = true;
+          this.errorMessage = '';
+          setTimeout(() => {
+            this.router.navigate(["/login"]);
+          }, 2000);
         }
       },
       error: (error) => {
