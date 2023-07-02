@@ -51,22 +51,34 @@
       <div class="row justify-content-center algin-item-center">
         <div class="group-input ps-5">
           <label class="form-label mb-4">Write a comment</label>
-          <input #mycomment class="form-control" type="text" name="comment" id="comment-input">
+          <input
+          class="form-control"
+          type="text"
+          name="comment"
+          id="comment-input"
+          [(ngModel)]="comment"
+        />
         </div>
         <div class="review-btn col-6 mx-auto mt-5">
-          <button (click)="onclick()" type="button" id="btn" class="btn col-lg-6">Add comment </button>
+          <button (click)="addComment()" type="button" id="btn" class="btn col-lg-6">Add comment </button>
         </div>
       </div>
       <div class="row py-5">
         <table class="table mt-3">
           <thead>
             <tr>
-              <th>Reviews</th>
+              <th class="text-center">
+                <i class="fa-solid fa-user"></i>
+              </th>
+              <th class="text-center">
+                Reviews
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let comment of comments">
-              <td>{{ comment }}</td>
+            <tr *ngFor="let comment of course.comments">
+              <td>{{ comment.name }}</td>
+              <td>{{ comment.comment }}</td>
             </tr>
           </tbody>
         </table>

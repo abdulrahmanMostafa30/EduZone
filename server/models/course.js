@@ -22,6 +22,20 @@ const courseSchema = new Schema({
     type: String,
     required: [true, 'Please tell us image!']
   },
+  comments: [{
+    _id: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    comment: {
+      type: String,
+      required: true
+    }
+  }],
   vid: [],
   userId: {
     type: Schema.Types.ObjectId,

@@ -1,32 +1,29 @@
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CoursesService } from '../courses.service';
+import { CourseService } from "../course/course.service";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { UserService } from "../profile/user.service";
 
 @Component({
-  selector: 'app-course-details',
-  templateUrl: './course-details.component.html',
-  styleUrls: ['./course-details.component.scss']
+  selector: "app-course-details",
+  templateUrl: "./course-details.component.html",
+  styleUrls: ["./course-details.component.scss"],
 })
 export class CourseDetailsComponent implements OnInit {
-
-  @ViewChild('mycomment', { static: false }) myCommentInput!: ElementRef;
   comments: string[] = [];
-  onclick() {
-    const comment = this.myCommentInput.nativeElement.value;
-    this.comments.push(comment);
-    // // Store the comments in localStorage
-    // localStorage.setItem('comments', JSON.stringify(this.comments));
-    // Clear the input after adding the comment
-    this.myCommentInput.nativeElement.value = '';
-  }
+  comment: string = "";
 
+  user: any;
   course: any = null;
-  id: any;
+  id: string = "";
   currentVideoIndex: number = 0;
   errorMsg: any;
-
-  constructor(private sanitizer: DomSanitizer, private coursesService: CoursesService, private route: ActivatedRoute) { }
+  errorMessage: any;
+  constructor(
+    private sanitizer: DomSanitizer,
+    private courseService: CourseService,
+    private route: ActivatedRoute
+  ) {}
 
   displayVideo(videoIndex: number) {
     this.currentVideoIndex = videoIndex;
@@ -34,14 +31,39 @@ export class CourseDetailsComponent implements OnInit {
 
   getSafeUrl(): SafeResourceUrl {
     const videoUrl = this.course.vid[this.currentVideoIndex].url;
-    console.log(this.currentVideoIndex);
     return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
   }
 
+  addComment() {
+    if (this.course) {
+      if (this.comment != "") {
+        this.courseService
+          .addComment({ id: this.course._id, comment: this.comment })
+          .subscribe({
+            next: (response) => {
+              this.comment = "";
+              this.getCourse();
+            },
+            error: (error) => {
+              this.errorMessage = error;
+              this.comment = "";
+            },
+          });
+      }
+    }
+  }
+  getCourse() {
+    this.courseService.getCourseById(this.id).subscribe({
+      next: (data) => {
+        this.course = data;
+      },
+      error: (error) => (this.errorMessage = error),
+    });
+  }
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.coursesService.getCourseById(this.id).subscribe((data) => {
-      this.course = data;
+    this.route.params.subscribe((params) => {
+      this.id = params["id"];
+      this.getCourse();
     });
   }
 }

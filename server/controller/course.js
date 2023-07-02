@@ -1,11 +1,11 @@
 const Course = require("../models/course");
-const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
-const factory = require('./handlerFactory');
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
+const factory = require("./handlerFactory");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
-  Object.keys(obj).forEach(el => {
+  Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
@@ -23,7 +23,6 @@ module.exports.getAllCourses = (request, response, next) => {
 };
 
 module.exports.addCourse = (request, response, next) => {
-  console.log(request.file);
   let image = request.body.image;
   if (request.file) {
     const url = request.protocol + "://" + request.get("host");
@@ -40,7 +39,7 @@ module.exports.addCourse = (request, response, next) => {
     category: category,
     price: price,
     image: image,
-    vid: vid
+    vid: vid,
   });
   course
     .save()
@@ -59,21 +58,31 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     const url = request.protocol + "://" + request.get("host");
     image = url + "/images/" + request.file.filename;
   }
-  
-  
-  const filteredBody = filterObj(request.body, 'title', 'description', 'category', 'price', 'vid');
-  filteredBody['image'] = image
 
-  const updatedCourse = await Course.findByIdAndUpdate(request.params.id, filteredBody, {
-    new: true,
-    runValidators: true
-  });
+  const filteredBody = filterObj(
+    request.body,
+    "title",
+    "description",
+    "category",
+    "price",
+    "vid"
+  );
+  filteredBody["image"] = image;
+
+  const updatedCourse = await Course.findByIdAndUpdate(
+    request.params.id,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   response.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      course: updatedCourse
-    }
+      course: updatedCourse,
+    },
   });
 });
 
@@ -87,6 +96,39 @@ module.exports.getCourseById = (request, response, next) => {
     .catch((error) => next(error));
 };
 
+module.exports.addComment = catchAsync(async (request, response, next) => {
+  const { id, comment } = request.body;
+  const user = request.user
+  // console.log(id, comment, user)
+  const course = await Course.findById(id);
+
+  if (!course) {
+    return next(new AppError("Course not found.", 401));
+
+  }
+  const existingComment = course.comments.find((c) => c._id.toString() === request.user._id.toString());
+
+  if (existingComment) {
+    return next(new AppError("User already added a comment", 401));
+  }
+
+  const newComment = {
+    _id: request.user._id,
+    name: `${request.user.fname} ${request.user.lname}`,
+    comment: comment,
+  };
+
+  course.comments.push(newComment);
+  await course.save();
+
+
+  response.status(200).json({
+    status: "success",
+    data: {
+      course: course.comments,
+    },
+  });
+});
 module.exports.delelteCourseById = (request, response, next) => {
   Course.findOneAndRemove(new ObjectId(request.params.id))
     .then((data) => {

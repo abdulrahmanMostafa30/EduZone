@@ -5,5 +5,6 @@ export interface ICourse {
   category: string;
   price: string;
   image: string;
+  comments: []
   vid: [];
 }

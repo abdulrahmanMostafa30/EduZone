@@ -63,7 +63,7 @@ exports.add = catchAsync(async (req, res, next) => {
   }
 
   const updatedCart = await User.updateOne(
-    { _id: req.user.id },
+    { _id: req.user._id },
     { $push: { cart: courseId } }
   );
 
