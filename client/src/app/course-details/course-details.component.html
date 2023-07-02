@@ -1,4 +1,4 @@
-<section class="container py-3">
+<section class="container py-3" *ngIf="course">
   <!-- Frist Row For Title -->
   <div class="row">
     <div class="title container">
@@ -44,7 +44,7 @@
 
 <!-- --------- Comment and review ---------------------->
 
-<section class="container py-5">
+<section class="container py-5" *ngIf="course">
   <div class="row justify-content-center algin-item-center">
     <!-- Write comment  -->
     <div class="col-lg-8">

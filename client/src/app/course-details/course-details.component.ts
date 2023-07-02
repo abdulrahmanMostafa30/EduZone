@@ -30,8 +30,13 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   getSafeUrl(): SafeResourceUrl {
-    const videoUrl = this.course.vid[this.currentVideoIndex].url;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+    if( this.course){
+      const videoUrl = this.course.vid[this.currentVideoIndex].url;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl('');
+
+
   }
 
   addComment() {
