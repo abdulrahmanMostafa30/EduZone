@@ -55,7 +55,7 @@ const userSchema = new Schema({
   },
   address: {
     type: String,
-    required: false
+    required: false,
   },
   university: {
     type: String,
@@ -63,7 +63,7 @@ const userSchema = new Schema({
   },
   faculty: {
     type: String,
-    required:false,
+    required: false,
   },
   department: {
     type: String,
@@ -75,16 +75,12 @@ const userSchema = new Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  cart: {
-    items: [
-      {
-        courseId: {
-          type: Schema.Types.ObjectId,
-          ref: "Course",
-        },
-      },
-    ],
-  },
+  cart: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+    },
+  ],
   role: {
     type: String,
     enum: ["user", "admin"],

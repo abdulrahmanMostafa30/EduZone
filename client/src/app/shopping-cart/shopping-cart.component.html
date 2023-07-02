@@ -4,48 +4,26 @@
   <div class="container">
     <div class="row" id="cart_items_details">
       <div class="col-lg-9">
-        <div class="in-cart-box">
-          <div class="title">4 Courses in cart</div>
+        <div class="in-cart-box" *ngIf="courses">
+          <div class="title">{{courses.length}} Courses in cart</div>
           <div class="">
-            <ul class="cart-course-list">
+            <ul class="cart-course-list" *ngFor="let course of courses">
               <li class="">
                 <div class="cart-course-wrapper box-shadow-5">
                   <div class="image d-none d-md-block">
-                    <a
-                      href=""
-                      class=""
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png"
-                        alt=""
-                        class="img-fluid"
-                      />
+                    <a href="" class="">
+                      <img src="{{course.image}}" alt="" class="img-fluid" />
                     </a>
                   </div>
                   <div class="details">
-                    <a
-                      href=""
-                      class=""
-                    >
+                    <a href="" class="">
                       <div class="name">
-                        Introduction and Learn Angular
+                        {{course.title}}
                       </div>
                     </a>
 
                     <div class="course-subtitle text-13px mt-2">
-                      Angular
-                    </div>
-
-                    <div class="floating-user d-inline-block mt-2">
-                      <img
-                        class="cursor-pointer"
-                        src="https://cdn.iconscout.com/icon/premium/png-512-thumb/profile-328-682849.png?f=avif&w=256"
-                        width="30px"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title=""
-                        aria-label="Abdulrahman Mostafa"
-                      />
+                      {{course.category}}
                     </div>
                   </div>
                   <div class="move-remove text-center">
@@ -56,113 +34,7 @@
                   </div>
                   <div class="price">
                     <div class="current-price">
-                      $359
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="">
-                <div class="cart-course-wrapper box-shadow-5">
-                  <div class="image d-none d-md-block">
-                    <a
-                      href=""
-                      class=""
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </a>
-                  </div>
-                  <div class="details">
-                    <a
-                      href=""
-                      class=""
-                    >
-                      <div class="name">
-                        Introduction and Learn Angular
-                      </div>
-                    </a>
-
-                    <div class="course-subtitle text-13px mt-2">
-                      Angular
-                    </div>
-
-                    <div class="floating-user d-inline-block mt-2">
-                      <img
-                        class="cursor-pointer"
-                        src="https://cdn.iconscout.com/icon/premium/png-512-thumb/profile-328-682849.png?f=avif&w=256"
-                        width="30px"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title=""
-                        aria-label="Abdulrahman Mostafa"
-                      />
-                    </div>
-                  </div>
-                  <div class="move-remove text-center">
-                    <div id="28" onclick="removeFromCartList(this)" class="">
-                      <i class="fas fa-times-circle"></i> Remove
-                    </div>
-                    <!-- <div>Move to Wishlist</div> -->
-                  </div>
-                  <div class="price">
-                    <div class="current-price">
-                      $359
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="">
-                <div class="cart-course-wrapper box-shadow-5">
-                  <div class="image d-none d-md-block">
-                    <a
-                      href=""
-                      class=""
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </a>
-                  </div>
-                  <div class="details">
-                    <a
-                      href=""
-                      class=""
-                    >
-                      <div class="name">
-                        Introduction and Learn Angular
-                      </div>
-                    </a>
-
-                    <div class="course-subtitle text-13px mt-2">
-                      Angular
-                    </div>
-
-                    <div class="floating-user d-inline-block mt-2">
-                      <img
-                        class="cursor-pointer"
-                        src="https://cdn.iconscout.com/icon/premium/png-512-thumb/profile-328-682849.png?f=avif&w=256"
-                        width="30px"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title=""
-                        aria-label="Abdulrahman Mostafa"
-                      />
-                    </div>
-                  </div>
-                  <div class="move-remove text-center">
-                    <div id="28" onclick="removeFromCartList(this)" class="">
-                      <i class="fas fa-times-circle"></i> Remove
-                    </div>
-                    <!-- <div>Move to Wishlist</div> -->
-                  </div>
-                  <div class="price">
-                    <div class="current-price">
-                      $359
+                      {{course.price}}
                     </div>
                   </div>
                 </div>
@@ -204,7 +76,8 @@
           <button
             type="button"
             class="btn red w-100 radius-10 mb-3"
-            routerLink="/checkout" >
+            routerLink="/checkout"
+          >
             Checkout
           </button>
         </div>

@@ -1,6 +1,8 @@
 
 const courseRoute = require('./routes/course')
 const userRoute = require('./routes/user')
+const cartRoute = require('./routes/cart')
+
 const globalErrorHandler = require('./controller/error');
 
 require("dotenv").config({ path: "../server/config.env" });
@@ -29,6 +31,7 @@ app.use("/images", express.static(path.join("./uploads")));
 
 app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
+app.use("/api/cart", cartRoute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
