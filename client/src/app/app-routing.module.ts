@@ -22,16 +22,20 @@ const routes: Routes = [
   { path: "login", component: LoginFormComponent },
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
-  { path: "course/enroll/:id", component: CourseDetailsComponent },
+  { path: "course/enroll/:id", component: CourseDetailsComponent , canActivate: [AuthGuard] },
   { path: "course/:id", component: EnrollCourseComponent },
   {
     path: "profile",
-    loadChildren: () => import("./profile/profile.module").then((m) => m.ProfileModule),
+    loadChildren: () =>
+      import("./profile/profile.module").then((m) => m.ProfileModule),
   },
 
-
-  { path: "checkout", component: CheckoutComponent },
-  { path: "shopping-cart", component: ShoppingCartComponent },
+  { path: "checkout", component: CheckoutComponent, canActivate: [AuthGuard] },
+  {
+    path: "shopping-cart",
+    component: ShoppingCartComponent,
+    canActivate: [AuthGuard],
+  },
   // { path: "**", component: PageNotFoundComponent },
 ];
 
