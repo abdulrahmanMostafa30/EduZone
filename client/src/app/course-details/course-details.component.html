@@ -2,9 +2,17 @@
   <!-- Frist Row For Title -->
   <div class="row">
     <div class="title container">
-      <h1> Course detail</h1>
+      <h1> {{course.title}} </h1>
       <div class="line my-2"></div>
-      <p class="py-3">Welcome! Edu Zone is an easy platform to use when you’re online learning. </p>
+      <h4 class="py-3">
+        You can only access chapter one for free!
+      </h4>
+      <h5>
+        <a routerLink="/checkout" style="text-decoration: none; color:rgb(189, 154, 122);">
+          Purchase
+        </a> the course now
+        to access the rest of the chapters.
+      </h5>
     </div>
   </div>
   <!-- Second Row For Course Details -->
@@ -26,7 +34,7 @@
     </div>
     <!-- Second Column -->
     <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
-      <h1> Course content </h1>
+      <h1> Chapter One </h1>
       <ul class="list-group list-group-flush" *ngFor="let vid of course.vid; let i = index;">
         <li class="list-group-item list-group-item-action" (click)="displayVideo(i)">{{vid.title}}</li>
       </ul>

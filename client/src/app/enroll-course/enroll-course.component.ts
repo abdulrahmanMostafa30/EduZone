@@ -18,6 +18,8 @@ import { CoursesService } from '../courses.service';
 export class EnrollCourseComponent implements OnInit {
   id: any;
   course: any;
+  isEnrolled = false;
+  buttonLabel = 'Enroll';
   constructor(private route: ActivatedRoute, private http: HttpClient, private coursesService: CoursesService) { }
 
   ngOnInit() {
@@ -26,12 +28,8 @@ export class EnrollCourseComponent implements OnInit {
       this.course = data;
     });
   }
-
-  // getCourseById(id: any) {
-  //   this.http.get('https://eduzone-om33.onrender.com/api/course/' + id).subscribe(data => {
-  //     this.course = data;
-  //     // console.log(data);
-  //   });
-  // }
-
+  enroll() {
+    this.isEnrolled = true;
+    this.buttonLabel = 'Enrolled';
+  }
 }

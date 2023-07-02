@@ -34,7 +34,10 @@
   </div>
 </div>
 <div class="row container mt-auto py-2 justify-content-center" *ngIf = "course">
-  <button [routerLink]="['/course/enroll/', course._id]" type="button" class="btn btn-lg  col-lg-6">Enrol Now</button>
+  <!-- <button [routerLink]="['/course/enroll/', course._id]" type="button" class="btn btn-lg  col-lg-6">Enrol Now</button> -->
+  <button [disabled]="isEnrolled" (click)="enroll()"  [routerLink]="['/course/enroll/', course._id]" type="button" class="btn btn-lg  col-lg-6">
+    {{ buttonLabel }}
+  </button>
 </div>
 </div>
 </section>
