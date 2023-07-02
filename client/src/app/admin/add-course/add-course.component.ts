@@ -8,7 +8,7 @@ import { CourseService } from "src/app/course/course.service";
   styleUrls: ["./add-course.component.scss"],
 })
 export class AddCourseComponent {
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(private courseService: CourseService, private router: Router) { }
   selectedFile: File | undefined;
 
   errorMessage: any;
@@ -18,6 +18,7 @@ export class AddCourseComponent {
     category: "",
     price: "",
   };
+  courseAdded = false;
   video = { title: "", url: "" };
   videos: any[] = [];
 
@@ -27,7 +28,10 @@ export class AddCourseComponent {
         .addCourse(this.course, this.videos, this.selectedFile)
         .subscribe({
           next: (response) => {
-            console.log(response);
+            this.courseAdded = true;
+            setTimeout(() => {
+              this.router.navigate(["/profile/admin/dashboard"]);
+            }, 500);
           },
           error: (error) => (this.errorMessage = error),
         });
