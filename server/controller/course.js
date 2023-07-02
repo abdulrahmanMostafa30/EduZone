@@ -54,11 +54,12 @@ module.exports.addCourse = (request, response, next) => {
 };
 
 module.exports.updateCourse = catchAsync(async (request, response, next) => {
-  let image = request.body.image;
+  let image = request.body.imagePath;
   if (request.file) {
     const url = request.protocol + "://" + request.get("host");
     image = url + "/images/" + request.file.filename;
   }
+  
   
   const filteredBody = filterObj(request.body, 'title', 'description', 'category', 'price', 'vid');
   filteredBody['image'] = image
