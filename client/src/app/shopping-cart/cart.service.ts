@@ -6,8 +6,8 @@ import { Observable, catchError, throwError } from "rxjs";
   providedIn: "root",
 })
 export class CartService {
-  private apiUrl = "http://localhost:5000/api/cart";
-  // private apiUrl = "https://eduzone-om33.onrender.com/api/course";
+  // private apiUrl = "http://localhost:5000/api/cart";
+  private apiUrl = "https://eduzone-om33.onrender.com/api/course";
   //
   constructor(private http: HttpClient) {}
   getCartItems(): Observable<any> {
