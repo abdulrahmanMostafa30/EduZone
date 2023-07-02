@@ -8,10 +8,7 @@
         You can only access chapter one for free!
       </h4>
       <h5>
-        <a
-          routerLink="/checkout"
-          style="text-decoration: none; color: rgb(189, 154, 122);"
-        >
+        <a routerLink="/checkout" style="text-decoration: none; color: rgb(189, 154, 122);">
           Purchase
         </a>
         the course now to access the rest of the chapters.
@@ -21,45 +18,27 @@
   <!-- Second Row For Course Details -->
   <div class="row py-3">
     <!-- Frist column -->
-    <div
-      class="container mb-5 col-lg-8 rounded-4 d-flex justify-content-center algin-item-center flex-column"
-    >
+    <div class="container mb-5 col-lg-8 rounded-4 d-flex justify-content-center algin-item-center flex-column">
       <div class="card mb-3">
         <!-- <img src="../../assets/images/reactCourse.jpg" class="card-img-top" alt="..."> -->
-        <iframe
-          class="card-img-top"
-          height="500"
-          frameborder="0"
+        <iframe class="card-img-top" height="500" frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          [src]="getSafeUrl()"
-          title="YouTube video player"
-        >
+          allowfullscreen [src]="getSafeUrl()" title="YouTube video player">
         </iframe>
         <div class="card-body">
           <h5 class="card-title">{{course.title}}</h5>
           <p class="card-text">{{course.description}}</p>
           <p class="card-text">
-            <small class="text-body-secondary"
-              >This course costs: {{course.price}}</small
-            >
+            <small class="text-body-secondary">This course costs: {{course.price}}</small>
           </p>
         </div>
       </div>
     </div>
     <!-- Second Column -->
-    <div
-      class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column"
-    >
+    <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
       <h1>Chapter One</h1>
-      <ul
-        class="list-group list-group-flush"
-        *ngFor="let vid of course.vid; let i = index;"
-      >
-        <li
-          class="list-group-item list-group-item-action"
-          (click)="displayVideo(i)"
-        >
+      <ul class="list-group list-group-flush" *ngFor="let vid of course.vid; let i = index;">
+        <li class="list-group-item list-group-item-action" (click)="displayVideo(i)">
           {{vid.title}}
         </li>
       </ul>
@@ -75,23 +54,12 @@
     <div class="col-lg-8">
       <div class="row justify-content-center algin-item-center">
         <div class="group-input ps-5">
-          <label class="form-label mb-4">Write a comment</label>
-          <input
-            class="form-control"
-            type="text"
-            name="comment"
-            id="comment-input"
-            [(ngModel)]="comment"
-          />
+          <label class="form-label mb-4">Write a review</label>
+          <input class="form-control" type="text" name="comment" id="comment-input" [(ngModel)]="comment" />
         </div>
         <div class="review-btn col-6 mx-auto mt-5">
-          <button
-            (click)="addComment()"
-            type="button"
-            id="btn"
-            class="btn col-lg-6"
-          >
-            Add comment
+          <button (click)="addComment()" type="button" id="btn" class="btn col-lg-6">
+            Add review
           </button>
         </div>
       </div>
@@ -114,6 +82,18 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="row" *ngIf="errorMessage">
+        <div class="col-12">
+          <div class="warning">
+            <div class="warning__icon">
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#393a37"></path>
+              </svg>
+            </div>
+            <div class="warning__title">You can only add one review</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
