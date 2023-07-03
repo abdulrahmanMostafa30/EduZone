@@ -1,0 +1,8 @@
+[build]
+  command = "cd server && npm install && npm start"
+  publish = "server"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

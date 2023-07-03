@@ -1,8 +1,0 @@
-[build]
-  command = "npm install && npm run build"
-  publish = "server" # Replace "server" with the directory containing your built files
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
