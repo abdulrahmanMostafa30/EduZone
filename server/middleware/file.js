@@ -19,7 +19,7 @@ class MulterError extends Error {
 }
 
 let projectId = "eduzone-391614"; // Get this from Google Cloud
-let keyFilename = path.join("./server/eduzone-391614-19b720aa0fa5.json"); // Get this from Google Cloud -> Credentials -> Service Accounts
+let keyFilename = path.join("../../server/eduzone-391614-19b720aa0fa5.json"); // Get this from Google Cloud -> Credentials -> Service Accounts
 const storage = new Storage({
   projectId,
   keyFilename,
