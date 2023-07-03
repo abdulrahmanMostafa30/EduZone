@@ -49,29 +49,29 @@
 <!-- --------- Comment and review ---------------------->
 
 <section class="container py-5" *ngIf="course">
-  <div class="row justify-content-center algin-item-center">
+  <div class="row d-flex justify-content-center algin-item-center">
     <!-- Write comment  -->
     <div class="col-lg-8">
-      <div class="row justify-content-center algin-item-center">
+      <div class="row d-flex justify-content-center algin-item-center">
         <div class="group-input ps-5">
           <label class="form-label mb-4">Write a review</label>
           <input class="form-control" type="text" name="comment" id="comment-input" [(ngModel)]="comment" />
         </div>
-        <div class="review-btn col-6 mx-auto mt-5">
+        <div class="review-btn col-6 mx-auto mt-5 d-flex justify-content-center">
           <button (click)="addComment()" type="button" id="btn" class="btn col-lg-6">
             Add review
           </button>
         </div>
       </div>
       <div class="row py-5">
-        <table class="table mt-3">
+        <table class="table mt-3 text-center">
           <thead>
             <tr>
               <th class="text-center">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user"></i> User
               </th>
               <th class="text-center">
-                Reviews
+                Review
               </th>
             </tr>
           </thead>
