@@ -20,7 +20,7 @@ header {
     font-weight: 600;
     letter-spacing: 0.1em;
     font-family: 'Tsukimi Rounded', sans-serif;
-    
+
 }
 
 
@@ -87,4 +87,13 @@ input:valid~label {
     background-color: #ffffff;
     padding: 0 .2em;
     color: rgb(41, 87, 112);
+}
+#link-ul-cart{
+  margin-right: 16%;
+}
+#link-ul-cart i{
+  color: #29576f;
+}
+#link-ul-cart i:hover{
+  color: rgb(189, 154, 122);
 }
