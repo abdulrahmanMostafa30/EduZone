@@ -25,8 +25,9 @@ module.exports.getAllCourses = (request, response, next) => {
 module.exports.addCourse = (request, response, next) => {
   let image = request.body.image;
   if (request.file) {
-    const url = request.protocol + "://" + request.get("host");
-    image = url + "/images/" + request.file.filename;
+    image = request.file.imageUrl;
+    // const url = request.protocol + "://" + request.get("host");
+    // image = url + "/images/" + request.file.filename;
   }
   const title = request.body.title;
   const description = request.body.description;
@@ -55,8 +56,9 @@ module.exports.addCourse = (request, response, next) => {
 module.exports.updateCourse = catchAsync(async (request, response, next) => {
   let image = request.body.imagePath;
   if (request.file) {
-    const url = request.protocol + "://" + request.get("host");
-    image = url + "/images/" + request.file.filename;
+    image = request.file.imageUrl;
+    // const url = request.protocol + "://" + request.get("host");
+    // image = url + "/images/" + request.file.filename;
   }
 
   const filteredBody = filterObj(
@@ -98,15 +100,16 @@ module.exports.getCourseById = (request, response, next) => {
 
 module.exports.addComment = catchAsync(async (request, response, next) => {
   const { id, comment } = request.body;
-  const user = request.user
+  const user = request.user;
   // console.log(id, comment, user)
   const course = await Course.findById(id);
 
   if (!course) {
     return next(new AppError("Course not found.", 401));
-
   }
-  const existingComment = course.comments.find((c) => c._id.toString() === request.user._id.toString());
+  const existingComment = course.comments.find(
+    (c) => c._id.toString() === request.user._id.toString()
+  );
 
   if (existingComment) {
     return next(new AppError("User already added a comment", 401));
@@ -120,7 +123,6 @@ module.exports.addComment = catchAsync(async (request, response, next) => {
 
   course.comments.push(newComment);
   await course.save();
-
 
   response.status(200).json({
     status: "success",

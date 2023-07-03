@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CourseService } from "src/app/course/course.service";
 
@@ -7,25 +8,33 @@ import { CourseService } from "src/app/course/course.service";
   templateUrl: "./add-course.component.html",
   styleUrls: ["./add-course.component.scss"],
 })
-export class AddCourseComponent {
-  constructor(private courseService: CourseService, private router: Router) { }
-  selectedFile: File | undefined;
+export class AddCourseComponent implements OnInit {
+  // courseForm: FormGroup;
+  // videos: FormArray;
+  courseForm: FormGroup | any;
 
+  constructor(private courseService: CourseService, private router: Router, private formBuilder: FormBuilder) {
+
+   }
+
+  selectedFile: File | undefined;
+  ngOnInit() {
+    this.courseForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      category: ['', Validators.required],
+      price: [null, Validators.required],
+      image: [null, Validators.required],
+      videos: this.formBuilder.array([])
+    });
+  }
   errorMessage: any;
-  course: any = {
-    title: "",
-    description: "",
-    category: "",
-    price: "",
-  };
   courseAdded = false;
-  video = { title: "", url: "" };
-  videos: any[] = [];
 
   addCourse() {
     if (this.selectedFile) {
       this.courseService
-        .addCourse(this.course, this.videos, this.selectedFile)
+        .addCourse(this.courseForm, this.selectedFile)
         .subscribe({
           next: (response) => {
             this.courseAdded = true;
@@ -37,15 +46,17 @@ export class AddCourseComponent {
         });
     }
   }
-
   addVideo() {
-    this.videos.push(this.video);
-    this.video.title = "";
-    this.video.url = "";
+    const videos = this.courseForm.get('videos') as FormArray;
+    videos.push(this.formBuilder.group({
+      title: ['', Validators.required],
+      url: ['', Validators.required]
+    }));
   }
 
   removeVideo(index: number) {
-    this.videos.splice(index, 1);
+    const videos = this.courseForm.get('videos') as FormArray;
+    videos.removeAt(index);
   }
   handleImageUpload(event: any) {
     this.selectedFile = event.target.files[0];

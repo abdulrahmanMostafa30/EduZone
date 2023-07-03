@@ -12,8 +12,15 @@ export class ShoppingCartComponent implements OnInit {
   constructor(private cartService: CartService){
 
   }
-  removeFromCartList(){
-
+  removeFromCartList(itemID:string){
+    this.cartService.remove(itemID).subscribe({
+      next: (response) => {
+        this.courses = response.data
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+      },
+    });
   }
   ngOnInit(): void {
     this.getCardItems()

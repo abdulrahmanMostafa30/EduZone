@@ -14,7 +14,10 @@ export class CartService {
     const url = `${this.apiUrl}`;
     return this.http.get<any>(url).pipe(catchError(this.handleError));
   }
-
+  remove(itemID:string): Observable<any> {
+    const url = `${this.apiUrl}`;
+    return this.http.delete<any>(url + '/' + itemID).pipe(catchError(this.handleError));
+  }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = "An error occurred";
     if (error.error instanceof ErrorEvent) {
@@ -22,7 +25,7 @@ export class CartService {
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.error(errorMessage);
+    // console.error(errorMessage);
     return throwError(errorMessage);
   }
 }

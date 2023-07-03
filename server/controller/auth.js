@@ -34,11 +34,26 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 exports.signup = catchAsync(async (req, res, next) => {
-  const { fname, lname, fullName, birthDate, email,password , confirmPassword, country, address, university, faculty, department, note} = req.body;
+  const {
+    fname,
+    lname,
+    fullName,
+    birthDate,
+    email,
+    password,
+    confirmPassword,
+    country,
+    address,
+    university,
+    faculty,
+    department,
+    note,
+  } = req.body;
   let imagePath = req.body.imagePath;
   if (req.file) {
-    const url = req.protocol + "://" + req.get("host");
-    imagePath = url + "/images/" + req.file.filename;
+    imagePath = req.file.imageUrl;
+    // const url = req.protocol + "://" + req.get("host");
+    // imagePath = url + "/images/" + req.file.filename;
   }
   const newUser = await new User({
     fname: fname,

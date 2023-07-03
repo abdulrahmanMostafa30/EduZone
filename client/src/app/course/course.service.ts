@@ -46,18 +46,21 @@ export class CourseService {
       .patch<ICourse>(url, postData)
       .pipe(catchError(this.handleError));
   }
-  addCourse(courseData: any, videos: any[], file: File): Observable<any> {
+  addCourse(courseData: any, image:File): Observable<any> {
     const url = `${this.apiUrl}`;
     const postData = new FormData();
-    postData.append("title", courseData.title);
-    postData.append("description", courseData.description);
-    postData.append("category", courseData.category);
-    postData.append("price", courseData.price);
-    postData.append("image", file);
-    videos.forEach((video, index) => {
-      postData.append(`vid[${index}][title]`, video.title);
-      postData.append(`vid[${index}][url]`, video.url);
-    });
+
+    postData.append("title", courseData.get('title').value);
+    postData.append("description", courseData.get('description').value);
+    postData.append("category", courseData.get('category').value);
+    postData.append("price", courseData.get('price').value);
+    postData.append("image", image);
+    const videos = courseData.get('videos').value;
+    for (let i = 0; i < videos.length; i++) {
+      const video = videos[i];
+      postData.append(`vid[${i}][title]`, video.title);
+      postData.append(`vid[${i}][url]`, video.url);
+    }
     return this.http
       .post<any>(url, postData)
       .pipe(catchError(this.handleError));
@@ -80,7 +83,7 @@ export class CourseService {
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.error(errorMessage);
+    // console.error(errorMessage);
     return throwError(errorMessage);
   }
 }

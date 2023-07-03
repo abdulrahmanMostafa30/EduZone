@@ -8,7 +8,6 @@ exports.postCart = (req, res, next) => {
         return req.user.addToCart(Course);
       })
       .then(result => {
-        console.log(result);
         res.redirect('/cart');
       });
   };

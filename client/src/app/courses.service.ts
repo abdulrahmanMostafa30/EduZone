@@ -27,7 +27,6 @@ export class CoursesService {
     }));
   }
   getCourseById(id: any): Observable<any> {
-    console.log("calling by id");
     return this.http.get<any>(this.coursesURL + "/" + id).pipe(catchError((error) => {
       return throwError(() => error.message || "server error");
     }));

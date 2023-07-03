@@ -75,6 +75,24 @@ exports.add = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.delete = catchAsync(async (req, res, next) => {
-  const updatedUser = await User.findByIdAndDelete({ _id: req.user.id });
+exports.remove = catchAsync(async (req, res, next) => {
+  const { cartItemId } = req.params;
+  console.log(req.user.id, cartItemId)
+  const user = await User.findOne({ _id: req.user.id, cart: cartItemId });
+
+  if (!user) {
+    return next(new AppError("Course does not exist in the cart.", 404));
+  }
+
+  const updatedCart = await User.updateOne(
+    { _id: req.user._id },
+    { $pull: { cart: cartItemId } }
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      course: updatedCart,
+    },
+  });
 });

@@ -9,12 +9,12 @@
 </div>
   <!-- Second Row For Course Enroll -->
 <div class="container flex-column justify-content-center algin-item-center">
-<div class="row" *ngIf = "course"> 
+<div class="row" *ngIf = "course">
   <div class="container mb-3 col-lg-12 rounded-4 d-flex justify-content-center algin-item-center">
     <div class="card mb-3" style="max-width: 80%;">
       <div class="row g-0">
         <div class="col-md-5">
-          <img [src]="'assets/images/courses/' + course.image" class="img-fluid rounded-start h-100">
+          <img [src]="course.image" class="img-fluid rounded-start h-100">
         </div>
         <div class="col-md-7">
           <div class="card-body">

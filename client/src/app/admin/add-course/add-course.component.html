@@ -1,61 +1,91 @@
 <h2>Add Course</h2>
 
-<form (ngSubmit)="addCourse()" #courseForm="ngForm">
+<form (ngSubmit)="addCourse()" [formGroup]="courseForm">
   <div class="mb-3">
     <label for="title" class="form-label">Title:</label>
-    <input type="text" id="title" name="title" class="form-control" [(ngModel)]="course.title" required>
+    <input type="text" id="title" formControlName="title" class="form-control" required>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('title').invalid && courseForm.get('title').touched">
+      Title is required.
+    </div>
   </div>
 
   <div class="mb-3">
     <label for="description" class="form-label">Description:</label>
-    <textarea id="description" name="description" class="form-control" [(ngModel)]="course.description"
-      required></textarea>
+    <textarea id="description" formControlName="description" class="form-control" required></textarea>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('description').invalid && courseForm.get('description').touched">
+      Description is required.
+    </div>
   </div>
 
   <div class="mb-3">
     <label for="category" class="form-label">Category:</label>
-    <input type="text" id="category" name="category" class="form-control" [(ngModel)]="course.category" required>
+    <input type="text" id="category" formControlName="category" class="form-control" required>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('category').invalid && courseForm.get('category').touched">
+      Category is required.
+    </div>
   </div>
 
   <div class="mb-3">
     <label for="price" class="form-label">Price:</label>
-    <input type="number" id="price" name="price" class="form-control" [(ngModel)]="course.price" required>
+    <input type="number" id="price" formControlName="price" class="form-control" required>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('price').invalid && courseForm.get('price').touched">
+      Price is required.
+    </div>
   </div>
+
   <div class="mb-3">
     <label for="image" class="form-label">Course Image:</label>
-    <input type="file" id="image" name="image" class="form-control" (change)="handleImageUpload($event)"
+    <input type="file" id="image" formControlName="image" class="form-control" (change)="handleImageUpload($event)"
       accept="image/*" required>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('image').invalid && courseForm.get('image').touched">
+      Course image is required.
+    </div>
   </div>
 
   <h3>Videos</h3>
 
-  <div *ngFor="let video of videos; let i = index" [attr.data-index]="i" class="video-field">
-    <div class="row mb-3">
-      <div class="col">
-        <label for="videoTitle{{ i }}" class="form-label">Title:</label>
-        <input type="text" id="videoTitle{{ i }}" name="videoTitle{{ i }}" class="form-control"
-          [(ngModel)]="video.title" required>
+  <div formArrayName="videos">
+    <div *ngFor="let video of courseForm.get('videos')?.controls; let i = index" [formGroupName]="i" class="video-field">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="videoTitle{{ i }}" class="form-label">Title:</label>
+          <input type="text" id="videoTitle{{ i }}" formControlName="title" class="form-control" required>
+          <div class="alert alert-danger mt-2" *ngIf="courseForm.get('videos.' + i + '.title').invalid && courseForm.get('videos.' + i + '.title').touched">
+            Title is required for video {{ i + 1 }}.
+          </div>
+        </div>
+        <div class="col">
+          <label for="videoUrl{{ i }}" class="form-label">URL:</label>
+          <input type="text" id="videoUrl{{ i }}" formControlName="url" class="form-control" required>
+          <div class="alert alert-danger mt-2" *ngIf="courseForm.get('videos.' + i + '.url').invalid && courseForm.get('videos.' + i + '.url').touched">
+            URL is required for video {{ i + 1 }}.
+          </div>
+        </div>
       </div>
-      <div class="col">
-        <label for="videoUrl{{ i }}" class="form-label">URL:</label>
-        <input type="text" id="videoUrl{{ i }}" name="videoUrl{{ i }}" class="form-control" [(ngModel)]="video.url"
-          required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo(i)">Remove</button>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo(i)">Remove</button>
+        </div>
       </div>
     </div>
   </div>
-
+  <div class="row pt-3" *ngIf="courseForm.invalid && courseForm.touched">
+    <div class="col-12">
+      <div class="warning w-100">
+        <div class="warning__icon">
+          <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#393a37"></path>
+          </svg>
+        </div>
+        <div class="warning__title">Please fix all the errors in the form.</div>
+      </div>
+    </div>
+  </div>
   <div class="buttons-container">
-
     <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
-
     <button type="submit" class="btn btn-success" [disabled]="!courseForm.valid">Add Course</button>
-
   </div>
+  <br>
 </form>
 <div class="container">
   <div class="row pt-3" *ngIf="courseAdded">
@@ -72,16 +102,6 @@
       </div>
     </div>
   </div>
-  <div class="row pt-3" *ngIf="!selectedFile">
-    <div class="col-12">
-      <div class="warning w-100">
-        <div class="warning__icon">
-          <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#393a37"></path>
-          </svg>
-        </div>
-        <div class="warning__title">course image is required</div>
-      </div>
-    </div>
-  </div>
+
+
 </div>

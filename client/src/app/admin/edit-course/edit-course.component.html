@@ -22,7 +22,7 @@
               <input type="text" class="form-control" id="title" required maxlength="255"
                 [(ngModel)]="editCourseForm.title" name="title" #title="ngModel">
               <div *ngIf="title.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!title.errors?.['required']">
+                <div [hidden]="!title.errors['required']">
                   title is required
                 </div>
               </div>
@@ -37,7 +37,7 @@
               <input type="text" class="form-control" id="description" required maxlength="255"
                 [(ngModel)]="editCourseForm.description" name="description" #description="ngModel">
               <div *ngIf="description.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!description.errors?.['required']">
+                <div [hidden]="!description.errors['required']">
                   description is required
                 </div>
               </div>
@@ -52,7 +52,7 @@
               <input type="text" class="form-control" id="category" required maxlength="255"
                 [(ngModel)]="editCourseForm.category" name="category" #category="ngModel">
               <div *ngIf="category.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!category.errors?.['required']">
+                <div [hidden]="!category.errors['required']">
                   category is required
                 </div>
               </div>
@@ -67,7 +67,7 @@
               <input type="text" class="form-control" id="price" required maxlength="255"
                 [(ngModel)]="editCourseForm.price" name="price" #price="ngModel">
               <div *ngIf="price.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!price.errors?.['required']">
+                <div [hidden]="!price.errors['required']">
                   Price is required
                 </div>
               </div>
@@ -82,7 +82,7 @@
               <input type="file" class="form-control" id="image" required maxlength="255"
                 [(ngModel)]="editCourseForm.image" name="image" #image="ngModel" (change)="handleImageUpload($event)">
               <div *ngIf="image.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!image.errors?.['required']">
+                <div [hidden]="!image.errors['required']">
                   image is required
                 </div>
               </div>
