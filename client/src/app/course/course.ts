@@ -3,7 +3,7 @@ export interface ICourse {
   title: string;
   description: string;
   category: string;
-  price: string;
+  price: number;
   image: string;
   comments: []
   vid: [];
