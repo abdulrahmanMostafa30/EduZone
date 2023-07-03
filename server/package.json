@@ -13,5 +13,9 @@
     "nodemailer": "^6.9.3",
     "simple-encryptor": "^4.0.0",
     "validator": "^13.9.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "npm install && npm start"
   }
 }
