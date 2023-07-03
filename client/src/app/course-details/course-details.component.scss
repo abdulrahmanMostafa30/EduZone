@@ -1,15 +1,17 @@
 // Title style
-.title h1{
+.title h1 {
   font-size: 3rem;
   font-weight: bold;
   color: #bc9a7d;
 }
-.title p{
+
+.title p {
   font-size: 15px;
   font-weight: 500;
   color: #bc9a7d;
 }
-.line{
+
+.line {
   height: 6px;
   width: 30%;
   background: #28576f;
@@ -17,18 +19,19 @@
 }
 
 // Review
-input:focus
-{
+input:focus {
   border: 1px solid 2px #bc9a7d;
   box-shadow: none;
   border-color: #bc9a7d;
   box-shadow: -1px 1px 20px -11px #faba99;
 }
-.form-check-input:checked{
+
+.form-check-input:checked {
   background-color: #bc9a7d;
   border-color: #bc9a7d;
 }
-.review-btn button{
+
+.review-btn button {
   display: inline-block;
   padding: 8px 10px;
   border: 1px solid rgb(41, 87, 112);
@@ -40,7 +43,8 @@ input:focus
   color: rgb(41, 87, 112);
   z-index: 1;
 }
-.review-btn button:before{
+
+.review-btn button:before {
   content: "";
   position: absolute;
   left: 50%;
@@ -54,6 +58,7 @@ input:focus
   transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
   z-index: -1;
 }
+
 .review-btn button:after {
   content: "";
   position: absolute;
@@ -68,6 +73,7 @@ input:focus
   transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
   z-index: -1;
 }
+
 .review-btn button:hover {
   color: #ffffff;
   border: 1px solid rgb(189, 154, 122);
@@ -84,14 +90,20 @@ input:focus
   background-color: rgb(189, 154, 122);
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
-th, td {
+
+th,
+td {
   border-color: rgb(189, 154, 122);
   border-width: .5px;
 }
-table, th, td{
+
+table,
+th,
+td {
   color: #28576f;
 }
-ul li{
+
+ul li {
   cursor: pointer;
 }
 
@@ -128,4 +140,8 @@ ul li{
 
 .warning__close path {
   fill: #393A37;
+}
+
+table tr, td, th {
+  border: none;
 }
