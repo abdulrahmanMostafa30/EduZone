@@ -174,7 +174,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   )}/api/v1/users/resetPassword/${resetToken}`;
 
   // const message = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
-  const resetLink = `http://localhost:4200/reset-password/${resetToken}`
+  const resetLink = `https://eduzone-frontend.netlify.app/reset-password/${resetToken}`
   try {
     await sendEmail({
       email: user.email,
