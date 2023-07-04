@@ -23,10 +23,14 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginFormComponent },
   { path: "forget-password", component: ForgetPasswordComponent },
-  { path: 'reset-password/:token', component: ResetPasswordComponent },
+  { path: "reset-password/:token", component: ResetPasswordComponent },
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
-  { path: "course/enroll/:id", component: CourseDetailsComponent , canActivate: [AuthGuard] },
+  {
+    path: "course/enroll/:id",
+    component: CourseDetailsComponent,
+    canActivate: [AuthGuard],
+  },
   { path: "course/:id", component: EnrollCourseComponent },
   {
     path: "profile",
@@ -44,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
   providers: [AuthService, AuthGuard],
 })
