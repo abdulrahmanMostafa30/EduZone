@@ -40,7 +40,6 @@ const serviceAccountKey = {
   "universe_domain": "googleapis.com"
 }
 
-
 const storage = new Storage({
   credentials: serviceAccountKey
 });
