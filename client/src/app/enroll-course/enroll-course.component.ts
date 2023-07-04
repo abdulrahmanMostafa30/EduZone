@@ -42,6 +42,9 @@ export class EnrollCourseComponent implements OnInit {
         if (this.user.data.data.cart.includes(this.course._id)) {
           this.isEnrolled = true;
           this.buttonLabel = "Enrolled";
+          setTimeout(() => {
+            this.router.navigate(["course/enroll", this.course._id]);
+          }, 500);
         }
       });
     });
