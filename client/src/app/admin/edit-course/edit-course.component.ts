@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormBuilder, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CourseService } from "./../../course/course.service";
 
@@ -10,7 +10,7 @@ import { CourseService } from "./../../course/course.service";
 })
 export class EditCourseComponent {
   editCourseForm: CourseForm = new CourseForm();
-  selectedFile: File | undefined;
+  selectedFile: File | null = null;
 
   @ViewChild("courseForm")
   courseForm!: NgForm;
@@ -18,10 +18,13 @@ export class EditCourseComponent {
   isSubmitted: boolean = false;
   courseId: any;
   errorMessage: any;
+  touchedVideos: boolean[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {}
   handleImageUpload(event: any) {
     this.selectedFile = event.target.files[0];
@@ -34,6 +37,7 @@ export class EditCourseComponent {
     this.courseService.getCourseById(this.courseId).subscribe(
       (resultData: any) => {
         if (resultData) {
+          this.editCourseForm.vid =resultData.vid
           this.editCourseForm.Id = resultData._id;
           this.editCourseForm.title = resultData.title;
           this.editCourseForm.description = resultData.description;
@@ -48,13 +52,13 @@ export class EditCourseComponent {
 
   EditCourse(isValid: any) {
     this.isSubmitted = true;
-    if (isValid && this.selectedFile) {
+
+    if (isValid) {
       this.courseService
         .updateCourseById(
           this.courseId,
           this.editCourseForm,
           this.selectedFile,
-          []
         )
         .subscribe({
           next: (response) => {
@@ -70,6 +74,22 @@ export class EditCourseComponent {
         });
     }
   }
+  addVideo() {
+    this.editCourseForm.vid.push({ title: "", url: "" });
+  }
+  removeVideo(index: number) {
+    const videosArray = this.editCourseForm.vid;
+    if (videosArray.length > 1) {
+      videosArray.splice(index, 1);
+    }
+  }
+  isVideoTitleInvalid(index: number): boolean {
+    return this.touchedVideos[index] && !this.editCourseForm.vid[index].title;
+  }
+
+  isVideoUrlInvalid(index: number): boolean {
+    return this.touchedVideos[index] && !this.editCourseForm.vid[index].url;
+  }
 }
 export class CourseForm {
   Id: string = "";
@@ -78,5 +98,5 @@ export class CourseForm {
   category: string = "";
   price: string = "";
   image: string = "";
-  // vid: Array = [ ];
+  vid: any[] = [];
 }

@@ -18,8 +18,16 @@ export class DashboardComponent {
   gotToCourse(courseId:string){
     this.router.navigate(["/course", courseId]);
   }
+  updateCourseStatus(course: ICourse){
+    this.courseService.updateCourseStatus(course._id, course.active).subscribe({
+      next: (data) => {
+        this.getCourses()
+      },
+      error: (error) => (this.errorMessage = error),
+    });
+  }
   getCourses(){
-    this.courseService.getCourses().subscribe({
+    this.courseService.getCourses(true).subscribe({
       next: (courses) => {
         this.courses = courses;
       },

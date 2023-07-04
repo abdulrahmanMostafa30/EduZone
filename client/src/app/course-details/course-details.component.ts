@@ -38,6 +38,10 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
       this.getSafeUrl();
     }
   }
+  setCurrentVideo(index: number) {
+    this.currentVideoIndex = index;
+  }
+
   getSafeUrl(): void {
     if (
       this.course &&

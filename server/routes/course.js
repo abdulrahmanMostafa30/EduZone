@@ -6,13 +6,20 @@ const extractFile = require("../middleware/file");
 
 router
   .route("")
-  .get(courseController.getAllCourses)
+  .get(authController.checkAuth, courseController.getAllCourses)
   .post(
     authController.protect,
     authController.restrictTo("admin"),
     extractFile,
     courseController.addCourse
   );
+router.put(
+  "/:courseId/status",
+  authController.protect,
+  authController.restrictTo("admin"),
+  courseController.updateCourseStatus
+);
+
 router
   .route("/comment")
   .post(authController.protect, courseController.addComment);

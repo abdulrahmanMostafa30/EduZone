@@ -96,6 +96,8 @@ export class AuthService {
               }
             } else {
               observer.error(new Error('Token not found in the response')); // Emit an error if token is not available
+              this.isAuthenticated = false;
+
             }
           },
           error => {
@@ -121,6 +123,10 @@ export class AuthService {
 
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
+    }
+    else {
+      this.isAuthenticated = false;
+
     }
   }
 

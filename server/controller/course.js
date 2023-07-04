@@ -15,13 +15,34 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.getAllCourses = (request, response, next) => {
-  Course.find({})
-    .then((data) => {
-      response.status(200).json(data);
+  const isAuthenticated = request.isAuthenticated; // Assuming you're using a session-based authentication
+  if (!isAuthenticated) {
+    Course.find({ active: true })
+      .then((data) => {
+        response.status(200).json(data);
+      })
+      .catch((error) => next(error));
+  } else {
+    const userRole = request.user.role;
+    const query = userRole === "admin" ? {} : { active: true };
+    Course.find(query)
+      .then((data) => {
+        response.status(200).json(data);
+      })
+      .catch((error) => next(error));
+  }
+};
+
+module.exports.updateCourseStatus = (request, response, next) => {
+  const { courseId } = request.params;
+  const { active } = request.body;
+
+  Course.findByIdAndUpdate(courseId, { active }, { new: true })
+    .then((updatedCourse) => {
+      response.status(200).json(updatedCourse);
     })
     .catch((error) => next(error));
 };
-
 module.exports.addCourse = (request, response, next) => {
   let image = request.body.image;
   if (request.file) {

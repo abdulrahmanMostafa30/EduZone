@@ -1,8 +1,8 @@
 <section class="container py-3" *ngIf="course">
-  <!-- Frist Row For Title -->
+  <!-- First Row For Title -->
   <div class="row">
     <div class="title container">
-      <h2>{{course.title}}</h2>
+      <h2>{{ course.title }}</h2>
       <div class="line my-2"></div>
       <h4 class="py-3">
         You can only access chapter one for free!
@@ -18,62 +18,60 @@
       </h5>
     </div>
   </div>
+
   <!-- Second Row For Course Details -->
   <div class="row py-3">
-    <!-- Frist column -->
+    <!-- First column -->
     <div
-      class="container mb-5 col-lg-8 rounded-4 d-flex justify-content-center algin-item-center flex-column"
+      class="container mb-5 col-lg-8 rounded-4 d-flex justify-content-center align-item-center flex-column"
     >
       <div class="card mb-3">
         <!-- <img src="../../assets/images/reactCourse.jpg" class="card-img-top" alt="..."> -->
         <iframe
-        class="card-img-top"
-        height="500"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-        [src]="safeUrl"
-        title="YouTube video player"
-      ></iframe>
+          class="card-img-top"
+          height="500"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          [src]="safeUrl"
+          title="YouTube video player"
+        ></iframe>
 
         <div class="card-body">
-          <h5 class="card-title">{{course.title}}</h5>
-          <p class="card-text">{{course.description}}</p>
+          <h5 class="card-title">{{ course.title }}</h5>
+          <p class="card-text">{{ course.description }}</p>
           <p class="card-text">
-            <small class="text-body-secondary"
-              >This course costs: {{course.price}}</small
-            >
+            <small class="text-body-secondary">This course costs: {{ course.price }}</small>
           </p>
         </div>
       </div>
     </div>
+
     <!-- Second Column -->
     <div
-      class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column"
+      class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center align-item-center flex-column"
     >
       <h2>Chapter One</h2>
-      <ul
-        class="list-group list-group-flush"
-        *ngFor="let vid of course.vid; let i = index;"
-      >
+      <ul class="list-group list-group-flush">
         <li
           class="list-group-item list-group-item-action"
-          (click)="displayVideo(i)"
+          *ngFor="let vid of course.vid; let i = index;"
+          [ngClass]="{ 'active': currentVideoIndex === i }"
+          (click)="setCurrentVideo(i)"
         >
-          {{vid.title}}
+          {{ vid.title }}
         </li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- --------- Comment and review ---------------------->
-
+<!-- Comment and Review Section -->
 <section class="container py-5" *ngIf="course">
-  <div class="row d-flex justify-content-center algin-item-center">
-    <!-- Write comment  -->
+  <div class="row d-flex justify-content-center align-item-center">
+    <!-- Write comment -->
     <div class="col-lg-8">
-      <div class="row d-flex justify-content-center algin-item-center">
+      <div class="row d-flex justify-content-center align-item-center">
         <div class="group-input ps-5">
           <label class="form-label mb-4">Write a review</label>
           <input
@@ -84,9 +82,7 @@
             [(ngModel)]="comment"
           />
         </div>
-        <div
-          class="review-btn col-6 mx-auto mt-5 d-flex justify-content-center"
-        >
+        <div class="review-btn col-6 mx-auto mt-5 d-flex justify-content-center">
           <button
             (click)="addComment()"
             type="button"
@@ -102,9 +98,7 @@
           <thead>
             <tr>
               <th class="text-center"><i class="fa-solid fa-user"></i> User</th>
-              <th class="text-center">
-                Review
-              </th>
+              <th class="text-center">Review</th>
             </tr>
           </thead>
           <tbody>

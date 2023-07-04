@@ -20,7 +20,10 @@ export class BestSellingComponent {
   }
 
   loadJSON() {
-    this.http.get('https://eduzone-om33.onrender.com/api/course').subscribe(data => {
+    // const coursesURL = "http://localhost:5000/api/course";
+    const coursesURL = 'https://eduzone-om33.onrender.com/api/course';
+
+    this.http.get(coursesURL).subscribe(data => {
       this.courses = data;
       this.filteredCourses = this.courses;
     });

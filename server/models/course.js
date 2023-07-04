@@ -39,6 +39,10 @@ const courseSchema = new Schema({
     },
   ],
   vid: [],
+  active: {
+    type: Boolean,
+    default: true,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",

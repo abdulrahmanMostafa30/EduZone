@@ -7,4 +7,5 @@ export interface ICourse {
   image: string;
   comments: []
   vid: [];
+  active: boolean;
 }

@@ -15,6 +15,7 @@ export class CoursesService {
 
   filteredCourses: any;
   searchQuery: string = '';
+  // coursesURL = "http://localhost:5000/api/course";
   coursesURL = 'https://eduzone-om33.onrender.com/api/course';
 
   constructor(private http: HttpClient) {
