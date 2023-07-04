@@ -4,38 +4,40 @@ const SchemaTypeOptions = mongoose.SchemaTypeOptions;
 const courseSchema = new Schema({
   title: {
     type: String,
-    required: [true, 'Please tell us title!']
+    required: [true, "Please tell us title!"],
   },
-  description:  {
+  description: {
     type: String,
-    required: [true, 'Please tell us description!']
+    required: [true, "Please tell us description!"],
   },
-  category:  {
+  category: {
     type: String,
-    required: [true, 'Please tell us category!']
+    required: [true, "Please tell us category!"],
   },
-  price:  {
+  price: {
+    type: Number,
+    required: [true, "Please tell us price!"],
+  },
+  image: {
     type: String,
-    required: [true, 'Please tell us price!']
+    required: [true, "Please tell us image!"],
   },
-  image:  {
-    type: String,
-    required: [true, 'Please tell us image!']
-  },
-  comments: [{
-    _id: {
-      type: String,
-      required: true
+  comments: [
+    {
+      _id: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      comment: {
+        type: String,
+        required: true,
+      },
     },
-    name: {
-      type: String,
-      required: true
-    },
-    comment: {
-      type: String,
-      required: true
-    }
-  }],
+  ],
   vid: [],
   userId: {
     type: Schema.Types.ObjectId,

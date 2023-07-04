@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -9,13 +10,14 @@ import { CartService } from './cart.service';
 export class ShoppingCartComponent implements OnInit {
   errorMessage:any
   courses: any[] = []
+  totalPrice:number = 0
   constructor(private cartService: CartService){
-
   }
-  removeFromCartList(itemID:string){
+  removeItem(itemID:string){
+
     this.cartService.remove(itemID).subscribe({
       next: (response) => {
-        this.courses = response.data
+        this.getCardItems()
       },
       error: (error) => {
         this.errorMessage = error.message;
@@ -29,6 +31,7 @@ export class ShoppingCartComponent implements OnInit {
     this.cartService.getCartItems().subscribe({
       next: (response) => {
         this.courses = response.data
+        this.totalPrice = this.courses.reduce((sum, course) => sum + course.price, 0);
       },
       error: (error) => {
         this.errorMessage = error.message;

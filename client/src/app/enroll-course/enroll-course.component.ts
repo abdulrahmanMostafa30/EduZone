@@ -1,17 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CoursesService } from '../courses.service';
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CoursesService } from "../courses.service";
+import { CartService } from "../shopping-cart/cart.service";
+import { UserService } from "../profile/user.service";
 // import { CoursesService } from '../courses.service';
 
 @Component({
-  selector: 'app-enroll-course',
-  templateUrl: './enroll-course.component.html',
-  styleUrls: ['./enroll-course.component.scss'],
+  selector: "app-enroll-course",
+  templateUrl: "./enroll-course.component.html",
+  styleUrls: ["./enroll-course.component.scss"],
   providers: [
     {
-      provide: 'paramId',
-      useValue: 'param-id',
+      provide: "paramId",
+      useValue: "param-id",
     },
   ],
 })
@@ -19,17 +21,46 @@ export class EnrollCourseComponent implements OnInit {
   id: any;
   course: any;
   isEnrolled = false;
-  buttonLabel = 'Enroll';
-  constructor(private route: ActivatedRoute, private http: HttpClient, private coursesService: CoursesService) { }
+  buttonLabel = "Enroll";
+  user: any;
+  constructor(
+    private route: ActivatedRoute,
+    private coursesService: CoursesService,
+    private router: Router,
+    private cartService: CartService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get("id");
     this.coursesService.getCourseById(this.id).subscribe((data) => {
       this.course = data;
+      this.userService.getUserMe().subscribe((responseUser) => {
+        this.user = responseUser;
+        console.log(this.user.data.data.cart);
+
+        if (this.user.data.data.cart.includes(this.course._id)) {
+          this.isEnrolled = true;
+          this.buttonLabel = "Enrolled";
+        }
+      });
     });
   }
   enroll() {
     this.isEnrolled = true;
-    this.buttonLabel = 'Enrolled';
+    this.buttonLabel = "Enrolled";
+
+    this.cartService.add(this.course._id).subscribe({
+      next: (response) => {
+        setTimeout(() => {
+          this.router.navigate(["course/enroll", this.course._id]);
+        }, 500);
+      },
+      error: (error) => {
+        // setTimeout(() => {
+        //   this.router.navigate(["shopping-cart"]);
+        // }, 500);
+      },
+    });
   }
 }

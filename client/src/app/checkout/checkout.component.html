@@ -63,41 +63,17 @@
           <div class="col-md-8">
             <div class="w-100 d-grid">
               <p class="pb-2 payment-header">Pay for purchasing course</p>
-              <p class="item float-start mb-0 pb-0">
-                <span class="count-item">1</span>
+              <p class="item float-start mb-0 pb-0" *ngFor="let course of courses; let i = index">
+                <span class="count-item">{{i + 1}}</span>
                 <span class="item-title"
-                  >Introduction and Learn Angular
-                  <span class="item-price"> $359 </span>
+                  >{{course.title}}
+                  <span class="item-price"> ${{course.price}} </span>
                 </span>
-                <span class="by-owner"> By Abdulrahman Mostafa </span>
-              </p>
-              <p class="item float-start mb-0 pb-0">
-                <span class="count-item">2</span>
-                <span class="item-title"
-                  >Introduction and Learn Angular
-                  <span class="item-price"> $359 </span>
-                </span>
-                <span class="by-owner"> By Abdulrahman Mostafa </span>
-              </p>
-              <p class="item float-start mb-0 pb-0">
-                <span class="count-item">3</span>
-                <span class="item-title"
-                  >Introduction and Learn Angular
-                  <span class="item-price"> $359 </span>
-                </span>
-                <span class="by-owner"> By Abdulrahman Mostafa </span>
-              </p>
-              <p class="item float-start mb-0 pb-0">
-                <span class="count-item">4</span>
-                <span class="item-title"
-                  >Introduction and Learn Angular
-                  <span class="item-price"> $359 </span>
-                </span>
-                <span class="by-owner"> By Abdulrahman Mostafa </span>
+                <span class="by-owner"> {{course.category}} </span>
               </p>
             </div>
-            <div class="w-100 float-start mt-4 indicated-price">
-              <div class="float-end total-price">$359</div>
+            <div class="w-100 float-start mt-4 indicated-price" *ngIf="totalPrice != 0">
+              <div class="float-end total-price">${{this.totalPrice | number: '1.0-2'}}</div>
               <div class="float-end total">Total</div>
             </div>
             <div class="w-100 float-start">
@@ -108,7 +84,7 @@
                 *ngIf="gatewaySelected == 'stripe'"
                 class="gateway stripe-gateway payment-button float-end"
                 id="stripePayButton"
-                (click)="makePayment(25)">
+                (click)="makePayment()">
                 Pay with stripe
               </button>
               <div

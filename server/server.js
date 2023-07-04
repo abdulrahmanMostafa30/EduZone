@@ -1,12 +1,25 @@
 
+
+const path = require("path");
+
+require("dotenv").config({ path: "../server/config.env" });
+require("dotenv").config({ path: "./server/config.env" });
+require("dotenv").config({ path: "config.env" });
+require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "/etc/secrets/config.env" });
+require("dotenv").config({ path: path.join(path.join(__dirname, '..', 'config.env')) });
+require("dotenv").config({ path: path.join(path.join(__dirname, 'config.env')) });
+require("dotenv").config({ path: path.join(path.join(__dirname, '..', '..', 'config.env')) });
+
+require("dotenv").config({ path: "./server/config.env" });
+require("dotenv").config({ path: "config.env" });
+require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "/etc/secrets/config.env" });
+
 const courseRoute = require('./routes/course')
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
-
 const globalErrorHandler = require('./controller/error');
-
-require("dotenv").config({ path: "../server/config.env" });
-require("dotenv").config({ path: "config.env" });
 
 const dbo = require("./db/conn");
 
@@ -14,10 +27,10 @@ const express = require("express");
 const json = require("morgan-json");
 const morgan = require("morgan");
 
-const path = require("path");
 const app = express();
 const cors = require("cors");
 const AppError = require('./utils/appError');
+
 const port = process.env.PORT || 5000;
 app.use(cors());
 const format = json(
