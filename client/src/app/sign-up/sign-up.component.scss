@@ -1,45 +1,56 @@
-.sign-title h1{
-  font-size: 3rem;
+.sign-title h2 {
+  font-family: 'Righteous', cursive;
+  letter-spacing: 0.1em;
+  // font-size: 3rem;
   font-weight: bold;
   color: #bc9a7d;
 }
-.sign-title p{
+
+.sign-title p {
   font-size: 15px;
   font-weight: 500;
   color: #bc9a7d;
 }
-.line{
+
+.line {
   height: 6px;
   width: 30%;
   background: #28576f;
   display: inline-block;
 }
-input, button, select, textarea{
+
+input,
+button,
+select,
+textarea {
   box-shadow: none;
   border-color: #bc9a7d;
 }
+
 ::placeholder {
   color: #bc9a7d;
   opacity: 1;
 }
+
 input:focus,
 button:focus,
-select:focus
-textarea:focus{
+select:focus textarea:focus {
   border: 1px solid 2px #28576f;
   box-shadow: none;
   border-color: #28576f;
   box-shadow: -1px 1px 20px -11px #28576f;
 }
-.form-select-color{
+
+.form-select-color {
   color: #bc9a7d;
 }
+
 .form-select option:hover,
-.form-select option:focus
-.form-select option:checked{
+.form-select option:focus .form-select option:checked {
   background-color: #8ba6b2;
 }
-.user-img{
+
+.user-img {
   width: 130px;
   height: 130px;
   border-radius: 50%;
@@ -49,16 +60,19 @@ textarea:focus{
   margin: 15% 5%;
 
 }
-#photo{
+
+#photo {
   width: 130px;
   height: 130px;
   border-radius: 50%;
 
 }
-#file{
+
+#file {
   display: none;
 }
-#uploadbtn{
+
+#uploadbtn {
   position: absolute;
   height: 35px;
   width: 35px;
@@ -72,16 +86,25 @@ textarea:focus{
   margin-top: 100px;
   box-shadow: 2px 4px 4p #bc9a7d;
 }
+
 // search
 #myInput {
-  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-  background-position: 10px 12px; /* Position the search icon */
-  background-repeat: no-repeat; /* Do not repeat the icon image */
-  width: 100%; /* Full-width */
-  font-size: 16px; /* Increase font-size */
-  padding: 12px 20px 12px 40px; /* Add some padding */
-  border: 1px solid #ddd; /* Add a grey border */
-  margin-bottom: 12px; /* Add some space below the input */
+  background-image: url('/css/searchicon.png');
+  /* Add a search icon to input */
+  background-position: 10px 12px;
+  /* Position the search icon */
+  background-repeat: no-repeat;
+  /* Do not repeat the icon image */
+  width: 100%;
+  /* Full-width */
+  font-size: 16px;
+  /* Increase font-size */
+  padding: 12px 20px 12px 40px;
+  /* Add some padding */
+  border: 1px solid #ddd;
+  /* Add a grey border */
+  margin-bottom: 12px;
+  /* Add some space below the input */
 }
 
 #myUL {
@@ -92,34 +115,50 @@ textarea:focus{
 }
 
 #myUL li a {
-  border: 1px solid #ddd; /* Add a border to all links */
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6; /* Grey background color */
-  padding: 12px; /* Add some padding */
-  text-decoration: none; /* Remove default text underline */
-  font-size: 18px; /* Increase the font-size */
-  color: black; /* Add a black text color */
-  display: block; /* Make it into a block element to fill the whole list */
+  border: 1px solid #ddd;
+  /* Add a border to all links */
+  margin-top: -1px;
+  /* Prevent double borders */
+  background-color: #f6f6f6;
+  /* Grey background color */
+  padding: 12px;
+  /* Add some padding */
+  text-decoration: none;
+  /* Remove default text underline */
+  font-size: 18px;
+  /* Increase the font-size */
+  color: black;
+  /* Add a black text color */
+  display: block;
+  /* Make it into a block element to fill the whole list */
 }
 
 #myUL li a:hover:not(.header) {
-  background-color: #eee; /* Add a hover effect to all links, except for headers */
+  background-color: #eee;
+  /* Add a hover effect to all links, except for headers */
 }
-label{color: #28576f;}
-.submit-btn button{
+
+label {
+  color: #28576f;
+}
+
+.submit-btn button {
   background-color: #28576f;
   color: #def0f1;
 
 }
-#exampleFormControlTextarea1:focus{
+
+#exampleFormControlTextarea1:focus {
   border: 1px solid 2px #28576f;
   box-shadow: none;
   border-color: #28576f;
   box-shadow: -1px 1px 20px -11px #28576f;
 }
-#date-bth{
+
+#date-bth {
   color: #bc9a7d;
 }
+
 // select
 .custom-select {
   height: auto;
@@ -131,10 +170,12 @@ label{color: #28576f;}
   background-color: white;
   border: 1px solid #bc9a7d;
 }
+
 .custom-select:focus,
 .custom-select:focus {
   box-shadow: none;
 }
+
 .custom-select:focus {
   border: 1px solid 2px #28576f;
   box-shadow: none;
