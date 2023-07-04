@@ -23,7 +23,8 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
   constructor(
     private sanitizer: DomSanitizer,
     private courseService: CourseService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService:UserService
   ) {}
 
   displayVideo(videoIndex: number) {
@@ -31,7 +32,17 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
 
     this.currentVideoIndex = videoIndex;
   }
-
+  getUserMe() {
+    this.userService.getUserMe().subscribe({
+      next: (response) => {
+        if ((response.status = "success")) {
+          this.user = response.data.data;
+          this.currentVideoIndex = this.user.currentVideoIndex;
+        }
+      },
+      error: (error) => (this.errorMessage = error),
+    });
+  }
   ngDoCheck(): void {
     if (this.currentVideoIndex !== this.previousVideoIndex) {
       this.previousVideoIndex = this.currentVideoIndex;
@@ -40,6 +51,14 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
   }
   setCurrentVideo(index: number) {
     this.currentVideoIndex = index;
+    this.user.currentVideoIndex = index
+    this.userService.updateProfile(this.user).subscribe({
+      next: (data) => {
+      },
+      error: (error) => {
+
+      },
+    });
   }
 
   getSafeUrl(): void {
@@ -88,6 +107,7 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
     this.route.params.subscribe((params) => {
       this.id = params["id"];
       this.getCourse();
+      this.getUserMe()
     });
   }
 }

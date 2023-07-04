@@ -36,9 +36,27 @@ export class AuthService {
   getRole() {
     return this.role;
   }
-  createUser(user: any): Observable<any> {
+  forgotPassword(email: string): Observable<any> {
+    return this.http
+      .post<any>(this.apiUrl + "/forgotPassword", { email })
+      .pipe(catchError(this.handleError));
+  }
 
-  // createUser(user: any) {
+  restPassword(
+    token: string,
+    password: string,
+    confirmPassword: string
+  ): Observable<any> {
+    return this.http
+      .patch<any>(this.apiUrl + "/resetPassword/" + token, {
+        password,
+        confirmPassword,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createUser(user: any): Observable<any> {
+    // createUser(user: any) {
     const postData = new FormData();
 
     postData.append("fname", user.fname);
@@ -75,7 +93,7 @@ export class AuthService {
       this.http
         .post<{ token: string; data: any }>(`${this.apiUrl}/login`, credentials)
         .subscribe(
-          response => {
+          (response) => {
             const token = response.token;
             if (token) {
               if (this.checkToken(token)) this.token = token;
@@ -89,18 +107,19 @@ export class AuthService {
                 this.isAuthenticated = true;
                 this.authStatusListener.next(true);
                 const now = new Date();
-                const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+                const expirationDate = new Date(
+                  now.getTime() + expiresInDuration * 1000
+                );
                 console.log(expirationDate);
                 this.saveAuthData(token, expirationDate, role);
                 observer.next({ success: true }); // Emit success status or any other desired data
               }
             } else {
-              observer.error(new Error('Token not found in the response')); // Emit an error if token is not available
+              observer.error(new Error("Token not found in the response")); // Emit an error if token is not available
               this.isAuthenticated = false;
-
             }
           },
-          error => {
+          (error) => {
             observer.error(error); // Emit error if login fails
           }
         );
@@ -123,10 +142,8 @@ export class AuthService {
 
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
-    }
-    else {
+    } else {
       this.isAuthenticated = false;
-
     }
   }
 

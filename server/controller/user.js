@@ -56,9 +56,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "address",
     "university",
     "faculty",
-    "department"
+    "department",
+    "currentVideoIndex"
   );
-  filteredBody["imagePath"] = imagePath;
+  if (imagePath) {
+    filteredBody["imagePath"] = imagePath;
+  }
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,

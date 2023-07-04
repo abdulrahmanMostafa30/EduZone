@@ -30,6 +30,8 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { MyCoursesComponent } from './profile/my-courses/my-courses.component';
 import { SecurityComponent } from './profile/security/security.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { SecurityComponent } from './profile/security/security.component';
     EditProfileComponent,
     MyCoursesComponent,
     SecurityComponent,
+    ForgetPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

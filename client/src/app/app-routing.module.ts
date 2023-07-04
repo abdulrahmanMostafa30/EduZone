@@ -16,10 +16,14 @@ import { AuthService } from "./auth/auth.service";
 import { EditProfileComponent } from "./profile/edit-profile/edit-profile.component";
 import { MyCoursesComponent } from "./profile/my-courses/my-courses.component";
 import { SecurityComponent } from "./profile/security/security.component";
+import { ForgetPasswordComponent } from "./forget-password/forget-password.component";
+import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginFormComponent },
+  { path: "forget-password", component: ForgetPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
   { path: "course/enroll/:id", component: CourseDetailsComponent , canActivate: [AuthGuard] },

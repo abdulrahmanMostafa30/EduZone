@@ -81,6 +81,10 @@ const userSchema = new Schema({
       ref: "Course",
     },
   ],
+  currentVideoIndex: {
+    type: Number,
+    default: 0,
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
