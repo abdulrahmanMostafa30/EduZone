@@ -20,7 +20,8 @@
       "default",
       {
         "ignore": [
-          "iframe[allowpaymentrequest]"
+          "iframe[allowpaymentrequest]",
+          "iframe[allow]"
         ]
       }
     ],

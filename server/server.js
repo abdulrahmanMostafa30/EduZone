@@ -7,6 +7,7 @@ const globalErrorHandler = require('./controller/error');
 
 require("dotenv").config({ path: "../server/config.env" });
 require("dotenv").config({ path: "config.env" });
+require("dotenv").config({ path: "/etc/secrets/config.env" });
 
 const dbo = require("./db/conn");
 
