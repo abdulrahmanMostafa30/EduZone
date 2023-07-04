@@ -2,7 +2,7 @@
   <!-- Frist Row For Title -->
   <div class="row">
     <div class="title container">
-      <h1>{{course.title}}</h1>
+      <h2>{{course.title}}</h2>
       <div class="line my-2"></div>
       <h4 class="py-3">
         You can only access chapter one for free!
@@ -36,7 +36,7 @@
     </div>
     <!-- Second Column -->
     <div class="container mb-5 col-lg-4 rounded-4 d-flex justify-content-center algin-item-center flex-column">
-      <h1>Chapter One</h1>
+      <h2>Chapter One</h2>
       <ul class="list-group list-group-flush" *ngFor="let vid of course.vid; let i = index;">
         <li class="list-group-item list-group-item-action" (click)="displayVideo(i)">
           {{vid.title}}

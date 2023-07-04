@@ -1,3 +1,13 @@
+* {
+  color: #28576f;
+}
+
+.payment-header-text {
+  color: #bc9a7d;
+  font-family: 'Righteous', cursive;
+  letter-spacing: 0.1em;
+}
+
 .box-shadow-5 {
   box-shadow: 0px 1px 5px #0000001c !important;
 }
@@ -5,17 +15,21 @@
 .radius-10 {
   border-radius: 10px !important;
 }
+
 .bg-white {
   background-color: #fff !important;
 }
+
 .py-4 {
   padding-top: 1.5rem !important;
   padding-bottom: 1.5rem !important;
 }
+
 .px-3 {
   padding-right: 1rem !important;
   padding-left: 1rem !important;
 }
+
 div,
 ul,
 li,
@@ -25,6 +39,7 @@ td,
 span {
   font-family: "Open Sans", sans-serif !important;
 }
+
 .btn.red {
   color: #fff;
   background-color: rgb(189, 154, 122);
@@ -35,10 +50,12 @@ span {
   line-height: 1.35135;
   font-weight: 600;
 }
+
 .marge-input-box button:hover {
   background: rgb(189, 154, 122);
   color: #fff;
 }
+
 .marge-input-box button {
   background: rgb(189, 154, 122);
   color: #fff;
@@ -47,23 +64,33 @@ span {
   font-size: 13px;
   border-radius: 8px;
 }
+
 .marge-input-box input {
   border-radius: 10px 0px 0px 10px;
   border-right: 0px;
   font-size: 13px;
 }
+
 .marge-input-box .input-group-append {
   border: 1px solid #cccfe7;
   border-radius: 0px 10px 10px 0px;
   border-left: none !important;
 }
-body, div, ul, li, a, button, td, span {
+
+body,
+div,
+ul,
+li,
+a,
+button,
+td,
+span {
   font-family: 'Open Sans', sans-serif !important;
 }
 
-.payment-header-text {
-  font-size: 23px;
-}
+// .payment-header-text {
+//   font-size: 23px;
+// }
 
 .close-btn-light {
   padding-left: 10px;
@@ -202,6 +229,7 @@ body, div, ul, li, a, button, td, span {
   float: left;
   display: none;
 }
+
 .offline_payment_instruction {
   padding: 20px;
   min-height: 100px;
@@ -222,29 +250,27 @@ body, div, ul, li, a, button, td, span {
   text-align: center;
 }
 
-#zoid-paypal-button > .zoid-outlet {
+#zoid-paypal-button>.zoid-outlet {
   display: inline-block;
   min-width: 75px;
   max-width: 750px;
   position: relative;
 }
 
-#zoid-paypal-button.paypal-button-layout-vertical
-  > .zoid-outlet {
+#zoid-paypal-button.paypal-button-layout-vertical>.zoid-outlet {
   min-width: 75px;
 }
 
-#zoid-paypal-button > .zoid-outlet {
+#zoid-paypal-button>.zoid-outlet {
   width: 350px;
   height: 45px;
 }
 
-#zoid-paypal-button.paypal-button-size-responsive
-  > .zoid-outlet {
+#zoid-paypal-button.paypal-button-size-responsive>.zoid-outlet {
   width: 100%;
 }
 
-#zoid-paypal-button > .zoid-outlet > iframe {
+#zoid-paypal-button>.zoid-outlet>iframe {
   min-width: 100%;
   max-width: 100%;
   width: 75px;
@@ -254,28 +280,20 @@ body, div, ul, li, a, button, td, span {
   left: 0;
 }
 
-#zoid-paypal-button
-  > .zoid-outlet
-  > iframe.zoid-component-frame {
+#zoid-paypal-button>.zoid-outlet>iframe.zoid-component-frame {
   z-index: 100;
 }
 
-#zoid-paypal-button
-  > .zoid-outlet
-  > iframe.zoid-prerender-frame {
+#zoid-paypal-button>.zoid-outlet>iframe.zoid-prerender-frame {
   transition: opacity 0.2s linear;
   z-index: 200;
 }
 
-#zoid-paypal-button
-  > .zoid-outlet
-  > iframe.zoid-visible {
+#zoid-paypal-button>.zoid-outlet>iframe.zoid-visible {
   opacity: 1;
 }
 
-#zoid-paypal-button
-  > .zoid-outlet
-  > iframe.zoid-invisible {
+#zoid-paypal-button>.zoid-outlet>iframe.zoid-invisible {
   opacity: 0;
   pointer-events: none;
 }
