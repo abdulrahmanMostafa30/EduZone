@@ -1,0 +1,32 @@
+<div class="container">
+  <h2>User Control</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <!-- Table content -->
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <div class="dropdown" [ngClass]="{ 'show': isDropdownOpen(user._id) }">
+              <button class="btn btn-secondary dropdown-toggle ms-1" type="button" id="dropdownMenuButton{{user._id}}"
+                [attr.aria-expanded]="isDropdownOpen(user._id) ? 'true' : 'false'" (click)="toggleDropdown(user._id)">
+                Change Role
+              </button>
+              <div class="dropdown-menu" [class.show]="isDropdownOpen(user._id)">
+                <a class="dropdown-item" *ngIf="user.role !== 'user'" (click)="changeRole(user._id, 'user')">User</a>
+                <a class="dropdown-item" *ngIf="user.role !== 'admin'" (click)="changeRole(user._id, 'admin')">Admin</a>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <button (click)="viewDetails(user._id)" class="btn btn-primary ms-1">View Details</button>
+            <button (click)="removeUser(user._id)" class="btn btn-danger ms-1">Remove</button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

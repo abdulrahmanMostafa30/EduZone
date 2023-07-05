@@ -4,13 +4,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { StudentsComponent } from './students/students.component';
+import { UsersComponent } from './users/users.component';
 import { EditCourseComponent } from './edit-course/edit-course.component';
+import { ContactUsAdminComponent } from './contact-us-admin/contact-us-admin.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "contact-us",
+    component: ContactUsAdminComponent,
     canActivate: [AuthGuard],
   },
   {
@@ -24,11 +31,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: "students",
-    component: StudentsComponent,
+    path: "users",
+    component: UsersComponent,
     canActivate: [AuthGuard],
   },
-
+  {
+    path: "user-details/:userId",
+    component: UserDetailsComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: '',
     redirectTo: 'dashboard',

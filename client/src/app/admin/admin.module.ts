@@ -1,21 +1,24 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { AdminRoutingModule } from './admin-routing.module';
-import { AddCourseComponent } from './add-course/add-course.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { StudentsComponent } from './students/students.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditCourseComponent } from './edit-course/edit-course.component';
+import { AdminRoutingModule } from "./admin-routing.module";
+import { AddCourseComponent } from "./add-course/add-course.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { UsersComponent } from "./users/users.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { EditCourseComponent } from "./edit-course/edit-course.component";
+import { ContactUsAdminComponent } from "./contact-us-admin/contact-us-admin.component";
+import { UserDetailsComponent } from "./user-details/user-details.component";
 
 @NgModule({
   declarations: [
     AddCourseComponent,
     DashboardComponent,
-    StudentsComponent,
+    UsersComponent,
     EditCourseComponent,
-
+    ContactUsAdminComponent,
+    UserDetailsComponent,
   ],
-  imports: [CommonModule,FormsModule, AdminRoutingModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, AdminRoutingModule, ReactiveFormsModule],
 })
 export class AdminModule {}

@@ -1,0 +1,33 @@
+<div class="contact-us">
+  <h3>Contact Us Messages</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Message</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through messages -->
+      <tr *ngFor="let message of contactMessages">
+        <td class="email-textarea">
+          <div class="email-textarea-container">
+            <textarea rows="3" disabled>{{ message.message }}</textarea>
+          </div>
+        </td>
+        <td>{{ message.email }}</td>
+        <td>
+          <button (click)="removeMessage(message)" class="btn btn-danger">
+            Remove
+          </button>
+        </td>
+      </tr>
+      <!-- Handle case when no messages available -->
+      <tr *ngIf="contactMessages.length === 0">
+        <td colspan="3" class="text-center">No messages found.</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

@@ -52,7 +52,7 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
   setCurrentVideo(index: number) {
     this.currentVideoIndex = index;
     this.user.currentVideoIndex = index
-    this.userService.updateProfile(this.user).subscribe({
+    this.userService.updateProfileMe(this.user).subscribe({
       next: (data) => {
       },
       error: (error) => {

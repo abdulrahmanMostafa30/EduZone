@@ -39,12 +39,12 @@ export class EditProfileComponent {
       reader.readAsDataURL(event.target.files[0]);
     }
   }
-  updateProfile() {
+  updateProfileMe() {
 
     if (this.selectedFile){
       this.user.image = this.selectedFile
     }
-    this.userService.updateProfile(this.user).subscribe({
+    this.userService.updateProfileMe(this.user).subscribe({
       next: (response) => {
         console.log(response);
         this.getUserMe();

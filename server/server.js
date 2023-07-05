@@ -19,6 +19,8 @@ require("dotenv").config({ path: "/etc/secrets/config.env" });
 const courseRoute = require('./routes/course')
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
+const contactRoute = require('./routes/contact')
+
 const globalErrorHandler = require('./controller/error');
 
 const dbo = require("./db/conn");
@@ -45,6 +47,7 @@ app.use("/images", express.static(path.join("./uploads")));
 app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/contact", contactRoute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

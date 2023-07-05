@@ -14,6 +14,26 @@ export class UserService {
   public childToParentEvent = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {}
+
+  getUserById(userId: string): Observable<any> {
+    return this.http
+      .get<any>(this.apiUrl + "/" + userId)
+      .pipe(catchError(this.handleError));
+  }
+  removeUser(userId: string): Observable<any> {
+    return this.http
+      .delete<any>(this.apiUrl + "/" + userId)
+      .pipe(catchError(this.handleError));
+  }
+  updateUser(userId: string, data: any): Observable<any> {
+    return this.http
+      .patch<any>(this.apiUrl + "/" + userId, data)
+      .pipe(catchError(this.handleError));
+  }
+  getAllUsers(): Observable<any> {
+    return this.http.get<any>(this.apiUrl).pipe(catchError(this.handleError));
+  }
+
   changePassword(passwords: any): Observable<any> {
     return this.http
       .patch<any>(this.apiUrl + "/updateMyPassword", passwords)
@@ -25,7 +45,7 @@ export class UserService {
       .get<any>(this.apiUrl + "/me")
       .pipe(catchError(this.handleError));
   }
-  updateProfile(user: any): Observable<any> {
+  updateProfileMe(user: any): Observable<any> {
     let form_data = new FormData();
 
     for (var key in user) {

@@ -35,6 +35,10 @@ export class DashboardComponent {
     });
   }
   deleteCourse(courseId:string){
+    const confirmed = confirm('Are you sure you want to delete this Course?');
+    if (!confirmed) {
+      return; // User canceled the deletion
+    }
     this.courseService.deleteCourseById(courseId).subscribe({
       next: (data) => {
         this.getCourses()

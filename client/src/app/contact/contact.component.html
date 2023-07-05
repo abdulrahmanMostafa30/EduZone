@@ -1,29 +1,47 @@
 <div class="container">
-    <div class="row">
-        <div class="col text-center pt-5">
-            <h2 class="heading-text">Contact us</h2>
-        </div>
+  <div class="row">
+    <div class="col text-center pt-5">
+      <h2 class="heading-text">Contact us</h2>
     </div>
-    <div class="row">
-        <div class="col-md-6 pb-5">
-            <div class="card">
-                <div class="card-body pt-5 d-flex justify-content-center">
-                    <textarea class="custom-textarea" placeholder="Please, write your message here" cols="50"
-                        rows="7"></textarea>
-                </div>
-                <div class="group-input ps-5">
-                    <input class="me-2" required="" type="email" name="email" id="email-input">
-                    <label class="email-label">your E-mail</label>
-                    <button class="btn" id="send-btn" type="submit">Send</button>
-                </div>
-            </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 pb-5">
+      <div class="card">
+        <div class="card-body pt-5 d-flex justify-content-center">
+          <textarea
+            class="custom-textarea"
+            placeholder="Please, write your message here"
+            [(ngModel)]="messageText"
+            name="message"
+            cols="50"
+            rows="7"
+          ></textarea>
         </div>
-        <div class="col-md-6 pb-5">
-            <div class="card">
-                <div class="card-img d-flex justify-content-center">
-                    <img src="../../assets/images/contact.png" alt="contact us">
-                </div>
-            </div>
+        <div class="group-input ps-5">
+          <input
+            class="me-2"
+            required
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            id="email-input"
+          />
+          <label class="email-label">Your E-mail</label>
+          <button class="btn" id="send-btn" (click)="sendContact()" type="submit">Send</button>
         </div>
+
+      </div>
+      <div class="alert alert-success m-3" *ngIf="showSuccessAlert" role="alert">
+        Message sent successfully!
+      </div>
     </div>
+    <div class="col-md-6 pb-5">
+      <div class="card">
+        <div class="card-img d-flex justify-content-center">
+          <img src="../../assets/images/contact.png" alt="contact us" />
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

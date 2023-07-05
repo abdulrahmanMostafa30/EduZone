@@ -51,8 +51,8 @@ export class ProfileComponent implements OnInit {
       console.log(JSON.stringify(this.registrationForm.value));
     }
   }
-  updateProfile(): void {
-    // this.userService.updateProfile(this.user).subscribe(
+  updateProfileMe(): void {
+    // this.userService.updateProfileMe(this.user).subscribe(
     //   (response) => {
     //     console.log('Profile updated successfully');
     //   },
