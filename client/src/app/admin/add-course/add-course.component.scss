@@ -1,4 +1,3 @@
-/* Custom Button Styles */
 .add-video-btn {
   background-color: #4caf50;
   color: #fff;
@@ -26,7 +25,6 @@
   cursor: pointer;
 }
 
-/* Flexbox Layout */
 .video-container {
   display: flex;
   flex-wrap: wrap;
@@ -51,7 +49,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   background: #84D65A;
   border-radius: 8px;
   box-shadow: 0px 0px 5px -3px #111;
@@ -86,7 +84,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   background: #F7C752;
   border-radius: 8px;
   box-shadow: 0px 0px 5px -3px #111;
