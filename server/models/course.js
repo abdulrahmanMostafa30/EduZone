@@ -39,6 +39,22 @@ const courseSchema = new Schema({
     },
   ],
   vid: [],
+  purchasedCourses: [
+    {
+      course: {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+      },
+      purchaseDate: {
+        type: Date,
+        default: Date.now,
+      },
+      paymentAmount: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
   active: {
     type: Boolean,
     default: true,
