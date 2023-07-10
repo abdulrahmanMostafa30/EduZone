@@ -1,3 +1,5 @@
+/* CSS */
+
 .dropdown {
   display: inline-block;
   position: relative;
@@ -66,6 +68,7 @@
 .btn-danger:hover {
   opacity: 0.8;
 }
+
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -76,67 +79,14 @@
 }
 
 @media (max-width: 767px) {
-  .table-responsive {
-    width: 100%;
-    overflow-x: hidden;
-  }
 
-  .table thead {
-    display: none;
-  }
-
-  .table tbody,
-  .table tr,
-  .table th,
-  .table td {
-    display: block;
-    width: 100%;
-  }
 
   .table td {
-    text-align: left;
-    padding-left: 0;
-    position: relative;
-  }
-
-  .table td:before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 8px;
-    font-weight: bold;
-  }
-
-  .dropdown {
     display: block;
-    margin-bottom: 10px;
+    // text-align: left;
+    // padding: 0.5rem;
+    // font-size: 14px;
   }
 
-  .dropdown-menu {
-    position: static;
-    float: none;
-    display: block;
-    min-width: 160px;
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
 
-  .dropdown-item {
-    display: block;
-    padding: 8px 0;
-  }
-
-  .btn {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .dropdown-toggle {
-    pointer-events: none;
-  }
 }

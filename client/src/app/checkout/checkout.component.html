@@ -99,7 +99,7 @@
                     class="zoid-outlet"
                     style="transition: all 0.5s ease-in-out 0.3s;"
                   >
-                    <iframe
+                    <!-- <iframe
                       class="zoid-component-frame zoid-visible"
                       frameborder="0"
                       allowtransparency="true"
@@ -108,7 +108,7 @@
                       allowpaymentrequest="allowpaymentrequest"
                       src="https://www.paypal.com/smart/button?env=production&amp;style.label=paypal&amp;style.size=large&amp;style.shape=rect&amp;style.color=blue&amp;style.tagline=true&amp;commit=true&amp;"
                       style="background-color: transparent;"
-                    ></iframe>
+                    ></iframe> -->
                       <ngx-paypal [config]="payPalConfig">
                       </ngx-paypal>
                   </div>
@@ -116,8 +116,19 @@
               </div>
             </div>
           </div>
+
+        </div>
+      </div>
+          <!-- Success message -->
+    <div *ngIf="paymentStatus" class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="alert alert-success mt-4" role="alert">
+          Payment successful! Thank you for your purchase.
+          Go to Your Profile section to enjoy and learn with Our Courses.
         </div>
       </div>
     </div>
+    </div>
+
   </div>
 </div>

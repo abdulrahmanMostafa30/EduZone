@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
 
@@ -16,9 +17,9 @@ import { FormsModule } from '@angular/forms';
     ProfileComponent,
     SidebarComponent,
   ],
-  imports: [CommonModule,FormsModule, ProfileRoutingModule],
+  imports: [CommonModule,FormsModule, SharedModule, ProfileRoutingModule],
   exports: [
-    SidebarComponent // HERE.
+    SidebarComponent // HERE.,
   ]
 })
 export class ProfileModule {}

@@ -1,10 +1,17 @@
+import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Injectable, EventEmitter } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable, Subject, throwError, Observer } from "rxjs";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from "@angular/common/http";
 import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
+import { ErrorHandlingService } from "../services/error-handling.service";
+import { environment } from "../../environments/environment";
 
 @Injectable()
 export class AuthService {
@@ -13,21 +20,33 @@ export class AuthService {
   private token: string | null = "";
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
-  // private apiUrl = "http://localhost:5000/api/users/auth"; // Replace with your actual API URL
-  private apiUrl = "https://eduzone-om33.onrender.com/api/users/auth"; // Replace with your actual API URL
+  roleChanged = new EventEmitter<string>();
+
+  private apiUrl = environment.API_URL + "/api/users/auth";
 
   constructor(
     public jwtHelper: JwtHelperService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private errorHandlingService: ErrorHandlingService,
+    private socialAuthService: SocialAuthService
   ) {}
+  setRole(role: string) {
+    this.role = role;
+    localStorage.setItem("role", role);
 
+    this.roleChanged.emit(role);
+  }
   getToken() {
     return this.token;
   }
 
   getIsAuth() {
     return this.isAuthenticated;
+  }
+  isTokenExpired(): boolean {
+    const token = localStorage.getItem("token");
+    return token !== null && this.jwtHelper.isTokenExpired(token);
   }
 
   getAuthStatusListener() {
@@ -36,10 +55,12 @@ export class AuthService {
   getRole() {
     return this.role;
   }
-  forgotPassword(email: string): Observable<any> {
+  forgotPassword(host: string, email: string): Observable<any> {
     return this.http
-      .post<any>(this.apiUrl + "/forgotPassword", { email })
-      .pipe(catchError(this.handleError));
+      .post<any>(this.apiUrl + "/forgotPassword", { host, email })
+      .pipe(
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
   }
 
   restPassword(
@@ -52,71 +73,91 @@ export class AuthService {
         password,
         confirmPassword,
       })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
   }
 
   createUser(user: any): Observable<any> {
-    // createUser(user: any) {
-    const postData = new FormData();
+    let postData;
+    if (user.imageGoogle) {
+      postData= user
+    } else {
+      postData = new FormData();
 
-    postData.append("fname", user.fname);
-    postData.append("lname", user.lname);
-    postData.append("fullName", user.fullName);
-    postData.append("birthDate", user.birthDate);
-    postData.append("email", user.email);
-    postData.append("password", user.password);
-    postData.append("confirmPassword", user.confirmPassword);
-    postData.append("image", user.image);
-    postData.append("country", user.country);
-    postData.append("address", user.address);
-    postData.append("university", user.university);
-    postData.append("faculty", user.faculty);
-    postData.append("department", user.department);
-    postData.append("note", user.note);
-    console.log(postData);
+      postData.append("image", user.image);
+      postData.append("fname", user.fname);
+      postData.append("lname", user.lname);
+      postData.append("fullName", user.fullName);
+      postData.append("birthDate", user.birthDate);
+      postData.append("email", user.email);
+      postData.append("password", user.password);
+      postData.append("confirmPassword", user.confirmPassword);
+      postData.append("country", user.country);
+      postData.append("address", user.address);
+      postData.append("university", user.university);
+      postData.append("faculty", user.faculty);
+      postData.append("department", user.department);
+      postData.append("note", user.note);
+    }
+
     return this.http
       .post(`${this.apiUrl}/signup`, postData)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
   }
-  //   this.http.post(`${this.apiUrl}/signup`, postData).subscribe((response) => {
-  //     console.log(response);
-  //   });
-  // }
   checkToken(token: string) {
-    console.log(this.jwtHelper.decodeToken(token));
-
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  authToken(response: any) {
+    const token = response.token;
+    if (token) {
+      if (this.checkToken(token)) {
+        this.token = token;
+        const role = response.data.user.role;
+        this.role = role;
+        const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+        if (expirationDate) {
+          const expirationTimestamp = expirationDate.getTime() / 1000;
+          const currentTimestamp = Math.floor(Date.now() / 1000);
+          const expiresInDuration = expirationTimestamp - currentTimestamp;
+
+          this.setAuthTimer(expiresInDuration);
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+
+          const now = new Date();
+          const newExpirationDate = new Date(
+            now.getTime() + expiresInDuration * 1000
+          );
+
+          this.saveAuthData(token, newExpirationDate, role);
+          return true;
+        } else {
+          this.isAuthenticated = false;
+          return false;
+        }
+      } else {
+        this.isAuthenticated = false;
+        return false;
+      }
+    } else {
+      this.isAuthenticated = false;
+    }
+    return false;
+  }
   login(credentials: AuthData): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       this.http
         .post<{ token: string; data: any }>(`${this.apiUrl}/login`, credentials)
         .subscribe(
           (response) => {
-            const token = response.token;
-            if (token) {
-              if (this.checkToken(token)) this.token = token;
-              if (token) {
-                const role = response.data.user.role;
-                this.role = role;
-                console.log(role);
-
-                const expiresInDuration = this.jwtHelper.decodeToken(token).exp;
-                this.setAuthTimer(expiresInDuration);
-                this.isAuthenticated = true;
-                this.authStatusListener.next(true);
-                const now = new Date();
-                const expirationDate = new Date(
-                  now.getTime() + expiresInDuration * 1000
-                );
-                console.log(expirationDate);
-                this.saveAuthData(token, expirationDate, role);
-                observer.next({ success: true }); // Emit success status or any other desired data
-              }
+            if (this.authToken(response)) {
+              observer.next({ success: true }); // Emit success status or any other desired data
             } else {
               observer.error(new Error("Token not found in the response")); // Emit an error if token is not available
-              this.isAuthenticated = false;
             }
           },
           (error) => {
@@ -125,6 +166,21 @@ export class AuthService {
         );
     });
   }
+  loginGoogle(token: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, { token })
+      .pipe(
+        map((response) => {
+          if (this.authToken(response)) {
+            return { success: true }; // Emit success status or any other desired data
+          } else {
+            throw new Error("Token not found in the response"); // Emit an error if token is not available
+          }
+        }),
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
+  }
+
   autoAuthUser() {
     const authInformation = this.getAuthData();
     console.log(authInformation);
@@ -133,21 +189,66 @@ export class AuthService {
       return;
     }
 
-    const now = new Date();
-    const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
-    if (expiresIn > 0) {
-      this.token = authInformation.token;
-      this.isAuthenticated = true;
-      this.role = authInformation.role;
+    const isTokenExpired = this.jwtHelper.isTokenExpired(authInformation.token);
+    if (isTokenExpired) {
+      this.isAuthenticated = false;
+      return;
+    }
 
-      this.setAuthTimer(expiresIn / 1000);
-      this.authStatusListener.next(true);
+    const expirationDate = this.jwtHelper.getTokenExpirationDate(
+      authInformation.token
+    );
+    if (expirationDate) {
+      // Check if expirationDate is not null
+      const now = new Date();
+      const expiresIn = expirationDate.getTime() - now.getTime();
+
+      if (expiresIn > 0) {
+        this.token = authInformation.token;
+        this.isAuthenticated = true;
+        this.role = authInformation.role;
+
+        this.setAuthTimer(expiresIn / 1000);
+        this.authStatusListener.next(true);
+      } else {
+        this.isAuthenticated = false;
+      }
     } else {
       this.isAuthenticated = false;
     }
   }
 
+  getFileFromUrl(
+    url: string,
+    name: string,
+    defaultType = "image/jpeg"
+  ): Observable<File> {
+    const headers = new HttpHeaders().set("Access-Control-Allow-Origin", "**");
+
+    return this.http
+      .get(url, {
+        headers: headers,
+        responseType: "blob",
+      })
+      .pipe(
+        map((response: Blob) => {
+          const blobData = new Blob([response]);
+          return new File([blobData], name, {
+            type: blobData.type || defaultType,
+          });
+        }),
+        catchError((error: any) => {
+          console.error("Error fetching image:", error);
+          throw error;
+        })
+      );
+  }
+
   logout() {
+    this.socialAuthService
+      .signOut()
+      .then(() => {})
+      .catch((error: any) => {});
     this.token = null;
     this.isAuthenticated = false;
     this.role = null;
@@ -167,7 +268,7 @@ export class AuthService {
 
   private saveAuthData(token: string, expirationDate: Date, role: string) {
     localStorage.setItem("token", token);
-    localStorage.setItem("expiration", expirationDate.toISOString());
+    // localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("role", role);
   }
 
@@ -179,15 +280,15 @@ export class AuthService {
 
   private getAuthData() {
     const token = localStorage.getItem("token");
-    const expirationDate = localStorage.getItem("expiration");
+    // const expirationDate = localStorage.getItem("expiration");
     const role = localStorage.getItem("role");
 
-    if (!token || !expirationDate || !role) {
+    if (!token || !role) {
       return;
     }
     return {
       token: token,
-      expirationDate: new Date(expirationDate),
+      // expirationDate: new Date(expirationDate),
       role: role,
     };
   }
@@ -227,14 +328,4 @@ export class AuthService {
   // removeToken() {
   //   localStorage.removeItem('token');
   // }
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = "An error occurred";
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    // console.error(errorMessage);
-    return throwError(errorMessage);
-  }
 }

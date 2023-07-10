@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from "../auth/auth.service";
+import { HostService } from "../services/host.service";
 
 @Component({
   selector: "app-forget-password",
@@ -14,7 +15,8 @@ export class ForgetPasswordComponent implements OnInit {
   userIsAuthenticated= false
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private hostService: HostService
   ) {
     this.resetForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
@@ -29,12 +31,11 @@ export class ForgetPasswordComponent implements OnInit {
     if (this.resetForm.invalid) {
       return;
     }
+    const host =this.hostService.getHost()
     const email = this.resetForm.value.email;
-    console.log(email);
 
-    this.authService.forgotPassword(email).subscribe(
+    this.authService.forgotPassword(host, email).subscribe(
       (response) => {
-        console.log("Password reset email sent successfully.");
         this.isEmailSent = true
       },
       (error) => {

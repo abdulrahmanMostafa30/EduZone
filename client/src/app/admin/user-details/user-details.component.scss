@@ -1,0 +1,61 @@
+/* CSS for the container */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* CSS for the card */
+.card {
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* CSS for the card title */
+.card-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* CSS for the list group items */
+.list-group-item {
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item i {
+  margin-right: 10px;
+}
+
+/* CSS for the user's image */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* CSS for the courses section */
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 10px;
+}

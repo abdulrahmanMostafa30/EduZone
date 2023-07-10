@@ -1,13 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { AuthGuard } from '../auth/auth.guard';
-import { AddCourseComponent } from './add-course/add-course.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { UsersComponent } from './users/users.component';
-import { EditCourseComponent } from './edit-course/edit-course.component';
-import { ContactUsAdminComponent } from './contact-us-admin/contact-us-admin.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
+import { AuthGuard } from "../auth/auth.guard";
+import { AddCourseComponent } from "./add-course/add-course.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { UsersComponent } from "./users/users.component";
+import { EditCourseComponent } from "./edit-course/edit-course.component";
+import { ContactUsAdminComponent } from "./contact-us-admin/contact-us-admin.component";
+import { UserDetailsComponent } from "./user-details/user-details.component";
+import { ReviewsComponent } from "./reviews/reviews.component";
+import { HomeComponent } from "../home/home.component";
 
 const routes: Routes = [
   {
@@ -41,9 +43,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
+    path: "reviews",
+    component: ReviewsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "",
+    redirectTo: "dashboard",
+    pathMatch: "full",
   },
 ];
 

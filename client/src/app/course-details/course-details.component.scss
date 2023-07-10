@@ -151,3 +151,88 @@ ul li {
 table tr, td, th {
   border: none;
 }
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap");
+
+.btn-primary {
+  background-color: rgb(41, 87, 112);
+  border: 1px solid rgb(41, 87, 112);
+  color: white;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.active,
+.btn-primary:active,
+.open > .dropdown-toggle.btn-primary {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+.btn-primary.active.focus,
+.btn-primary.active:focus,
+.btn-primary.active:hover,
+.btn-primary.focus:active,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.open > .dropdown-toggle.btn-primary.focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.open > .dropdown-toggle.btn-primary:hover {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+.btn-primary.active:not(:disabled):not(.disabled),
+.btn-primary:active:not(:disabled):not(.disabled),
+.show > .btn-primary.dropdown-toggle {
+  background-color: rgb(189, 154, 122);
+  border-color: rgb(189, 154, 122);
+  color: #fff;
+}
+.btn-primary.active:focus:not(:disabled):not(.disabled),
+.btn-primary:active:focus:not(:disabled):not(.disabled),
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: unset;
+}
+.btn-secondary {
+  color: #fff;
+  background: rgb(41, 87, 112);
+  border: 1px solid rgb(41, 87, 112);
+}
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary.active,
+.btn-secondary:active,
+.open > .dropdown-toggle.btn-secondary {
+  background-color: rgb(189, 154, 122);
+  border: 1px solid rgb(189, 154, 122);
+}
+
+a {
+  color: #22100d;
+  text-decoration: none;
+}
+input,
+button,
+a {
+  transition: all 0.4s ease;
+}
+.form-control {
+  border-color: #dce0eb;
+  color: #26292c;
+  font-size: 15px;
+  min-height: 42px;
+  padding: 6px 15px;
+}
+.form-control::placeholder {
+  color: #6e82a3;
+  font-size: 14px;
+}
+.rating i {
+  color: #777777;
+}
+
+.rating i.filled {
+  color: #FFB800;
+}
+
+.fa-star:before {
+  content: "\f005";
+}

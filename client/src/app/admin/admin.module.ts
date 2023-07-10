@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EditCourseComponent } from "./edit-course/edit-course.component";
 import { ContactUsAdminComponent } from "./contact-us-admin/contact-us-admin.component";
 import { UserDetailsComponent } from "./user-details/user-details.component";
+import { ReviewsComponent } from './reviews/reviews.component';
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { UserDetailsComponent } from "./user-details/user-details.component";
     EditCourseComponent,
     ContactUsAdminComponent,
     UserDetailsComponent,
+    ReviewsComponent,
   ],
-  imports: [CommonModule, FormsModule, AdminRoutingModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, SharedModule, AdminRoutingModule, ReactiveFormsModule],
 })
 export class AdminModule {}

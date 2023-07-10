@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ContactUsService } from '../admin/contact-us.service';
+import { ContactUsService } from '../services/contact-us.service';
 
 @Component({
   selector: 'app-contact',
@@ -29,7 +29,6 @@ export class ContactComponent {
     this.contactService.add(this.email, this.messageText).subscribe(
       (response) => {
         // Handle success, show success message, clear form fields, etc.
-        console.log('Message sent successfully:', response);
         this.showSuccessAlert = true;
 
         this.messageText = '';

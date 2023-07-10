@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const courseController = require("../controller/course");
 const authController = require("./../controller/auth");
-const extractFile = require("../middleware/file");
+const {extractFile} = require("../middleware/file");
 
 router
   .route("")
@@ -19,6 +19,10 @@ router.put(
   authController.restrictTo("admin"),
   courseController.updateCourseStatus
 );
+
+router
+  .route("/my-courses")
+  .get(authController.protect, courseController.getPurchasedCourses);
 
 router
   .route("/comment")
@@ -38,5 +42,6 @@ router
     extractFile,
     courseController.updateCourse
   );
+
 
 module.exports = router;

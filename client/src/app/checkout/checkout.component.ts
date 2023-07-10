@@ -1,10 +1,9 @@
 // import {bootstrap}    from '@angular/platform-browser-dynamic';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ICreateOrderRequest } from "ngx-paypal";
-import { CoursesService } from "../courses.service";
-import { CartService } from "../shopping-cart/cart.service";
-import { UserService } from "../profile/user.service";
+import { CartService } from "../services/cart.service";
+import { PaypalService } from "../services/paypal-service.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-checkout",
@@ -13,17 +12,91 @@ import { UserService } from "../profile/user.service";
 })
 export class CheckoutComponent implements OnInit {
   public payPalConfig: any;
+  public paymentStatus: boolean = false;
   public showPaypalButtons: boolean = false; // Added declaration
   courses: any[] = [];
+  paymentId: string = "";
   totalPrice: number = 0;
   errorMessage: string = "";
   constructor(
     private route: ActivatedRoute,
-    private coursesService: CoursesService,
     private router: Router,
     private cartService: CartService,
-    private userService: UserService
+    private paypalService: PaypalService
   ) {}
+  extractECTokenFromUrl(url: string): string | null {
+    const matches = url.match(/EC-\w+/);
+    return matches ? matches[0] : null;
+  }
+
+  getPaymentIdFromUrl(): string {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get("paymentId");
+    if (paymentId) return paymentId;
+    else {
+      return "";
+    }
+  }
+  initPaypalConfig() {
+    this.payPalConfig = {
+      currency: "USD",
+      clientId: environment.PAYPAL_CLIENT_ID,
+      createOrderOnServer: () => {
+        return new Promise((resolve, reject) => {
+          this.paypalService.createPayment().subscribe(
+            (response: any) => {
+              if (response && response.approvalUrl) {
+                this.paymentId = response.orderId;
+
+                const ecToken = this.extractECTokenFromUrl(
+                  response.approvalUrl
+                );
+                if (ecToken) {
+                  resolve(ecToken);
+                } else {
+                  reject(
+                    new Error("Failed to extract EC token from approval URL.")
+                  );
+                }
+              } else {
+                reject(new Error("Invalid response from createPayment."));
+              }
+            },
+            (error: any) => {
+              reject(error);
+            }
+          );
+        });
+      },
+      onApprove: async (data: any, actions: any) => {
+        const paymentId = data.paymentID; // Retrieve the paymentId from the response
+
+        if (paymentId && data.payerID) {
+          const executePaymentPayload = {
+            payer_id: data.payerID,
+          };
+
+          this.paypalService.capturePayment(paymentId, data.payerID).subscribe(
+            (response: any) => {
+              // Handle the success response
+              this.paymentStatus = true;
+              // Redirect or show success message to the user
+            },
+            (error: any) => {
+              // Handle the error case
+              console.error("Failed to capture PayPal payment.", error);
+            }
+          );
+        } else {
+          console.error("Payment ID not found.");
+        }
+      },
+
+      onError: (err: any) => {
+        console.log(err);
+      },
+    };
+  }
 
   gatewaySelected: string = "";
   selectedPaymentGateway(gateway: string) {
@@ -33,11 +106,9 @@ export class CheckoutComponent implements OnInit {
   paymentHandler: any = null;
   makePayment() {
     const paymentHandler = (<any>window).StripeCheckout.configure({
-      key:
-        "pk_test_51NMeY2Ha08wV5yekM9osQdLpYjYKU64TaXOY6mgBhrIu60UXmRum3cFxCVjnyzWhdw8gsRjAuqRbagyflaMn30PP00w8LPbIJp",
+      key: environment.STRIPE_KEY,
       locale: "auto",
       token: function (stripeToken: any) {
-        console.log(stripeToken);
         alert("Stripe token generated!");
       },
     });
@@ -55,11 +126,9 @@ export class CheckoutComponent implements OnInit {
       script.src = "https://checkout.stripe.com/checkout.js";
       script.onload = () => {
         this.paymentHandler = (<any>window).StripeCheckout.configure({
-          key:
-            "pk_test_51NMeY2Ha08wV5yekM9osQdLpYjYKU64TaXOY6mgBhrIu60UXmRum3cFxCVjnyzWhdw8gsRjAuqRbagyflaMn30PP00w8LPbIJp",
+          key: environment.STRIPE_KEY,
           locale: "auto",
           token: function (stripeToken: any) {
-            console.log(stripeToken);
             alert("Payment has been successfull!");
           },
         });
@@ -85,83 +154,6 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.getCardItems();
     this.invokeStripe();
-    // paypal
-    this.payPalConfig = {
-      currency: "EUR",
-      clientId:
-        "AfMFe_fPS2ino2nBE72wzbMU2-PGKkT0t_uc_yVZyLE3xHQDtANe3zcZc50wiFFJT8FDBPoMHDaMz6Vf",
-      createOrder: (data: any, actions: any) =>
-        <ICreateOrderRequest>{
-          intent: "CAPTURE",
-          purchase_units: [
-            {
-              amount: {
-                currency_code: "EUR",
-                value: "9.99",
-                breakdown: {
-                  item_total: {
-                    currency_code: "EUR",
-                    value: "9.99",
-                  },
-                },
-              },
-              items: [
-                {
-                  name: "Enterprise Subscription",
-                  quantity: "1",
-                  category: "DIGITAL_GOODS",
-                  unit_amount: {
-                    currency_code: "EUR",
-                    value: "9.99",
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      advanced: {
-        commit: "true",
-      },
-      style: {
-        label: "paypal",
-        layout: "vertical",
-      },
-      onApprove: (data: any, actions: any) => {
-        console.log(
-          "onApprove - transaction was approved, but not authorized",
-          data,
-          actions
-        );
-        actions.order.get().then((details: any) => {
-          console.log(
-            "onApprove - you can get full order details inside onApprove: ",
-            details
-          );
-        });
-      },
-      onClientAuthorization: (data: any) => {
-        console.log(
-          "onClientAuthorization - you should probably inform your server about the completed transaction at this point",
-          data
-        );
-      },
-      onCancel: (data: any, actions: any) => {
-        console.log("OnCancel", data, actions);
-      },
-      onError: (err: any) => {
-        console.log("OnError", err);
-      },
-      onClick: (data: any, actions: any) => {
-        console.log("onClick", data, actions);
-      },
-    };
-  }
-
-  pay() {
-    this.showPaypalButtons = true;
-  }
-
-  back() {
-    this.showPaypalButtons = false;
+    this.initPaypalConfig();
   }
 }

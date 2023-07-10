@@ -56,28 +56,23 @@ exports.getItems = catchAsync(async (req, res, next) => {
 
 exports.add = catchAsync(async (req, res, next) => {
   const { courseId } = req.body;
-  const user = await User.findOne({ _id: req.user.id, cart: courseId });
 
-  if (user) {
-    return next(new AppError("Course already exists in the cart.", 400));
-  }
-
-  const updatedCart = await User.updateOne(
+  const updatedUser = await User.findOneAndUpdate(
     { _id: req.user._id },
-    { $push: { cart: courseId } }
+    { $addToSet: { cart: courseId } },
+    { upsert: true, new: true }
   );
 
   res.status(200).json({
     status: "success",
     data: {
-      course: updatedCart,
+      cart: updatedUser.cart,
     },
   });
 });
 
 exports.remove = catchAsync(async (req, res, next) => {
   const { cartItemId } = req.params;
-  console.log(req.user.id, cartItemId)
   const user = await User.findOne({ _id: req.user.id, cart: cartItemId });
 
   if (!user) {

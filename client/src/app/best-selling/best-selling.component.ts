@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // import { CoursesService } from '../courses.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-best-selling',
@@ -10,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class BestSellingComponent {
+  private coursesURL = environment.API_URL + '/api/course';
 
   courses: any;
   filteredCourses: any;
@@ -20,10 +22,7 @@ export class BestSellingComponent {
   }
 
   loadJSON() {
-    // const coursesURL = "http://localhost:5000/api/course";
-    const coursesURL = 'https://eduzone-om33.onrender.com/api/course';
-
-    this.http.get(coursesURL).subscribe(data => {
+    this.http.get(this.coursesURL).subscribe(data => {
       this.courses = data;
       this.filteredCourses = this.courses;
     });

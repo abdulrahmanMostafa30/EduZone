@@ -1,23 +1,32 @@
 <section class="container">
-  
-  <!-- Frist Row For Title -->
+  <!-- First Row For Title -->
   <div class="row">
     <div class="sign-title container">
-      <h2 class="heading-text"> Register Form</h2>
+      <h2 class="heading-text">Register Form</h2>
       <div class="line my-2"></div>
-      <p class="py-3">Welcome! Edu Zone is an easy platform to use when you’re online learning. </p>
+      <p class="py-3">
+        Welcome! Edu Zone is an easy platform to use when you’re online
+        learning.
+      </p>
     </div>
   </div>
 
-  <!-- Seccessful message -->
+  <!-- Successful message -->
   <div class="row" *ngIf="isSignedup">
     <div class="col-12">
       <div class="success">
         <div class="success__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
-            <path fill-rule="evenodd" fill="#393a37"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            viewBox="0 0 24 24"
+            height="24"
+            fill="none"
+          >
+            <path
               d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z"
-              clip-rule="evenodd"></path>
+              clip-rule="evenodd"
+            ></path>
           </svg>
         </div>
         <div class="success__title">Successfully Signed up</div>
@@ -25,12 +34,22 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="!selectedFile">
+  <!-- Error message -->
+  <div class="row" *ngIf="isAlertImage() && registerationForm.touched">
     <div class="col-12">
       <div class="warning">
         <div class="warning__icon">
-          <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#393a37"></path>
+          <svg
+            fill="none"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z"
+              fill="#393a37"
+            ></path>
           </svg>
         </div>
         <div class="warning__title">You must upload your photo!</div>
@@ -38,134 +57,313 @@
     </div>
   </div>
 
+
   <!-- Second Row For Form -->
   <form [formGroup]="registerationForm" (submit)="onSignup($event)">
-    <!-- {{registerationForm.value | json}} -->
     <div class="row py-5">
       <!-- column 01 -->
-      <div class="container col-lg-3 box-one d-flex justify-content-center flex-column">
+      <div
+        class="container col-lg-3 box-one d-flex justify-content-center flex-column"
+      >
         <div class="user-img">
-          <img src="../../assets/images/user-profile/bt1.png" alt="" id="photo">
-          <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)">
-          <label for="file" id="uploadbtn"> <i class="bi bi-camera"></i> </label>
+          <img
+            src="../../assets/images/user-profile/bt1.png"
+            alt=""
+            id="photo"
+          />
+          <input
+            type="file"
+            name="filephoto"
+            id="file"
+            (change)="displaySelectedImage($event)"
+          />
+          <label for="file" id="uploadbtn">
+            <i class="bi bi-camera"></i>
+          </label>
           <!-- <small *ngIf="image?.errors?.['required']">Image is Required </small> -->
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Frist name"
-            formControlName="fname" [class.is-invalid]="fname?.invalid && fname?.touched">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="Frist name"
+            formControlName="fname"
+            [class.is-invalid]="fname?.invalid && fname?.touched"
+          />
         </div>
         <div class="text-danger mb-3" *ngIf="fname?.invalid && fname?.touched">
-          <small *ngIf="fname?.errors?.['required']">Firstname is Required </small>
-          <small *ngIf="fname?.errors?.['minlength']">Firstname must be 3 charachrest at least </small>
+          <small *ngIf="fname?.errors?.['required']"
+            >Firstname is Required
+          </small>
+          <small *ngIf="fname?.errors?.['minlength']"
+            >Firstname must be 3 charachrest at least
+          </small>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Last name"
-            formControlName="lname" [class.is-invalid]="lname?.invalid && lname?.touched">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="Last name"
+            formControlName="lname"
+            [class.is-invalid]="lname?.invalid && lname?.touched"
+          />
         </div>
         <div class="text-danger mb-3" *ngIf="lname?.invalid && lname?.touched">
-          <small *ngIf="lname?.errors?.['required']">Lastname is Required </small>
-          <small *ngIf="lname?.errors?.['minlength']">Lastname must be 3 charachrest at least </small>
+          <small *ngIf="lname?.errors?.['required']"
+            >Lastname is Required
+          </small>
+          <small *ngIf="lname?.errors?.['minlength']"
+            >Lastname must be 3 charachrest at least
+          </small>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Full name"
-            formControlName="fullName" [class.is-invalid]="fullName?.invalid && fullName?.touched">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="Full name"
+            formControlName="fullName"
+            [class.is-invalid]="fullName?.invalid && fullName?.touched"
+          />
         </div>
-        <div class="text-danger mb-3" *ngIf="fullName?.invalid && fullName?.touched">
-          <small *ngIf="fullName?.errors?.['required']">Fullname is Required </small>
-          <small *ngIf="fullName?.errors?.['pattern']">Fullname must be contain 4 names at least </small>
+        <div
+          class="text-danger mb-3"
+          *ngIf="fullName?.invalid && fullName?.touched"
+        >
+          <small *ngIf="fullName?.errors?.['required']"
+            >Fullname is Required
+          </small>
+          <small *ngIf="fullName?.errors?.['pattern']"
+            >Fullname must be contain 4 names at least
+          </small>
         </div>
       </div>
       <!-- column 02 -->
-      <div class="container col-lg-3 box-two d-flex justify-content-center flex-column">
+      <div
+        class="container col-lg-3 box-two d-flex justify-content-center flex-column"
+      >
         <div class="row algin-item-center">
           <div class="input-group mb-1">
-            <label for="" class="form-check-label" id="date-bth">Date of birth</label><br>
+            <label for="birthDate" class="form-check-label" id="date-bth"
+              >Date of birth</label
+            ><br />
           </div>
           <div class="input-group mb-3">
-            <input type="date" class="form-control form-control-lg bg-light fs-6" id="birthDate"
-              placeholder="Date of birth" formControlName="birthDate"
-              [class.is-invalid]="birthDate?.invalid && birthDate?.touched">
+            <input
+              type="date"
+              class="form-control form-control-lg bg-light fs-6"
+              id="birthDate"
+              placeholder="Date of birth"
+              formControlName="birthDate"
+              [class.is-invalid]="birthDate?.invalid && birthDate?.touched"
+              required
+            />
           </div>
-          <div class="text-danger mb-3" *ngIf="birthDate?.invalid && birthDate?.touched">
-            <small *ngIf="birthDate?.errors?.['required']">Birth Date is Required </small>
-          </div>
-          <div class="input-group mb-3">
-            <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="Email address"
-              formControlName="email" [class.is-invalid]="email?.invalid && email?.touched">
-          </div>
-          <div class="text-danger mb-3" *ngIf="email?.invalid && email?.touched">
-            <small *ngIf="email?.errors?.['required']">Email is Required </small>
-            <small *ngIf="email?.errors?.['pattern']">Invalid email, make sure it like [name@example.com] </small>
-          </div>
-          <div class="input-group mb-3">
-            <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password"
-              formControlName="password" [class.is-invalid]="password?.invalid && password?.touched">
-          </div>
-          <div class="text-danger mb-3" *ngIf="password?.invalid && password?.touched">
-            <small *ngIf="password?.errors?.['required']">set password is Required </small>
-            <small *ngIf="password?.errors?.['minlength']">password must be 8 charachrest at least </small>
+          <div
+            class="text-danger mb-3"
+            *ngIf="birthDate?.invalid && birthDate?.touched"
+          >
+            <small *ngIf="birthDate?.errors?.required"
+              >Birth date is required</small
+            >
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Confirm password"
+            <input
+              type="email"
+              class="form-control form-control-lg bg-light fs-6"
+              placeholder="Email address"
+              formControlName="email"
+              [class.is-invalid]="email?.invalid && email?.touched"
+              required
+            />
+          </div>
+          <div
+            class="text-danger mb-3"
+            *ngIf="email?.invalid && email?.touched"
+          >
+            <small *ngIf="email?.errors?.required"
+              >Email address is required</small
+            >
+            <small *ngIf="email?.errors?.pattern"
+              >Invalid email format, please enter a valid email address</small
+            >
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control form-control-lg bg-light fs-6"
+              placeholder="Password"
+              formControlName="password"
+              [class.is-invalid]="password?.invalid && password?.touched"
+              required
+            />
+          </div>
+          <div
+            class="text-danger mb-3"
+            *ngIf="password?.invalid && password?.touched"
+          >
+            <small *ngIf="password?.errors?.required"
+              >Password is required</small
+            >
+            <small *ngIf="password?.errors?.minlength"
+              >Password must be at least 8 characters long</small
+            >
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control form-control-lg bg-light fs-6"
+              placeholder="Confirm password"
               formControlName="confirmPassword"
-              [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched">
+              [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched"
+              required
+            />
           </div>
-          <div class="text-danger mb-3" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
-            <small *ngIf="confirmPassword?.errors?.['required']">set confirm password is Required </small>
-            <small *ngIf="confirmPassword?.errors?.['minlength']">password must be 8 charachrest at least </small>
+          <div
+            class="text-danger mb-3"
+            *ngIf="confirmPassword?.invalid && confirmPassword?.touched"
+          >
+            <small *ngIf="confirmPassword?.errors?.required"
+              >Confirm password is required</small
+            >
+            <small *ngIf="confirmPassword?.errors?.minlength"
+              >Password must be at least 8 characters long</small
+            >
+            <small *ngIf="confirmPassword.value != '' && !confirmPassword?.errors?.minlength && confirmPassword?.errors?.passwordMismatch">Passwords do not match</small>
+
           </div>
           <div class="input-group mb-3">
-            <select class="form-select custom-select" (change)="changeCountry($event)" formControlName="country">
+            <select
+              class="form-select custom-select"
+              formControlName="country"
+              [class.is-invalid]="country?.invalid && country?.touched"
+              required
+            >
               <option value="">Select your country</option>
-              <option *ngFor="let country of Country" [ngValue]="country">
-                {{ country }}
+              <option *ngFor="let country of Country" [ngValue]="country"
+                >{{ country }}</option
+              >
             </select>
           </div>
-          <div class="text-danger mb-3" *ngIf="country?.invalid && country?.touched">
-            <small *ngIf="country?.errors?.['required']">Please choose country, is Required </small>
+          <div
+            class="text-danger mb-3"
+            *ngIf="country?.invalid && country?.touched"
+          >
+            <small *ngIf="country?.errors?.required"
+              >Please choose your country</small
+            >
           </div>
           <div class="input-group mb-3">
-            <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Adress"
-              formControlName="address" [class.is-invalid]="address?.invalid && address?.touched">
+            <input
+              type="text"
+              class="form-control form-control-lg bg-light fs-6"
+              placeholder="Address"
+              formControlName="address"
+              [class.is-invalid]="address?.invalid && address?.touched"
+              required
+            />
           </div>
-          <div class="text-danger mb-3" *ngIf="address?.invalid && address?.touched">
-            <small *ngIf="address?.errors?.['required']">Address is Required </small>
+          <div
+            class="text-danger mb-3"
+            *ngIf="address?.invalid && address?.touched"
+          >
+            <small *ngIf="address?.errors?.required">Address is required</small>
           </div>
         </div>
       </div>
       <!-- column 03 -->
-      <div class="container col-lg-3 box-three d-flex justify-content-center flex-column">
+      <div
+        class="container col-lg-3 box-three d-flex justify-content-center flex-column"
+      >
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="University"
-            formControlName="university" [class.is-invalid]="university?.invalid && university?.touched">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="University"
+            formControlName="university"
+            [class.is-invalid]="university?.invalid && university?.touched"
+            required
+          />
         </div>
-        <div class="text-danger mb-3" *ngIf="university?.invalid && university?.touched">
-          <small *ngIf="university?.errors?.['required']">University is Required </small>
+        <div
+          class="text-danger mb-3"
+          *ngIf="university?.invalid && university?.touched"
+        >
+          <small *ngIf="university?.errors?.required"
+            >University is required</small
+          >
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Faculty"
-            formControlName="faculty" [class.is-invalid]="faculty?.invalid && faculty?.touched">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="Faculty"
+            formControlName="faculty"
+            [class.is-invalid]="faculty?.invalid && faculty?.touched"
+            required
+          />
         </div>
-        <div class="text-danger mb-3" *ngIf="faculty?.invalid && faculty?.touched">
-          <small *ngIf="faculty?.errors?.['required']">Address is Required </small>
+        <div
+          class="text-danger mb-3"
+          *ngIf="faculty?.invalid && faculty?.touched"
+        >
+          <small *ngIf="faculty?.errors?.required">Faculty is required</small>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Department"
-            formControlName="department">
+          <input
+            type="text"
+            class="form-control form-control-lg bg-light fs-6"
+            placeholder="Department"
+            formControlName="department"
+            [class.is-invalid]="department?.invalid && department?.touched"
+          />
+        </div>
+        <div
+          class="text-danger mb-3"
+          *ngIf="department?.invalid && department?.touched"
+        >
+          <small *ngIf="department?.errors?.required"
+            >Department address is required</small
+          >
         </div>
         <div class="input-group mb-1">
-          <label for="exampleFormControlTextarea1" class="form-label">Any Note</label>
+          <label for="exampleFormControlTextarea1" class="form-label"
+            >Any Note</label
+          >
         </div>
         <div class="input-group mb-3">
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="note">
-      </textarea>
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="5"
+            formControlName="note"
+          ></textarea>
         </div>
       </div>
     </div>
     <div class="row mb-5 col-lg-6 m-auto">
       <div class="input-group mb-5 submit-btn">
-        <button class="btn btn-lg w-100 fs-6"> Register </button>
+        <button
+          class="btn btn-lg w-100 fs-6"
+          [disabled]="!registerationForm.valid"
+        >
+          Register
+        </button>
+
+
+      </div>
+
+      <div class="text-center">
+        <h6 class="text-secondary">Or SignUp in with:</h6>
+        <div class="social-buttons">
+
+          <asl-google-signin-button type="standard" size="medium" class="btn btn-google">
+            <i class="fab fa-google"></i> Sign up with Google
+          </asl-google-signin-button>
+
+        </div>
       </div>
     </div>
+
   </form>
+
 </section>

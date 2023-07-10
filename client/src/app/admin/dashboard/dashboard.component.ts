@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICourse } from 'src/app/course/course';
-import { CourseService } from 'src/app/course/course.service';
+import { CourseService } from 'src/app/services/course.service';
 
 @Component({
   selector: 'app-dashboard',

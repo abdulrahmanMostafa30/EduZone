@@ -1,3 +1,5 @@
+const express = require("express");
+const router = express.Router();
 const User = require("../models/user");
 const Course = require("../models/course");
 const paypal = require("paypal-rest-sdk");
@@ -6,119 +8,198 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // Initialize S
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
+// Set up PayPal configuration
 paypal.configure({
-  mode: "sandbox",
-  client_id: "YOUR_SANDBOX_CLIENT_ID",
-  client_secret: "YOUR_SANDBOX_CLIENT_SECRET",
+  mode: "sandbox", // Change to "live" for production environment
+  client_id:
+    "AZ1pef0q2Bt30xoYFzn57qSAZ2RhEOFlRIYhNHttUjNKDkejojqRJxhWqEPAxUJlqvcVyUIYzJU0p5g2",
+  client_secret:
+    "EOaxtxJrChOxw8y2n7D9UHXVTibw9lWr2BfHj_bLOZzdNjLR9YQFLAjPmGWNc0msJbeC3WgVa6LiueHt",
 });
 
-// Configure PayPal SDK
-paypal.configure({
-  mode: "sandbox",
-  client_id: process.env.PAYPAL_CLIENT_ID,
-  client_secret: process.env.PAYPAL_CLIENT_SECRET,
-});
-
-const purchaseCourse = catchAsync(async (req, res) => {
+// Create Payment
+const createPayment = catchAsync(async (req, res) => {
+  const userId = req.user.id; // Get the user ID from req.user
   try {
-    // Retrieve user ID from authenticated user
-    const userId = req.user._id;
-
-    // Retrieve course ID and payment amount from request body
-    const { courseId, paymentAmount, paymentMethod } = req.body;
-
-    // Retrieve course details
-    const course = await Course.findById(courseId);
-
-    if (!course) {
-      return res.status(404).json({ error: "Course not found" });
-    }
-
-    // Retrieve authenticated user's details
-    const user = await User.findById(userId);
-
+    // Retrieve the user from the database
+    const user = await User.findById(userId).populate("cart");
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found." });
     }
+    const courseIds = user.cart.map((course) => course._id);
 
-    let paymentResult;
-
-    if (paymentMethod === "paypal") {
-      // Create a PayPal payment
-      const createPayment = {
-        intent: "sale",
-        payer: {
-          payment_method: "paypal",
-        },
-        redirect_urls: {
-          return_url: "http://localhost:3000/success", // Replace with your return URL
-          cancel_url: "http://localhost:3000/cancel", // Replace with your cancel URL
-        },
-        transactions: [
-          {
-            amount: {
-              total: paymentAmount.toFixed(2),
-              currency: "USD",
-            },
-            description: `Purchase of ${course.title}`,
+    const total = await user.calculateTotalPrice();
+    const create_payment_json = {
+      intent: "sale",
+      payer: {
+        payment_method: "paypal",
+      },
+      redirect_urls: {
+        return_url: "http://localhost:3000/success",
+        cancel_url: "http://localhost:3000/cancel",
+      },
+      transactions: [
+        {
+          item_list: {
+            items: [
+              {
+                name: "Red Sox Hat",
+                sku: "002",
+                price: total.toFixed(2),
+                currency: "USD",
+                quantity: 1,
+              },
+            ],
           },
-        ],
-      };
+          amount: {
+            currency: "USD",
+            total: total.toFixed(2),
+          },
+          description: "Hat for the best team ever",
+        },
+      ],
+    };
 
-      // Initiate the PayPal payment
-      const paypalPayment = await new Promise((resolve, reject) => {
-        paypal.payment.create(createPayment, (error, payment) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(payment);
-          }
+    paypal.payment.create(create_payment_json, async (error, payment) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json({ error: "Failed to create PayPal payment." });
+      }
+
+      try {
+        if (!user.payments) {
+          user.payments = [];
+        }
+        // Save the payment information in the user's data
+        user.payments.push({
+          paymentId: payment.id,
+          amount: total,
+          isPaid: false,
+          courseIds: courseIds,
         });
-      });
+        user.confirmPassword = user.password; // Assign the same value as the password to confirmPassword
+        await user.save({ validateBeforeSave: false });
 
-      // Store the PayPal payment details in the user document
-      user.purchasedCourses.push({
-        course: course._id,
-        paymentAmount: paymentAmount,
-        paymentMethod: "PayPal",
-        paymentId: paypalPayment.id,
-      });
-
-      paymentResult = paypalPayment;
-    } else if (paymentMethod === "stripe") {
-      // Create a Stripe payment
-      const stripePayment = await stripe.paymentIntents.create({
-        amount: paymentAmount * 100, // Stripe amount is in cents, so multiply by 100
-        currency: "usd",
-        description: `Purchase of ${course.title}`,
-      });
-
-      // Store the Stripe payment details in the user document
-      user.purchasedCourses.push({
-        course: course._id,
-        paymentAmount: paymentAmount,
-        paymentMethod: "Stripe",
-        paymentId: stripePayment.id,
-      });
-
-      paymentResult = stripePayment;
-    } else {
-      return res.status(400).json({ error: "Invalid payment method" });
-    }
-
-    // Save the updated user document
-    await user.save();
-
-    return res.json({
-      message: "Course purchased successfully",
-      paymentResult,
+        for (let i = 0; i < payment.links.length; i++) {
+          if (payment.links[i].rel === "approval_url") {
+            return res.json({
+              orderId: payment.id,
+              approvalUrl: payment.links[i].href,
+            });
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json({ error: "Failed to save payment information." });
+      }
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Failed to create PayPal payment." });
   }
 });
 
+// Execute Payment
+const executePayment = catchAsync(async (req, res) => {
+  const payerId = req.query.payerId;
+  const paymentId = req.query.paymentId;
+  const payment = req.user.payments.find(p => p.paymentId === paymentId);
+  const courseIds = payment.courseIds;
+
+  const execute_payment_json = {
+    payer_id: payerId,
+  };
+  // const capture = await paypal.capturePayment(paymentId);
+
+  // try {
+
+  //   paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
+  //     if (error) {
+  //       throw error;
+  //     } else {
+  //       // Handle the captured payment response
+  //       console.log(payment);
+  //     }
+  //   });
+  // } catch (error) {
+  //   // Handle any errors that occurred during payment capture
+  //   console.error(error);
+  // }
+
+  // try {
+  //   // Capture the payment using PayPal APIs
+  //   const response = await paypal.payment.execute(paymentId, { payer_id: payerId});
+
+  //   if (capture.status === 'COMPLETED') {
+  //     // Payment is captured successfully
+  //     // Update the payment status in your database or perform any other necessary actions
+  //     // Return a success response
+  //     res.status(200).json({ message: 'Payment captured successfully.' });
+  //   } else {
+  //     // Payment capture failed
+  //     // Return an error response
+  //     res.status(400).json({ error: 'Payment capture failed.' });
+  //   }
+  // } catch (error) {
+  //   // Handle any errors that occurred during payment capture
+  //   console.error(error);
+  //   res.status(500).json({ error: 'Failed to capture payment.' });
+  // }
+  paypal.payment.execute(
+    paymentId,
+    execute_payment_json,
+    async (error, payment) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json({ error: "Failed to execute PayPal payment." });
+      }
+
+      if (payment.state === "approved") {
+        try {
+          // Update the payment status in the user's data
+          const updatedUser = await User.findOneAndUpdate(
+            { "payments.paymentId": paymentId },
+            {
+              $set: { "payments.$.isPaid": true },
+              $push: {
+                purchasedCourses: {
+                  $each: courseIds.map(courseId => ({
+                    orderId: paymentId,
+                    courseId: courseId,
+                  })),
+                },
+              },
+            }
+          );
+          if (!updatedUser) {
+            return res
+              .status(404)
+              .json({ error: "User not found or payment not found." });
+          }
+          updatedUser.cart = [];
+          await updatedUser.save({ validateBeforeSave: false });
+
+          return res.status(200).json({ message: "Payment successful." });
+
+          // res.render("success"); // Render success page
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: "Failed to update payment status." });
+        }
+      } else {
+        res.status(400).json({ error: "Payment not approved." });
+      }
+    }
+  );
+});
+
 module.exports = {
-  purchaseCourse,
+  createPayment,
+  executePayment,
 };

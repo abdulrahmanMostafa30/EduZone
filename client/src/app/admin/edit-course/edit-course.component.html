@@ -1,128 +1,137 @@
-<div class="container-xl">
-  <div class="table-responsive">
-    <div class="table-wrapper">
-      <div class="table-title">
-        <div class="row">
-          <div class="col-sm-6">
-            <h4><b>Update Course</b></h4>
-          </div>
-          <div class="col-sm-6">
-            <a routerLink="/profile/admin/dashboard" class="btn btn-success back"><i class='fas fa-arrow-circle-left'></i> Back</a>
-            <br>
-            <br>
+<div class="container">
+  <div class="table-title">
+    <div class="row">
+      <div class="col-sm-6">
+        <h4><b>Update Course</b></h4>
+      </div>
+      <div class="col-sm-6">
+        <a routerLink="/profile/admin/dashboard" class="btn btn-success back"><i class='fas fa-arrow-circle-left'></i> Back</a>
+      </div>
+    </div>
+  </div>
+  <form #courseForm="ngForm">
+    <div class="table-content">
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="title" class="p-t-b-10">Title<span class="requiredStar">*</span></label>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="title" required maxlength="255" [(ngModel)]="editCourseForm.title" name="title" #title="ngModel">
+          <div *ngIf="title.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!title.errors['required']">
+              title is required
+            </div>
           </div>
         </div>
       </div>
-      <form #courseForm="ngForm">
-        <div class="table-content">
-          <div class="form-group p-10 row">
-            <div class="col-sm-3">
-              <label for="title" class="p-t-b-10">Title<span class="requiredStar">*</span></label>
-            </div>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="title" required maxlength="255" [(ngModel)]="editCourseForm.title" name="title" #title="ngModel">
-              <div *ngIf="title.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!title.errors['required']">
-                  title is required
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="form-group p-10 row">
-            <div class="col-sm-3">
-              <label for="description" class="p-t-b-10">Description<span class="requiredStar">*</span></label>
-            </div>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="description" required maxlength="255" [(ngModel)]="editCourseForm.description" name="description" #description="ngModel">
-              <div *ngIf="description.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!description.errors['required']">
-                  description is required
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group p-10 row">
-            <div class="col-sm-3">
-              <label for="category" class="p-t-b-10">Category<span class="requiredStar">*</span></label>
-            </div>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="category" required maxlength="255" [(ngModel)]="editCourseForm.category" name="category" #category="ngModel">
-              <div *ngIf="category.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!category.errors['required']">
-                  category is required
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group p-10 row">
-            <div class="col-sm-3">
-              <label for="price" class="p-t-b-10">Price<span class="requiredStar">*</span></label>
-            </div>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="price" required maxlength="255" [(ngModel)]="editCourseForm.price" name="price" #price="ngModel">
-              <div *ngIf="price.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!price.errors['required']">
-                  Price is required
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group p-10 row">
-            <div class="col-sm-3">
-              <label for="image" class="p-t-b-10">Image<span class="requiredStar"></span></label>
-            </div>
-            <div class="col-sm-9">
-              <input type="file" class="form-control" id="image" required maxlength="255" name="image" (change)="handleImageUpload($event)">
-              <img *ngIf="editCourseForm.image" [src]="editCourseForm.image" alt="Image Preview" class="img-preview">
-
-              <!-- <div *ngIf="image.errors && isSubmitted" class="alert alert-danger validationError">
-                <div [hidden]="!image.errors['required']">
-                  image is required
-                </div>
-              </div> -->
-            </div>
-          </div>
-
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="description" class="p-t-b-10">Description<span class="requiredStar">*</span></label>
         </div>
-
-        <h3>Videos</h3>
-
-        <div *ngFor="let video of editCourseForm.vid; let i = index" class="video-field">
-          <div class="row mb-3">
-            <div class="col">
-              <label for="videoTitle{{ i }}" class="form-label">Title:</label>
-              <input type="text" id="videoTitle{{ i }}" [(ngModel)]="video.title" name="videoTitle{{ i }}" class="form-control" required>
-              <div class="alert alert-danger mt-2" *ngIf="isVideoTitleInvalid(i)">
-                Title is required for video {{ i + 1 }}.
-              </div>
-            </div>
-            <div class="col">
-              <label for="videoUrl{{ i }}" class="form-label">URL:</label>
-              <input type="text" id="videoUrl{{ i }}" [(ngModel)]="video.url" name="videoUrl{{ i }}" class="form-control" required>
-              <div class="alert alert-danger mt-2" *ngIf="isVideoUrlInvalid(i)">
-                URL is required for video {{ i + 1 }}.
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo(i)">Remove</button>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="description" required maxlength="255" [(ngModel)]="editCourseForm.description" name="description" #description="ngModel">
+          <div *ngIf="description.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!description.errors['required']">
+              description is required
             </div>
           </div>
         </div>
-        <br>
-        <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
-        <br>
-        <br>
+      </div>
 
-        <div class="table-footer">
-          <button class="btn btn-success" (click)="EditCourse(courseForm.form.valid)">Submit</button>
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="category" class="p-t-b-10">Category<span class="requiredStar">*</span></label>
         </div>
-      </form>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="category" required maxlength="255" [(ngModel)]="editCourseForm.category" name="category" #category="ngModel">
+          <div *ngIf="category.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!category.errors['required']">
+              category is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="price" class="p-t-b-10">Price<span class="requiredStar">*</span></label>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="price" required maxlength="255" [(ngModel)]="editCourseForm.price" name="price" #price="ngModel">
+          <div *ngIf="price.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!price.errors['required']">
+              Price is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="price" class="p-t-b-10">Course Content Length<span class="requiredStar">*</span></label>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="course_content_length" required maxlength="255" [(ngModel)]="editCourseForm.course_content_length" name="course_content_length" #course_content_length="ngModel">
+          <div *ngIf="course_content_length.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!course_content_length.errors['required']">
+              Course Content Length is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group p-10 row">
+        <div class="col-sm-3">
+          <label for="image" class="p-t-b-10">Image<span class="requiredStar"></span></label>
+        </div>
+        <div class="col-sm-9">
+          <input type="file" class="form-control" id="image" required maxlength="255" name="image" (change)="handleImageUpload($event)">
+          <img *ngIf="editCourseForm.image" [src]="editCourseForm.image" alt="Image Preview" class="img-preview">
+
+          <!-- <div *ngIf="image.errors && isSubmitted" class="alert alert-danger validationError">
+            <div [hidden]="!image.errors['required']">
+              image is required
+            </div>
+          </div> -->
+        </div>
+      </div>
     </div>
-  </div>
+
+    <h3>Videos</h3>
+
+    <div *ngFor="let video of editCourseForm.vid; let i = index" class="video-field">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="videoTitle{{ i }}" class="form-label">Title:</label>
+          <input type="text" id="videoTitle{{ i }}" [(ngModel)]="video.title" name="videoTitle{{ i }}" class="form-control" required>
+          <div class="alert alert-danger mt-2" *ngIf="isVideoTitleInvalid(i)">
+            Title is required for video {{ i + 1 }}.
+          </div>
+        </div>
+        <div class="col">
+          <label for="videoUrl{{ i }}" class="form-label">URL:</label>
+          <input type="text" id="videoUrl{{ i }}" [(ngModel)]="video.url" name="videoUrl{{ i }}" class="form-control" required>
+          <div class="alert alert-danger mt-2" *ngIf="editCourseForm.vid[i].url == ''">
+            URL is required for video {{ i + 1 }}.
+          </div>
+          <div class="alert alert-danger mt-2" *ngIf="isVideoUrlInvalid(video.url, i)">
+            Invalid YouTube URL format for video {{ i + 1 }}.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeVideo(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
+    <br>
+    <br>
+
+    <div classclass="table-footer">
+      <button class="btn btn-success" (click)="EditCourse(courseForm.form.valid)">Submit</button>
+    </div>
+  </form>
 </div>

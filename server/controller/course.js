@@ -13,6 +13,20 @@ const filterObj = (obj, ...allowedFields) => {
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+module.exports.getPurchasedCourses = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+
+  // Retrieve the user from the database
+  const user = await User.findById(userId).populate('purchasedCourses.courseId');
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+  response.status(200).json({
+    status: "success",
+    data: user.purchasedCourses,
+  });
+});
 
 module.exports.getAllCourses = (request, response, next) => {
   const isAuthenticated = request.isAuthenticated; // Assuming you're using a session-based authentication
@@ -88,7 +102,8 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     "description",
     "category",
     "price",
-    "vid"
+    "vid",
+    'comments',
   );
   filteredBody["image"] = image;
 
@@ -120,7 +135,7 @@ module.exports.getCourseById = (request, response, next) => {
 };
 
 module.exports.addComment = catchAsync(async (request, response, next) => {
-  const { id, comment } = request.body;
+  const { id, comment, rating } = request.body;
   const user = request.user;
   // console.log(id, comment, user)
   const course = await Course.findById(id);
@@ -135,11 +150,12 @@ module.exports.addComment = catchAsync(async (request, response, next) => {
   if (existingComment) {
     return next(new AppError("User already added a comment", 401));
   }
-
   const newComment = {
     _id: request.user._id,
     name: `${request.user.fname} ${request.user.lname}`,
     comment: comment,
+    rating: rating,
+    imageUserPath: request.user.imagePath
   };
 
   course.comments.push(newComment);

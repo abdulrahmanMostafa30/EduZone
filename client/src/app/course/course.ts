@@ -5,7 +5,7 @@ export interface ICourse {
   category: string;
   price: number;
   image: string;
-  comments: []
+  comments: [];
   vid: [];
   active: boolean;
 }

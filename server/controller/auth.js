@@ -7,6 +7,8 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
 const { log } = require("console");
+const axios = require("axios");
+const { recaptchaMiddleware } = require("../utils/recaptcha");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -34,6 +36,44 @@ const createSendToken = (user, statusCode, res) => {
     },
   });
 };
+
+const verifyGoogleToken = async (token) => {
+  const response = await axios.get("https://oauth2.googleapis.com/tokeninfo", {
+    params: {
+      id_token: token,
+      client_id: process.env.EMAIL_CLIENT_ID,
+      client_secret: process.env.EMAIL_CLEINT_SECRET,
+    },
+  });
+  const { data } = response;
+  // Verify if the audience matches your client ID
+  if (data.aud !== process.env.EMAIL_CLIENT_ID) {
+    next(new AppError("Invalid token audience", 401));
+  }
+
+  // Token is valid
+  return data;
+};
+
+const loginGoogle = async (req, res, next, token) => {
+  const verifiedToken = await verifyGoogleToken(token);
+  if (!verifiedToken) {
+    return next(new AppError("Token is invalid or failed verification", 401));
+  }
+  if (!verifiedToken.email) {
+    return next(new AppError("Please provide email", 400));
+  }
+  const user = await User.findOne({ email: verifiedToken.email });
+  if (!user) {
+    return next(new AppError("Email does not exist", 401));
+  }
+  console.log("Token is valid");
+  console.log("User ID:", verifiedToken.sub);
+  // const decodedToken = jwt.verify(token, process.env.EMAIL_CLEINT_SECRET);
+
+  createSendToken(user, 201, res);
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const {
     fname,
@@ -50,12 +90,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     department,
     note,
   } = req.body;
+  
   let imagePath = req.body.imagePath;
   if (req.file) {
     imagePath = req.file.imageUrl;
     // const url = req.protocol + "://" + req.get("host");
     // imagePath = url + "/images/" + req.file.filename;
   }
+
   const newUser = await new User({
     fname: fname,
     lname: lname,
@@ -76,15 +118,21 @@ exports.signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { email, password, recaptchaToken, token } = req.body;
+  if (token) {
+    return await loginGoogle(req, res, next, token);
+  }
+  if (!email || !password || !recaptchaToken) {
     return next(new AppError("Please provide email and password", 400));
   }
   const user = await User.findOne({ email: email }).select("+password");
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
-
+  isValidCaptcha = await recaptchaMiddleware(recaptchaToken);
+  if(!isValidCaptcha){
+    return next(new AppError("Invalid reCAPTCHA response.", 400));
+  }
   createSendToken(user, 201, res);
 });
 const verifyToken = async (token) => {
@@ -106,7 +154,7 @@ const verifyToken = async (token) => {
       new AppError("User recently changed password! Please log in again.", 401)
     );
   }
-  return currentUser
+  return currentUser;
 };
 
 exports.checkAuth = catchAsync(async (req, res, next) => {
@@ -170,12 +218,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  const resetURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/users/resetPassword/${resetToken}`;
-  console.log(user.email)
+  // const resetURL = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/users/resetPassword/${resetToken}`;
+
+  const resetLink = `${req.body.host}/reset-password/${resetToken}`;
   // const message = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
-  const resetLink = `https://eduzone-frontend.netlify.app/#/reset-password/${resetToken}`
+  // const resetLink = `https://eduzone-frontend.netlify.app/#/reset-password/${resetToken}`
   try {
     await sendEmail({
       email: user.email,

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "../user.service";
+import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/auth/auth.service";
-import { FormBuilder } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-security",
@@ -12,30 +12,61 @@ import { FormBuilder } from "@angular/forms";
 export class SecurityComponent implements OnInit {
   user: any;
   errorMessage: any;
+  passwordForm: FormGroup;
+
   constructor(
     private userService: UserService,
-    private router: Router,
     public fb: FormBuilder,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private formBuilder: FormBuilder
+  ) {
+    this.passwordForm = this.formBuilder.group({
+      passwordCurrent: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    })
+    this.passwordForm.get('password')?.valueChanges.subscribe(() => {
+      this.passwordForm.get('confirmPassword')?.updateValueAndValidity();
+    });
 
-  ngOnInit() {}
+    // Set custom validator for confirm password field
+    this.passwordForm.get('confirmPassword')?.setValidators([Validators.required, Validators.minLength(8), this.matchConfirmPassword.bind(this)]);
+  }
 
-  passwords = {
-    passwordCurrent: "",
-    password: "",
-    confirmPassword: "",
-  };
+  ngOnInit() {
+
+  }
+
+
   changePassword() {
-    if(this.passwords.passwordCurrent == '' || this.passwords.password == '' || this.passwords.confirmPassword == ''){
-      return
+    if (
+      this.passwordForm.get('current_password')?.value === '' ||
+      this.passwordForm.get('password')?.value === '' ||
+      this.passwordForm.get('confirmPassword')?.value === ''
+    ) {
+      return;
     }
-    this.userService.changePassword(this.passwords).subscribe({
+    const passwords = {
+      passwordCurrent: this.passwordForm.get('passwordCurrent')?.value,
+      password: this.passwordForm.get('password')?.value,
+      confirmPassword: this.passwordForm.get('confirmPassword')?.value,
+    };
+    this.userService.changePassword(passwords).subscribe({
       next: (response) => {
-        console.log(response);
         this.authService.logout()
       },
       error: (error) => (this.errorMessage = error),
     });
+  }
+  matchConfirmPassword(control: AbstractControl): ValidationErrors | null {
+    const password = this.passwordForm.get('password')?.value;
+    const confirmPassword = control.value;
+
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+      return { passwordMismatch: true };
+    }
+
+    return null;
   }
 }

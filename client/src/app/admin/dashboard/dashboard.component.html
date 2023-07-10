@@ -1,52 +1,64 @@
 <section class="container">
   <!-- Frist Row For Title -->
-<div class="row">
-  <div class="admin-title container">
-    <h1> Admin Dashboard</h1>
-    <div class="line my-2"></div>
-    <p class="py-3">Edu Zone admin dashboard to add Courses </p>
+  <div class="row">
+    <div class="admin-title container">
+      <h1>Admin Dashboard</h1>
+      <div class="line my-2"></div>
+      <p class="py-3">Edu Zone admin dashboard to add Courses</p>
+    </div>
   </div>
-</div>
-<!-- Second Row For panel -->
-<div class="row">
-  <div class="container-xl">
-    <div class="table-responsive">
-      <div class="table-wrapper">
-        <table class="table table-striped table-hover table-bordered table-content">
-          <thead>
-            <tr class="center-align">
-              <th>Title</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Price</th>
-              <!-- <th>Picture</th> -->
-              <th>Videos</th>
-              <th>Actions</th>
-              <th>Active</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="center-align" *ngFor="let course of courses">
-              <td>{{course.title}}</td>
-              <td>{{course.description}}</td>
-              <td>{{course.category}}</td>
-              <td>${{course.price}}</td>
-              <!-- <td>{{course.image}}</td> -->
-              <td>{{(course.vid.length)}}</td>
-              <td>
-                <div class="btn"><i class='fas fa-eye view' (click)="gotToCourse(course._id)"></i></div>
-                <div class="btn"><i class='fa fa-edit edit' routerLink="/profile/admin/edit-course/{{course._id}}"></i></div>
-                <div class="btn"><i class='fas fa-trash-alt delete' (click)="deleteCourse(course._id)"></i></div>
-              </td>
-              <td>
-                <input type="checkbox" [(ngModel)]="course.active" (change)="updateCourseStatus(course)">
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Second Row For panel -->
+  <div class="row">
+    <div class="container-xl">
+      <div class="table-responsive">
+        <div class="table-wrapper">
+          <table
+            class="table table-striped table-hover table-bordered table-content"
+          >
+            <thead>
+              <tr class="center-align">
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Videos</th>
+                <th>Actions</th>
+                <th>Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="center-align" *ngFor="let course of courses">
+                <td>{{course.title}}</td>
+                <td>{{course.description}}</td>
+                <td>{{course.category}}</td>
+                <td>${{course.price}}</td>
+                <td>{{(course.vid.length)}}</td>
+                <td>
+                  <div class="btn" (click)="gotToCourse(course._id)">
+                    <i class="fas fa-eye view"></i>
+                  </div>
+                  <div
+                    class="btn"
+                    routerLink="/profile/admin/edit-course/{{course._id}}"
+                  >
+                    <i class="fa fa-edit edit"></i>
+                  </div>
+                  <div class="btn" (click)="deleteCourse(course._id)">
+                    <i class="fas fa-trash-alt delete"></i>
+                  </div>
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="course.active"
+                    (change)="updateCourseStatus(course)"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </section>

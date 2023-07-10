@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactUsService } from '../contact-us.service';
+import { ContactUsService } from '../../services/contact-us.service';
 
 @Component({
   selector: 'app-contact-us-admin',
@@ -29,6 +29,10 @@ export class ContactUsAdminComponent implements OnInit {
   }
 
   removeMessage(message: any) {
+    const confirmed = confirm('Are you sure you want to delete this Message?');
+    if (!confirmed) {
+      return; // User canceled the deletion
+    }
     const contactId = message._id; // Assuming the message object has an _id property
     this.contactUsService.delete(contactId).subscribe(
       () => {

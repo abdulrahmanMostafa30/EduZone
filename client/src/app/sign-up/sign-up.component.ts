@@ -1,20 +1,31 @@
-import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from "@angular/forms";
 import { AuthService } from "../auth/auth.service";
 import { Router } from "@angular/router";
+import { GoogleAuthService } from "../services/google-auth.service";
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from "@abacritt/angularx-social-login";
 
 @Component({
   selector: "app-sign-up",
   templateUrl: "./sign-up.component.html",
   styleUrls: ["./sign-up.component.scss"],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   errorMessage: any;
+  user: any;
+
   Country: any = [
     "Egypt",
     "Kuwait",
@@ -27,16 +38,95 @@ export class SignUpComponent implements OnInit {
   isSignedup = false;
   registerationForm: FormGroup | any;
   selectedFile: File | null = null;
+  private authSubscription: Subscription | null = null;
+  private subscriptions: Subscription[] = [];
+  imageGoogle:string | null = null
 
   constructor(
     private fb: FormBuilder,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private socialAuthService: SocialAuthService,
+
+    private googleAuthService: GoogleAuthService
   ) {}
+  isAlertImage(): boolean {
+    const controls = this.registerationForm.controls;
+
+    if (
+      Object.keys(controls).every(
+        (key) => key === "image" || !controls[key].errors
+      )
+    ) {
+      if (!controls["image"].value) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+    return false;
+  }
+  signupWithGoogle(): void {
+    this.subscriptions.push(
+      this.socialAuthService.authState.subscribe((user) => {
+        if (user) {
+          this.user = user;
+
+          const { email, firstName, lastName, photoUrl } = this.user;
+          // Set the user data to the form controls
+          this.registerationForm.patchValue({
+            email: email,
+            fname: firstName,
+            lname: lastName,
+          });
+          const imgElement = document.getElementById(
+            "photo"
+          ) as HTMLImageElement;
+          imgElement.src = photoUrl;
+          this.imageGoogle =photoUrl
+          this.registerationForm.get("image").setValue(photoUrl);
+
+
+          // if (imgElement.files && imgElement.files[0]) {
+          //   this.selectedFile = imgElement.files[0];
+          //   this.registerationForm.controls["image"].setValue(event.target.files[0]);}
+          // this.authService
+          //   .getFileFromUrl(photoUrl, "profile_photo.jpg")
+          //   .subscribe(
+          //     (file: File) => {
+          //       console.log("Loaded file:", file);
+          //       this.selectedFile = file;
+          //       this.registerationForm.get("image").setValue(file);
+          //     },
+          //     (error: any) => {
+          //       console.error("Error loading image:", error);
+          //     }
+          //   );
+          //   getFileFromUrl()
+          //     .then((file) => {
+          //       this.selectedFile = file;
+          //       this.registerationForm.get("image").setValue(file);
+          //     })
+          //     .catch((error) => {});
+        }
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.socialAuthService
+      .signOut()
+      .then(() => {})
+      .catch((error: any) => {});
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
   ngOnInit() {
+    if (this.authService.getIsAuth()) {
+      this.router.navigate(["/"]);
+    }
+    this.signupWithGoogle();
     // using form builder services
     this.registerationForm = this.fb.group({
-      image: [""],
+      image: ["", Validators.required],
       fname: ["", [Validators.required, Validators.minLength(3)]],
       lname: ["", [Validators.required, Validators.minLength(3)]],
       fullName: [
@@ -60,9 +150,23 @@ export class SignUpComponent implements OnInit {
       address: ["", [Validators.required]],
       university: ["", [Validators.required]],
       faculty: ["", [Validators.required]],
-      department: [""],
+      department: ["", Validators.required],
       note: [""],
     });
+    this.subscriptions.push(
+      this.registerationForm.get("password").valueChanges.subscribe(() => {
+        this.registerationForm.get("confirmPassword").updateValueAndValidity();
+      })
+    );
+
+    // Set custom validator for confirm password field
+    this.registerationForm
+      .get("confirmPassword")
+      .setValidators([
+        Validators.required,
+        Validators.minLength(8),
+        this.matchConfirmPassword.bind(this),
+      ]);
   }
   get fname() {
     return this.registerationForm.get("fname");
@@ -106,10 +210,22 @@ export class SignUpComponent implements OnInit {
   get image() {
     return this.registerationForm.get("image").value;
   }
+  matchConfirmPassword(control: AbstractControl): ValidationErrors | null {
+    const password = this.registerationForm.get("password").value;
+    const confirmPassword = control.value;
 
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+      return { passwordMismatch: true };
+    }
+
+    return null;
+  }
   displaySelectedImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
+      this.imageGoogle = null
+      this.registerationForm.controls["image"].setValue(event.target.files[0]);
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const imgElement = document.getElementById("photo") as HTMLImageElement;
@@ -128,17 +244,12 @@ export class SignUpComponent implements OnInit {
     e.preventDefault();
 
     if (this.registerationForm.invalid) {
-      console.log(this.registerationForm.invalid);
       return;
     }
-    if (!this.selectedFile) {
-      return;
-    }
-    console.log("onSignup");
 
     this.isLoading = true;
 
-    const user = {
+    const user: User = {
       fname: this.fname.value,
       lname: this.lname.value,
       fullName: this.fullName.value,
@@ -146,7 +257,6 @@ export class SignUpComponent implements OnInit {
       email: this.email.value,
       password: this.password.value,
       confirmPassword: this.confirmPassword.value,
-      image: this.selectedFile,
       country: this.country.value.toString(),
       address: this.address.value,
       university: this.university.value,
@@ -155,28 +265,34 @@ export class SignUpComponent implements OnInit {
       note: this.note.value,
     };
 
-    this.authService.createUser(user).subscribe({
-      next: (response) => {
-        console.log(response);
-        if(response.token){
-          this.isSignedup = true;
-          this.errorMessage = '';
-          setTimeout(() => {
-            this.router.navigate(["/login"]);
-          }, 2000);
-        }
-      },
-      error: (error) => {
-        if (error.status === 500) {
-          this.errorMessage = 'Internal Server Error. Please try again later.';
-        } else {
-          this.errorMessage = error.message;
-        }
-        // Access other properties from the error response
-        // For example, if the error response has a 'errorData' property
-        console.log(error.message);
-      },
-    });
+    if (this.selectedFile) {
+      user.image = this.selectedFile;
+    } else {
+      user.imageGoogle = this.imageGoogle;
+    }
+    this.subscriptions.push(
+      this.authService.createUser(user).subscribe({
+        next: (response) => {
+          if (response.token) {
+            this.isSignedup = true;
+            this.errorMessage = "";
+            setTimeout(() => {
+              this.router.navigate(["/login"]);
+            }, 2000);
+          }
+        },
+        error: (error) => {
+          if (error.status === 500) {
+            this.errorMessage =
+              "Internal Server Error. Please try again later.";
+          } else {
+            this.errorMessage = error.message;
+          }
+          // Access other properties from the error response
+          // For example, if the error response has a 'errorData' property
+        },
+      })
+    );
 
     // this.postsService.addPost(
     //   this.fname,
@@ -216,4 +332,23 @@ export class SignUpComponent implements OnInit {
   //   note: 'no'
   //   })
   // }
+}
+
+
+interface User {
+  fname: any;
+  lname: any;
+  fullName: any;
+  birthDate: any;
+  email: any;
+  password: any;
+  confirmPassword: any;
+  country: any;
+  address: any;
+  university: any;
+  faculty: any;
+  department: any;
+  note: any;
+  image?: any; // Optional property
+  imageGoogle?: any; // Optional property
 }

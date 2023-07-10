@@ -1,9 +1,14 @@
-<div class="settings-widget profile-details">
-  <div class="settings-menu p-0">
-    <div class="profile-heading">
-      <h3>Courses Enroll</h3>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-      </p>
+
+
+<div class="col-lg-12" *ngIf="user">
+  <div class="card instructor-card">
+    <div class="card-header">
+      <h4>
+        My Courses
+      </h4>
+    </div>
+    <div class="card-body">
+    <app-courses [user]="user" *ngIf="user"></app-courses>
+  </div>
   </div>
 </div>

@@ -1,8 +1,9 @@
-import { CourseService } from "../course/course.service";
+import { CourseService } from "../services/course.service";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { Component, OnInit, DoCheck } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { UserService } from "../profile/user.service";
+import { UserService } from "../services/user.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-course-details",
@@ -11,7 +12,6 @@ import { UserService } from "../profile/user.service";
 })
 export class CourseDetailsComponent implements OnInit, DoCheck {
   comments: string[] = [];
-  comment: string = "";
   safeUrl: SafeResourceUrl | null = null;
   currentVideoIndex: number = 0;
   previousVideoIndex: number = -1;
@@ -20,16 +20,41 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
   id: string = "";
   errorMsg: any;
   errorMessage: any;
+  hovered: number = 0;
+  commentForm: FormGroup;
+
   constructor(
     private sanitizer: DomSanitizer,
     private courseService: CourseService,
     private route: ActivatedRoute,
-    private userService:UserService
-  ) {}
+    private userService: UserService,
+    private formBuilder: FormBuilder
+  ) {
+    this.commentForm = this.formBuilder.group({
+      comment: ['', Validators.required],
+      rating: ['', Validators.required]
+    });
+  }
+  setRating(rating: number) {
+    // Set the selected rating
+    if(rating != 5){
+      rating = rating + .5
+    }
+    this.commentForm.patchValue({
+      rating: rating
+    });
+  }
 
+  setHovered(stars: number) {
+    // Set the number of stars being hovered
+    this.hovered = stars;
+  }
+
+  clearHovered() {
+    // Clear the number of hovered stars
+    this.hovered = 0;
+  }
   displayVideo(videoIndex: number) {
-    console.log(videoIndex);
-
     this.currentVideoIndex = videoIndex;
   }
   getUserMe() {
@@ -37,7 +62,15 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
       next: (response) => {
         if ((response.status = "success")) {
           this.user = response.data.data;
-          this.currentVideoIndex = this.user.currentVideoIndex;
+          const course = this.user.courseProgress.find(
+            (c: any) => c.courseId === this.course._id
+          );
+
+          // Access the currentVideoIndex property
+          if (course) {
+            this.currentVideoIndex = course.currentVideoIndex;
+            // Do something with the currentVideoIndex value
+          }
         }
       },
       error: (error) => (this.errorMessage = error),
@@ -51,13 +84,28 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
   }
   setCurrentVideo(index: number) {
     this.currentVideoIndex = index;
-    this.user.currentVideoIndex = index
-    this.userService.updateProfileMe(this.user).subscribe({
-      next: (data) => {
-      },
-      error: (error) => {
+    // this.user.currentVideoIndex = index;
+    // Check if the course already exists in the courseProgress array
+    const existingCourseIndex = this.user.courseProgress.findIndex(
+      (course: any) => course.courseId === this.course._id
+    );
 
-      },
+    if (existingCourseIndex !== -1) {
+      // Course already exists, update the currentVideoIndex
+      this.user.courseProgress[
+        existingCourseIndex
+      ].currentVideoIndex = this.currentVideoIndex;
+    } else {
+      // Course doesn't exist, add it to the courseProgress array
+      this.user.courseProgress.push({
+        courseId: this.course._id,
+        currentVideoIndex: this.currentVideoIndex,
+      });
+    }
+
+    this.userService.updateProfileMe(this.user).subscribe({
+      next: (data) => {},
+      error: (error) => {},
     });
   }
 
@@ -76,22 +124,23 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  addComment() {
-    if (this.course) {
-      if (this.comment != "") {
-        this.courseService
-          .addComment({ id: this.course._id, comment: this.comment })
-          .subscribe({
-            next: (response) => {
-              this.comment = "";
-              this.getCourse();
-            },
-            error: (error) => {
-              this.errorMessage = error;
-              this.comment = "";
-            },
-          });
-      }
+  addComment(): void {
+    if (this.course && this.commentForm.valid) {
+      const { comment, rating } = this.commentForm.value;
+      this.courseService.addComment({
+        id: this.course._id,
+        comment,
+        rating
+      }).subscribe(
+        response => {
+          this.commentForm.reset();
+          this.getCourse();
+        },
+        error => {
+          this.errorMessage = error // Clear the error message
+          this.commentForm.reset();
+        }
+      );
     }
   }
   getCourse() {
@@ -107,7 +156,7 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
     this.route.params.subscribe((params) => {
       this.id = params["id"];
       this.getCourse();
-      this.getUserMe()
+      this.getUserMe();
     });
   }
 }

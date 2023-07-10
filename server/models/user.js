@@ -81,10 +81,52 @@ const userSchema = new Schema({
       ref: "Course",
     },
   ],
-  currentVideoIndex: {
-    type: Number,
-    default: 0,
-  },
+  payments: [
+    {
+      _id: false,
+      paymentId: String,
+      courseIds: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Course',
+          required: true
+        }
+      ],
+      amount: Number,
+      isPaid: Boolean,
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    },
+  ],
+  purchasedCourses: [{
+    _id: false,
+    orderId: {
+      type: String,
+      required: true
+    },
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      required: true
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  courseProgress: [{
+    courseId: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      required: true
+    },
+    currentVideoIndex: {
+      type: Number,
+      default: 0
+    }
+  }],
   role: {
     type: String,
     enum: ["user", "admin"],
@@ -151,6 +193,17 @@ userSchema.methods.addToCart = function (course) {
   this.cart = updatedCart;
   return this.save();
 };
+userSchema.methods.calculateTotalPrice = async function () {
+  await this.populate("cart");
+  let totalPrice = 0;
+
+  for (const course of this.cart) {
+    totalPrice += course.price;
+  }
+
+  return totalPrice;
+};
+
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 

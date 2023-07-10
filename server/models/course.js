@@ -36,6 +36,18 @@ const courseSchema = new Schema({
         type: String,
         required: true,
       },
+      rating: {
+        type: Number,
+        required: true,
+      },
+      imageUserPath: {
+        type: String,
+        required: true,
+      },
+      course_content_length: {
+        type: String,
+        required: true,
+      },
     },
   ],
   vid: [],

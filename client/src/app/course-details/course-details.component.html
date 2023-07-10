@@ -4,10 +4,10 @@
     <div class="title container">
       <h2>{{ course.title }}</h2>
       <div class="line my-2"></div>
-      <h4 class="py-3">
+      <!-- <h4 class="py-3">
         You can only access chapter one for free!
-      </h4>
-      <h5>
+      </h4> -->
+      <!-- <h5>
         <a
           routerLink="/checkout"
           style="text-decoration: none; color: rgb(189, 154, 122);"
@@ -15,7 +15,7 @@
           Purchase
         </a>
         the course now to access the rest of the chapters.
-      </h5>
+      </h5> -->
     </div>
   </div>
 
@@ -41,7 +41,9 @@
           <h5 class="card-title">{{ course.title }}</h5>
           <p class="card-text">{{ course.description }}</p>
           <p class="card-text">
-            <small class="text-body-secondary">This course costs: {{ course.price }}</small>
+            <small class="text-body-secondary"
+              >This course costs: ${{ course.price }}</small
+            >
           </p>
         </div>
       </div>
@@ -69,61 +71,70 @@
 <!-- Comment and Review Section -->
 <section class="container py-5" *ngIf="course">
   <div class="row d-flex justify-content-center align-item-center">
-    <!-- Write comment -->
     <div class="col-lg-8">
       <div class="row d-flex justify-content-center align-item-center">
-        <div class="group-input ps-5">
-          <label class="form-label mb-4">Write a review</label>
-          <input
-            class="form-control"
-            type="text"
-            name="comment"
-            id="comment-input"
-            [(ngModel)]="comment"
-          />
-        </div>
-        <div class="review-btn col-6 mx-auto mt-5 d-flex justify-content-center">
-          <button
-            (click)="addComment()"
-            type="button"
-            id="btn"
-            class="btn col-lg-6"
-          >
-            Add review
-          </button>
+        <div>
+          <app-reviews [comments]="course.comments" *ngIf="course"></app-reviews>
+          <br />
+          <h5 class="form-title">Write a Review</h5>
+          <form [formGroup]="commentForm">
+            <textarea class="form-control" rows="3" placeholder="Your Review" formControlName="comment" id="comment"></textarea>
+
+
+            <div class="rating">
+              <i
+                class="fas fa-star"
+                [ngClass]="{'filled': hovered >= 1 || commentForm.get('rating')?.value >= 1}"
+                (mouseenter)="setHovered(1)"
+                (mouseleave)="clearHovered()"
+                (click)="setRating(1)"
+              ></i>
+              <i
+                class="fas fa-star"
+                [ngClass]="{'filled': hovered >= 2 || commentForm.get('rating')?.value >= 2}"
+                (mouseenter)="setHovered(2)"
+                (mouseleave)="clearHovered()"
+                (click)="setRating(2)"
+              ></i>
+              <i
+                class="fas fa-star"
+                [ngClass]="{'filled': hovered >= 3 || commentForm.get('rating')?.value >= 3}"
+                (mouseenter)="setHovered(3)"
+                (mouseleave)="clearHovered()"
+                (click)="setRating(3)"
+              ></i>
+              <i
+                class="fas fa-star"
+                [ngClass]="{'filled': hovered >= 4 || commentForm.get('rating')?.value >= 4}"
+                (mouseenter)="setHovered(4)"
+                (mouseleave)="clearHovered()"
+                (click)="setRating(4)"
+              ></i>
+              <i
+                class="fas fa-star"
+                [ngClass]="{'filled': hovered >= 5 || commentForm.get('rating')?.value >= 5}"
+                (mouseenter)="setHovered(5)"
+                (mouseleave)="clearHovered()"
+                (click)="setRating(5)"
+              ></i>
+              <span class="d-inline-block average-rating">
+                {{ commentForm.get('rating')?.value }} Rating
+              </span>
+            </div>
+
+            <div class="update-profile">
+              <button type="button" class="btn btn-primary mt-2" [disabled]="!commentForm.valid" (click)="addComment()">Submit Review</button>
+            </div>
+          </form>
         </div>
       </div>
-      <div class="row py-5">
-        <table class="table mt-3 text-center">
-          <thead>
-            <tr>
-              <th class="text-center"><i class="fa-solid fa-user"></i> User</th>
-              <th class="text-center">Review</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let comment of course.comments">
-              <td>{{ comment.name }}</td>
-              <td>{{ comment.comment }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <br>
       <div class="row" *ngIf="errorMessage">
         <div class="col-12">
           <div class="warning">
             <div class="warning__icon">
-              <svg
-                fill="none"
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z"
-                  fill="#393a37"
-                ></path>
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#393a37"></path>
               </svg>
             </div>
             <div class="warning__title">You can only add one review</div>

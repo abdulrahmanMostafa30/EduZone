@@ -8,13 +8,14 @@
     </div>
     <div class="course-group mb-0 d-flex">
       <div class="course-group-img d-flex align-items-center">
-        <div
-          ><img
+        <div>
+          <img
             src="{{ user?.imagePath }}"
             alt=""
             class="img-fluid m-3"
             id="photo"
-        /></div>
+          />
+        </div>
         <div class="course-name">
           <h4>
             <div>Your avatar</div>
@@ -22,15 +23,17 @@
           <p>PNG or JPG no bigger than 800px wide and tall.</p>
         </div>
       </div>
-      <div
-        class="profile-share d-flex align-items-center justify-content-center"
-      >
-      <input type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)" style="display: none;">
-      <label for="file" id="uploadbtn" > <i class="bi bi-camera"></i> </label>
-      <!-- <input class="btn btn-success" type="file" name="filephoto" id="file" (change)="displaySelectedImage($event)"> -->
-
-        <!-- <div class="btn btn-success" (change)="displaySelectedImage($event)">Update</div> -->
-        <!-- <a href="" class="btn btn-danger">Delete</a> -->
+      <div class="profile-share d-flex align-items-center justify-content-center">
+        <input
+          type="file"
+          name="filephoto"
+          id="file"
+          (change)="displaySelectedImage($event)"
+          style="display: none;"
+        />
+        <label for="file" id="uploadbtn">
+          <i class="bi bi-camera"></i>
+        </label>
       </div>
     </div>
     <div class="checkout-form personal-address add-course-info">
@@ -38,7 +41,7 @@
         <h4>Personal Details</h4>
         <p>Edit your personal information and address.</p>
       </div>
-      <form (ngSubmit)="updateProfileMe()" *ngIf="user">
+      <form (ngSubmit)="updateProfileMe()" [formGroup]="profileForm" *ngIf="user">
         <div class="row">
           <div class="col-lg-6">
             <div class="form-group">
@@ -47,10 +50,14 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your first name"
-                name="first_name"
-                required
-                [(ngModel)]="user.fname"
+                formControlName="first_name"
               />
+              <div
+                *ngIf="profileForm.get('first_name')?.invalid && profileForm.get('first_name')?.touched"
+                class="alert alert-danger"
+              >
+                First Name is required.
+              </div>
             </div>
           </div>
 
@@ -61,10 +68,14 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your last name"
-                name="last_name"
-                required
-                [(ngModel)]="user.lname"
+                formControlName="last_name"
               />
+              <div
+                *ngIf="profileForm.get('last_name')?.invalid && profileForm.get('last_name')?.touched"
+                class="alert alert-danger"
+              >
+                Last Name is required.
+              </div>
             </div>
           </div>
 
@@ -75,8 +86,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your full name"
-                name="full_name"
-                [(ngModel)]="user.fullName"
+                formControlName="full_name"
               />
             </div>
           </div>
@@ -87,10 +97,14 @@
               <input
                 type="date"
                 class="form-control"
-                name="birth_date"
-                required
-                [(ngModel)]="user.birthDate"
+                formControlName="birth_date"
               />
+              <div
+                *ngIf="profileForm.get('birth_date')?.invalid && profileForm.get('birth_date')?.touched"
+                class="alert alert-danger"
+              >
+                Birth Date is required.
+              </div>
             </div>
           </div>
 
@@ -103,23 +117,24 @@
                 placeholder="Enter your email"
                 name="email"
                 readonly
-                value="{{ user.email }}"
+                [value]="user.email"
               />
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="user.role != 'admin'">
+          <div class="col-lg-6" *ngIf="user.role !== 'admin'">
             <div class="form-group">
               <label class="form-control-label">Country</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter your country"
-                name="country"
-                [(ngModel)]="user.country"
-              />
+              <select class="form-control" formControlName="country">
+                <option value="">Select Country</option>
+                <option *ngFor="let country of Country" [value]="country">{{ country }}</option>
+              </select>
+              <div *ngIf="profileForm.get('country')?.invalid && profileForm.get('country')?.touched" class="text-danger">
+                Country is required
+              </div>
             </div>
           </div>
+
 
           <div class="col-lg-6" *ngIf="user.role != 'admin'">
             <div class="form-group">
@@ -128,8 +143,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your address"
-                name="address"
-                [(ngModel)]="user.address"
+                formControlName="address"
               />
             </div>
           </div>
@@ -141,8 +155,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your university"
-                name="university"
-                [(ngModel)]="user.university"
+                formControlName="university"
               />
             </div>
           </div>
@@ -154,8 +167,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your faculty"
-                name="faculty"
-                [(ngModel)]="user.faculty"
+                formControlName="faculty"
               />
             </div>
           </div>
@@ -167,14 +179,17 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter your department"
-                name="department"
-                [(ngModel)]="user.department"
+                formControlName="department"
               />
             </div>
           </div>
-          <!-- Update other input fields with the corresponding properties from the user object -->
+
           <div class="update-profile">
-            <button type="submit" class="btn btn-primary">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="profileForm.invalid"
+            >
               Update Profile
             </button>
           </div>

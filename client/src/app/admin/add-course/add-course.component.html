@@ -34,6 +34,13 @@
   </div>
 
   <div class="mb-3">
+    <label for="course_content_length" class="form-label">Course Content Length:</label>
+    <input type="number" id="course_content_length" formControlName="course_content_length" class="form-control" required>
+    <div class="alert alert-danger mt-2" *ngIf="courseForm.get('course_content_length').invalid && courseForm.get('course_content_length').touched">
+      Course Content Length is required.
+    </div>
+  </div>
+  <div class="mb-3">
     <label for="image" class="form-label">Course Image:</label>
     <input type="file" id="image" formControlName="image" class="form-control" (change)="handleImageUpload($event)"
       accept="image/*" required>
@@ -57,10 +64,14 @@
         <div class="col">
           <label for="videoUrl{{ i }}" class="form-label">URL:</label>
           <input type="text" id="videoUrl{{ i }}" formControlName="url" class="form-control" required>
-          <div class="alert alert-danger mt-2" *ngIf="courseForm.get('videos.' + i + '.url').invalid && courseForm.get('videos.' + i + '.url').touched">
+          <div class="alert alert-danger mt-2" *ngIf="courseForm.get('videos.' + i + '.url').errors?.required && courseForm.get('videos.' + i + '.url').touched">
             URL is required for video {{ i + 1 }}.
           </div>
+          <div class="alert alert-danger mt-2" *ngIf="courseForm.get('videos.' + i + '.url').hasError('invalidYoutubeUrl')">
+            Invalid YouTube URL format for video {{ i + 1 }}.
+          </div>
         </div>
+
       </div>
       <div class="row">
         <div class="col">

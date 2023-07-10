@@ -1,0 +1,31 @@
+<div class="card-body" *ngIf="comments.length > 0">
+  <h5 class="subs-title">
+    Reviews
+  </h5>
+  <div class="instructor-wrap" *ngFor="let comment of comments">
+    <div class="about-instructor">
+      <div class="abt-instructor-img">
+          <img [src]="comment.imageUserPath ? comment.imageUserPath :  '../../assets/images/man.png'" alt="img" class="img-fluid" />
+
+
+      </div>
+      <div class="instructor-detail">
+        <h5>
+            {{ comment.name }}
+
+        </h5>
+      </div>
+    </div>
+    <div class="rating" *ngIf="comment.rating">
+      <i class="fas fa-star filled" *ngFor="let star of getFilledStars(comment.rating)"></i>
+      <i class="fas fa-star" *ngFor="let star of getEmptyStars(comment.rating)"></i>
+      <span class="d-inline-block average-rating">
+        {{ comment.rating }} Rating
+      </span>
+    </div>
+
+    <p class="rev-info">
+      “ {{ comment.comment }} “
+    </p>
+  </div>
+</div>

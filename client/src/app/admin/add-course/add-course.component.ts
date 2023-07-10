@@ -1,7 +1,16 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
-import { CourseService } from "src/app/course/course.service";
+import { Subscription } from "rxjs";
+import { CourseService } from "src/app/services/course.service";
 
 @Component({
   selector: "app-add-course",
@@ -9,23 +18,28 @@ import { CourseService } from "src/app/course/course.service";
   styleUrls: ["./add-course.component.scss"],
 })
 export class AddCourseComponent implements OnInit {
+  subscriptions: Subscription[] = [];
+
   // courseForm: FormGroup;
   // videos: FormArray;
   courseForm: FormGroup | any;
 
-  constructor(private courseService: CourseService, private router: Router, private formBuilder: FormBuilder) {
-
-   }
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {}
 
   selectedFile: File | undefined;
   ngOnInit() {
     this.courseForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      category: ['', Validators.required],
+      title: ["", Validators.required],
+      description: ["", Validators.required],
+      category: ["", Validators.required],
       price: [null, Validators.required],
+      course_content_length: [null, Validators.required],
       image: [null, Validators.required],
-      videos: this.formBuilder.array([])
+      videos: this.formBuilder.array([]),
     });
   }
   errorMessage: any;
@@ -46,16 +60,45 @@ export class AddCourseComponent implements OnInit {
         });
     }
   }
+  youtubeUrlValidator(control: AbstractControl): ValidationErrors | null {
+    const url = control.value;
+
+    const urlPattern = /^(?:https?:\/\/www\.youtube\.com\/(?:watch\?v=|embed\/))(.*)$/;
+
+    if (url && !urlPattern.test(url)) {
+      return { invalidYoutubeUrl: true };
+    }
+
+    const replacedUrl = url.replace("watch?v=", "embed/");
+
+    if (url !== replacedUrl) {
+      control.setValue(replacedUrl, { emitEvent: false });
+    }
+
+    return null;
+  }
   addVideo() {
-    const videos = this.courseForm.get('videos') as FormArray;
-    videos.push(this.formBuilder.group({
-      title: ['', Validators.required],
-      url: ['', Validators.required]
-    }));
+    const videos = this.courseForm.get("videos") as FormArray;
+    const videoFormGroup = this.formBuilder.group({
+      title: ["", Validators.required],
+      url: ["", [Validators.required, this.youtubeUrlValidator.bind(this)]],
+    });
+
+    const urlControl = videoFormGroup.get("url");
+
+    // Subscribe to valueChanges for real-time validation
+    const urlSubscription = urlControl?.valueChanges.subscribe(() => {
+      urlControl?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    });
+
+    // Unsubscribe from valueChanges on component destruction
+    if (urlSubscription) this.subscriptions.push(urlSubscription);
+
+    videos.push(videoFormGroup);
   }
 
   removeVideo(index: number) {
-    const videos = this.courseForm.get('videos') as FormArray;
+    const videos = this.courseForm.get("videos") as FormArray;
     videos.removeAt(index);
   }
   handleImageUpload(event: any) {

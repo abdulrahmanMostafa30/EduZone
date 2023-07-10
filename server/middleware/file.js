@@ -2,7 +2,8 @@ const { Storage } = require("@google-cloud/storage");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
-const { log } = require("console");
+const axios = require("axios");
+
 const dir = "./uploads";
 
 if (!fs.existsSync(dir)) {
@@ -61,6 +62,38 @@ async function getPublicUrl(filePath) {
     console.error("Error generating signed URL:", error);
     throw new Error("Failed to generate signed URL for the file.");
   }
+}
+
+async function convertUrlToImage(req, res, next) {
+  const { imageGoogle } = req.body;
+
+  if (imageGoogle) {
+    if (imageGoogle.includes("googleusercontent.com")) {
+      try {
+        const response = await axios.get(imageGoogle, {
+          responseType: "arraybuffer",
+        });
+        const fileName = path.basename(imageGoogle);
+
+        const fileBuffer = Buffer.from(response.data);
+        const file = {
+          fieldname: "image",
+          buffer: fileBuffer,
+          originalname: fileName,
+          mimetype: response.headers["content-type"],
+        };
+
+        req.file = file;
+        next();
+      } catch (error) {
+        // Handle error if the axios request fails
+        console.error("Failed to fetch image:", error);
+        res.status(500).send("Failed to fetch image");
+      }
+      return; // Return here to prevent calling next() again
+    }
+  }
+  next();
 }
 
 // Middleware for handling file uploads and storing them in Google Cloud Storage
@@ -128,7 +161,6 @@ function uploadToGCS(req, res, next) {
     stream.on("finish", async () => {
       // const imageUrl = await getPublicUrl(gcsFilePath + gcsFileName);
       const imageUrl = `https://storage.googleapis.com/${bucket.name}/${gcsFilePath}${gcsFileName}`;
-      log("ld");
       console.log("File uploaded to Google Cloud Storage:", imageUrl);
       req.file.imageUrl = imageUrl;
       next();
@@ -138,4 +170,5 @@ function uploadToGCS(req, res, next) {
   });
 }
 
-module.exports = uploadToGCS;
+exports.extractFile = uploadToGCS;
+exports.convertUrlToImage = convertUrlToImage;

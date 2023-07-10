@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CourseService } from "src/app/course/course.service";
-import { UserService } from "src/app/profile/user.service";
+import { CourseService } from "src/app/services/course.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-user-details",
@@ -31,6 +31,7 @@ export class UserDetailsComponent implements OnInit {
         (response) => {
           if (response.status === "success") {
             this.user = response.data.data;
+
           }
         },
         (error) => {
@@ -39,17 +40,32 @@ export class UserDetailsComponent implements OnInit {
       );
     }
   }
-
   getUserCourses() {
-    // this.courseService.getCoursesByStudentId(this.studentId).subscribe(
-    //   (response) => {
-    //     if (response.status === 'success') {
-    //       this.courses = response.data;
-    //     }
-    //   },
-    //   (error) => {
-    //     console.error('Error getting student courses:', error);
-    //   }
-    // );
+    if(this.userId){
+
+
+    this.courseService.getUserCourses(this.userId).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          this.courses = response.data;
+        }
+      },
+      (error) => {
+        console.error('Error getting student courses:', error);
+      }
+    );
   }
+}
+  // getUserCourses() {
+  //   this.courseService.getMyCourses().subscribe(
+  //     (response) => {
+  //       if (response.status === 'success') {
+  //         this.courses = response.data;
+  //       }
+  //     },
+  //     (error) => {
+  //       console.error('Error getting student courses:', error);
+  //     }
+  //   );
+  // }
 }

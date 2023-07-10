@@ -57,7 +57,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "university",
     "faculty",
     "department",
-    "currentVideoIndex"
+    'courseProgress'
   );
   if (imagePath) {
     filteredBody["imagePath"] = imagePath;
@@ -91,8 +91,43 @@ exports.createUser = (req, res) => {
   });
 };
 
-exports.getUser = factory.getOne(User);
+// exports.getUserCourses = async (req, res, next) => {
+//   console.log('getUserCourses')
+  
+//   try {
+//     const user = factory.getOne(User, { path: 'purchasedCourses', populate: { path: 'courseId' }})
+//     console.log(user(req))
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found.' });
+//     }
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: user.purchasedCourses,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Failed to fetch user courses.' });
+//   }
+// };
+exports.getUserCourses = (req, res) => {
+  const { id } = req.params;
+  const populateOptions = { path: 'purchasedCourses', populate: { path: 'courseId' }};
+  
+  req.customCallback = (doc) => {
+    res.status(200).json({
+      status: 'success',
+      data: doc.purchasedCourses
+    });
+  };
+
+  factory.getOne(User, populateOptions)(req, res);
+};
+exports.getUser = factory.getOne(User, { path: 'purchasedCourses', populate: { path: 'courseId' }});
+// exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
+// exports.getUserCourses = factory.getOne(User, { path: 'purchasedCourses.courseId' });
+// exports.getUserCourses = factory.getOne(User, { path: 'purchasedCourses', populate: { path: 'courseId' }});
 
 // Do NOT update passwords with this!
 exports.updateUser = factory.updateOne(User);
