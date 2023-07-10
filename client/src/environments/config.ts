@@ -1,5 +1,5 @@
 export const baseEnvironment = {
-  USE_HASH: true,
+  USE_HASH: false,
   PAYPAL_CLIENT_ID:
     "AZ1pef0q2Bt30xoYFzn57qSAZ2RhEOFlRIYhNHttUjNKDkejojqRJxhWqEPAxUJlqvcVyUIYzJU0p5g2",
   STRIPE_KEY:
