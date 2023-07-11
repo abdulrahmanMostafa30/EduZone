@@ -40,17 +40,18 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 const verifyGoogleToken = async (token) => {
+  console.log(token)
   const response = await axios.get("https://oauth2.googleapis.com/tokeninfo", {
     params: {
       id_token: token,
       client_id: process.env.EMAIL_CLIENT_ID,
-      client_secret: process.env.EMAIL_CLEINT_SECRET,
+      client_secret: process.env.EMAIL_CLIENT_SECRET,
     },
   });
   const { data } = response;
   // Verify if the audience matches your client ID
   if (data.aud !== process.env.EMAIL_CLIENT_ID) {
-    next(new AppError("Invalid token audience", 401));
+    throw "Invalid token audience";
   }
 
   // Token is valid
@@ -58,21 +59,24 @@ const verifyGoogleToken = async (token) => {
 };
 
 const loginGoogle = async (req, res, next, token) => {
-  const verifiedToken = await verifyGoogleToken(token);
-  if (!verifiedToken) {
-    return next(new AppError("Token is invalid or failed verification", 401));
+  try {
+    const verifiedToken = await verifyGoogleToken(token);
+    if (!verifiedToken) {
+      return next(new AppError("Token is invalid or failed verification", 401));
+    }
+    if (!verifiedToken.email) {
+      return next(new AppError("Please provide email", 400));
+    }
+    const user = await User.findOne({ email: verifiedToken.email });
+    if (!user) {
+      return next(new AppError("Email does not exist", 400));
+    }
+    console.log("Token is valid");
+    console.log("User ID:", verifiedToken.sub);
+    createSendToken(user, 201, res);
+  } catch (err) {
+    return next(new AppError(err, 400));
   }
-  if (!verifiedToken.email) {
-    return next(new AppError("Please provide email", 400));
-  }
-  const user = await User.findOne({ email: verifiedToken.email });
-  if (!user) {
-    return next(new AppError("Email does not exist", 401));
-  }
-  console.log("Token is valid");
-  console.log("User ID:", verifiedToken.sub);
-
-  createSendToken(user, 201, res);
 };
 
 exports.signup = catchAsync(async (req, res, next) => {

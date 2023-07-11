@@ -3,20 +3,21 @@ const router = express.Router();
 const authController = require("../controller/auth");
 const userController = require("../controller/user");
 const AppError = require("../utils/appError");
-const {convertUrlToImage, extractFile} = require("../middleware/file");
+const { convertUrlToImage, extractFile } = require("../middleware/file");
 
 router.post("/signup", convertUrlToImage, extractFile, authController.signup);
 router.post("/login", authController.login);
-
-// router.post("/uploud-image-google", extractFile, authController.convertUrlToImage);
 
 router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.resetPassword);
 
 router.use(authController.protect);
-router.get("/generate-verification-code", authController.generate_verification_code);
+router.get(
+  "/generate-verification-code",
+  authController.generate_verification_code
+);
 router.post("/check-verification-code", authController.check_verification_code);
-router.use(authController.protectEmailVerified );
+router.use(authController.protectEmailVerified);
 router.patch("/updateMyPassword", authController.updatePassword);
 router.get("/me", userController.getMe, userController.getUser);
 router.patch("/updateMe", extractFile, userController.updateMe);
