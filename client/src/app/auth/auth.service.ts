@@ -52,8 +52,8 @@ export class AuthService {
   }
   setEmailVerified(isEmailVerified: boolean) {
     localStorage.setItem("isEmailVerified", isEmailVerified.toString());
+    this.isEmailVerified = isEmailVerified
 
-    return (this.isEmailVerified = isEmailVerified);
   }
   isTokenExpired(): boolean {
     const token = localStorage.getItem("token");
@@ -239,6 +239,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.role = null;
+    this.isEmailVerified = false
 
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
