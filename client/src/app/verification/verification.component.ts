@@ -12,6 +12,7 @@ export class VerificationComponent implements OnInit {
   isLoading: boolean = true;
   isVerified: boolean = false;
   verificationCode: string = "";
+  isSendEmail=false
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -32,7 +33,6 @@ export class VerificationComponent implements OnInit {
     });
   }
   verifyEmail(verificationCode: string): void {
-    console.log();
     this.authService.verifyEmail(verificationCode).subscribe(
       () => {
         // Handle success scenarios
@@ -48,6 +48,7 @@ export class VerificationComponent implements OnInit {
   sendEmailButtonClicked(): void {
     this.authService.resendVerificationEmail().subscribe(
       () => {
+        this.isSendEmail =true
         // Handle success scenarios
         console.log("Verification email sent");
       },
