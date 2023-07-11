@@ -104,9 +104,9 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     "price",
     "vid",
     'comments',
+    'active',
   );
   filteredBody["image"] = image;
-
   const updatedCourse = await Course.findByIdAndUpdate(
     request.params.id,
     filteredBody,

@@ -129,6 +129,11 @@ export class AuthService {
         this.token = token;
         const role = response.data.user.role;
         const isEmailVerified = response.data.user.isEmailVerified;
+        this.setEmailVerified(isEmailVerified);
+
+
+
+        console.log('authToken :' , isEmailVerified)
         this.role = role;
         const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
         if (expirationDate) {
@@ -139,11 +144,6 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
-
-          const now = new Date();
-          const newExpirationDate = new Date(
-            now.getTime() + expiresInDuration * 1000
-          );
 
           this.saveAuthData(token, role, isEmailVerified);
           return true;

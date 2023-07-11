@@ -129,8 +129,8 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
       const { comment, rating } = this.commentForm.value;
       this.courseService.addComment({
         id: this.course._id,
-        comment,
-        rating
+        comment: comment,
+        rating: rating,
       }).subscribe(
         response => {
           this.commentForm.reset();
