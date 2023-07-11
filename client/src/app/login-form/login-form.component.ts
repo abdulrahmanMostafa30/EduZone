@@ -50,36 +50,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     if (this.authService.getIsAuth()) {
       this.router.navigate(["/"]);
     }
-    this.signupWithGoogle();
+    // this.signupWithGoogle();
   }
 
-  signupWithGoogle(): void {
-    this.subscriptions.push(
-      this.socialAuthService.authState.subscribe((user) => {
-        if (user) {
-          this.subscriptions.push(this.authService.loginGoogle(user.idToken).subscribe({
-            next: (response) => {
-              this.isLogged = true;
-              this.haveError = false;
-              this.errorMessage = "";
-              setTimeout(() => {
-                this.router.navigate(["/"]);
-              }, 500);
-            },
-            error: (error) => {
-              this.haveError = true;
-              if (error.includes("Email does not exist")) {
-                this.errorMessage = "Plese Signup First!";
-              } else {
-                this.errorMessage = this.errorMessageDefult;
-              }
-              this.isLogged = false;
-            },
-          }));
-        }
-      })
-    );
-  }
+
   onLogin() {
     this.isLoading = true;
 
@@ -120,7 +94,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               },
             }));
           } else {
-            // Handle form validation errors
           }
         })
     );

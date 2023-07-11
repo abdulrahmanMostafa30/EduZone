@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   private authSubscription: Subscription | null = null;
   private subscriptions: Subscription[] = [];
-  imageGoogle:string | null = null
+  imageGoogle: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -69,45 +69,46 @@ export class SignUpComponent implements OnInit, OnDestroy {
   signupWithGoogle(): void {
     this.subscriptions.push(
       this.socialAuthService.authState.subscribe((user) => {
-        if (user) {
-          this.user = user;
+        if (this.router.url === "/signup") {
+          if (user) {
+            this.user = user;
 
-          const { email, firstName, lastName, photoUrl } = this.user;
-          // Set the user data to the form controls
-          this.registerationForm.patchValue({
-            email: email,
-            fname: firstName,
-            lname: lastName,
-          });
-          const imgElement = document.getElementById(
-            "photo"
-          ) as HTMLImageElement;
-          imgElement.src = photoUrl;
-          this.imageGoogle =photoUrl
-          this.registerationForm.get("image").setValue(photoUrl);
+            const { email, firstName, lastName, photoUrl } = this.user;
+            // Set the user data to the form controls
+            this.registerationForm.patchValue({
+              email: email,
+              fname: firstName,
+              lname: lastName,
+            });
+            const imgElement = document.getElementById(
+              "photo"
+            ) as HTMLImageElement;
+            imgElement.src = photoUrl;
+            this.imageGoogle = photoUrl;
+            this.registerationForm.get("image").setValue(photoUrl);
 
-
-          // if (imgElement.files && imgElement.files[0]) {
-          //   this.selectedFile = imgElement.files[0];
-          //   this.registerationForm.controls["image"].setValue(event.target.files[0]);}
-          // this.authService
-          //   .getFileFromUrl(photoUrl, "profile_photo.jpg")
-          //   .subscribe(
-          //     (file: File) => {
-          //       console.log("Loaded file:", file);
-          //       this.selectedFile = file;
-          //       this.registerationForm.get("image").setValue(file);
-          //     },
-          //     (error: any) => {
-          //       console.error("Error loading image:", error);
-          //     }
-          //   );
-          //   getFileFromUrl()
-          //     .then((file) => {
-          //       this.selectedFile = file;
-          //       this.registerationForm.get("image").setValue(file);
-          //     })
-          //     .catch((error) => {});
+            // if (imgElement.files && imgElement.files[0]) {
+            //   this.selectedFile = imgElement.files[0];
+            //   this.registerationForm.controls["image"].setValue(event.target.files[0]);}
+            // this.authService
+            //   .getFileFromUrl(photoUrl, "profile_photo.jpg")
+            //   .subscribe(
+            //     (file: File) => {
+            //       console.log("Loaded file:", file);
+            //       this.selectedFile = file;
+            //       this.registerationForm.get("image").setValue(file);
+            //     },
+            //     (error: any) => {
+            //       console.error("Error loading image:", error);
+            //     }
+            //   );
+            //   getFileFromUrl()
+            //     .then((file) => {
+            //       this.selectedFile = file;
+            //       this.registerationForm.get("image").setValue(file);
+            //     })
+            //     .catch((error) => {});
+          }
         }
       })
     );
@@ -224,7 +225,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   displaySelectedImage(event: any) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
-      this.imageGoogle = null
+      this.imageGoogle = null;
       this.registerationForm.controls["image"].setValue(event.target.files[0]);
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -333,7 +334,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   //   })
   // }
 }
-
 
 interface User {
   fname: any;

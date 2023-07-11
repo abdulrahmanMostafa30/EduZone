@@ -49,6 +49,7 @@ import {
 import { environment } from "src/environments/environment";
 import { SharedModule } from "./shared/shared.module";
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { VerificationComponent } from './verification/verification.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
     ForgetPasswordComponent,
     ResetPasswordComponent,
     ReviewsComponent,
+    VerificationComponent,
   ],
   imports: [
     BrowserModule,

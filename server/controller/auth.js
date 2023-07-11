@@ -6,9 +6,9 @@ const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
-const { log } = require("console");
 const axios = require("axios");
 const { recaptchaMiddleware } = require("../utils/recaptcha");
+const URL_FRONTEND = process.env.URL_FRONTEND;
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -27,6 +27,8 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie("jwt", token, cookieOptions);
   // Remove password from output
   user.password = undefined;
+  user.emailVerificationCode = undefined;
+  user.emailVerificationExpiresAt = undefined;
 
   res.status(statusCode).json({
     status: "success",
@@ -69,7 +71,6 @@ const loginGoogle = async (req, res, next, token) => {
   }
   console.log("Token is valid");
   console.log("User ID:", verifiedToken.sub);
-  // const decodedToken = jwt.verify(token, process.env.EMAIL_CLEINT_SECRET);
 
   createSendToken(user, 201, res);
 };
@@ -90,7 +91,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     department,
     note,
   } = req.body;
-  
+
   let imagePath = req.body.imagePath;
   if (req.file) {
     imagePath = req.file.imageUrl;
@@ -114,7 +115,11 @@ exports.signup = catchAsync(async (req, res, next) => {
     department: department,
     note: note,
   });
+
   await newUser.save();
+  await newUser.createVerificationCode();
+  await newUser.save({ validateBeforeSave: false });
+
   createSendToken(newUser, 201, res);
 });
 exports.login = catchAsync(async (req, res, next) => {
@@ -122,37 +127,72 @@ exports.login = catchAsync(async (req, res, next) => {
   if (token) {
     return await loginGoogle(req, res, next, token);
   }
-  if (!email || !password || !recaptchaToken) {
+
+  if (!recaptchaToken && req.hostname != "localhost") {
+    return next(new AppError("Please provide email and password", 400));
+  }
+  if (!email || !password) {
     return next(new AppError("Please provide email and password", 400));
   }
   const user = await User.findOne({ email: email }).select("+password");
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
-  isValidCaptcha = await recaptchaMiddleware(recaptchaToken);
-  if(!isValidCaptcha){
-    return next(new AppError("Invalid reCAPTCHA response.", 400));
+  if (req.hostname != "localhost") {
+    isValidCaptcha = await recaptchaMiddleware(recaptchaToken);
+    if (!isValidCaptcha) {
+      return next(new AppError("Invalid reCAPTCHA response.", 400));
+    }
   }
   createSendToken(user, 201, res);
 });
+exports.generate_verification_code = catchAsync(async (req, res, next) => {
+  {
+    const user = await User.findById(req.user.id);
+
+    await user.createVerificationCode();
+    await user.save({ validateBeforeSave: false });
+
+    try {
+      res.status(200).json({
+        status: "success",
+        message: "Email verification sent to email!",
+      });
+    } catch (err) {
+      console.log(err);
+      return next(
+        new AppError("There was an error sending the email. Try again later!"),
+        500
+      );
+    }
+  }
+});
+
+exports.check_verification_code = catchAsync(async (req, res, next) => {
+  const { verificationCode } = req.body;
+
+  const user = await User.findById(req.user.id);
+  const isCodeValid = await user.checkVerificationCode(verificationCode);
+  if (isCodeValid) {
+    user.isEmailVerified = true;
+    await user.save({ validateBeforeSave: false });
+    return res.status(200).json({ message: "Email verification successful" });
+  } else {
+    return next(new AppError("Invalid verification code"), 401);
+  }
+});
+
 const verifyToken = async (token) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
-    return next(
-      new AppError(
-        "The user belonging to this token does no longer exist.",
-        401
-      )
-    );
+    throw "The user belonging to this token does no longer exist.";
   }
   // 4) Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError("User recently changed password! Please log in again.", 401)
-    );
+    throw "User recently changed password! Please log in again.";
   }
   return currentUser;
 };
@@ -171,9 +211,18 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
       const currentUser = await verifyToken(token);
       req.user = currentUser;
       req.isAuthenticated = true;
-    } catch (error) {}
+      next();
+    } catch (error) {
+      return next(new AppError(error));
+    }
   }
-  next();
+});
+exports.protectEmailVerified = catchAsync(async (req, res, next) => {
+  if (req.user.isEmailVerified) {
+    next();
+  } else {
+    return next(new AppError("You need to Verifiy Email First!"));
+  }
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -191,9 +240,16 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError("You are not logged in! Please log in to get access.", 401)
     );
   }
-  const currentUser = await verifyToken(token);
-  req.user = currentUser;
-  next();
+  if (token) {
+    try {
+      const currentUser = await verifyToken(token);
+      req.user = currentUser;
+      req.isAuthenticated = true;
+      next();
+    } catch (error) {
+      return next(new AppError(error));
+    }
+  }
 });
 
 exports.restrictTo = (...roles) => {
@@ -218,18 +274,21 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Send it to user's email
-  // const resetURL = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/api/v1/users/resetPassword/${resetToken}`;
 
-  const resetLink = `${req.body.host}/reset-password/${resetToken}`;
-  // const message = `Forgot your password? Submit a PATCH request with your new password and confirmPassword to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
-  // const resetLink = `https://eduzone-frontend.netlify.app/#/reset-password/${resetToken}`
+  const resetLink = `${URL_FRONTEND}/reset-password/${resetToken}`;
   try {
     await sendEmail({
       email: user.email,
       subject: "Your password reset token (valid for 10 min)",
-      resetLink,
+      message: `
+      <h3>Forgot your password?</h3>
+      <p>Don't worry! We've got you covered.</p>
+      <p>Please click on the following link to reset your password:</p>
+      <p><a href="${resetLink}">Reset Password</a></p>
+      <p>If you didn't request this, please ignore this email.</p>
+      <p>Best regards,</p>
+      <p>The EduZone Team</p>
+    `,
     });
 
     res.status(200).json({

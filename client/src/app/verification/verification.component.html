@@ -1,0 +1,16 @@
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="card text-center">
+    <!-- <div *ngIf="isLoading" class="card-body">
+      <p>Loading...</p>
+    </div> -->
+    <div *ngIf="!isVerified" class="card-body">
+      <h2 class="card-title">Email Verification</h2>
+      <p class="card-text">Please check your email for the verification link.</p>
+      <p class="card-text">If you didn't receive the email, you can <button class="btn btn-primary" (click)="sendEmailButtonClicked()"><i class="fas fa-envelope"></i> Resend Email</button>.</p>
+    </div>
+    <div *ngIf="isVerified" class="card-body">
+      <h2 class="card-title">Email Verified</h2>
+      <p class="card-text">Your email has been successfully verified. You can now access the full features of our application.</p>
+    </div>
+  </div>
+</div>

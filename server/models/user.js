@@ -3,6 +3,8 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const catchAsync = require("../utils/catchAsync");
+const sendEmail = require("../utils/email");
+const URL_FRONTEND = process.env.URL_FRONTEND
 
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
@@ -88,45 +90,63 @@ const userSchema = new Schema({
       courseIds: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Course',
-          required: true
-        }
+          ref: "Course",
+          required: true,
+        },
       ],
       amount: Number,
       isPaid: Boolean,
       date: {
         type: Date,
-        default: Date.now
-      }
+        default: Date.now,
+      },
     },
   ],
-  purchasedCourses: [{
-    _id: false,
-    orderId: {
-      type: String,
-      required: true
+  purchasedCourses: [
+    {
+      _id: false,
+      orderId: {
+        type: String,
+        required: true,
+      },
+      courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+        required: true,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
-    courseId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Course',
-      required: true
+  ],
+  courseProgress: [
+    {
+      courseId: {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+        required: true,
+      },
+      currentVideoIndex: {
+        type: Number,
+        default: 0,
+      },
     },
-    date: {
-      type: Date,
-      default: Date.now
-    }
-  }],
-  courseProgress: [{
-    courseId: {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
-      required: true
-    },
-    currentVideoIndex: {
-      type: Number,
-      default: 0
-    }
-  }],
+  ],
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailVerificationCode: {
+    type: String,
+    required: false,
+    select: false,
+  },
+  emailVerificationExpiresAt: {
+    type: Date,
+    required: false,
+    select: false,
+  },
   role: {
     type: String,
     enum: ["user", "admin"],
@@ -171,28 +191,60 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   // False means NOT changed
   return false;
 };
-userSchema.methods.addToCart = function (course) {
-  const cartcourseIndex = this.cart.items.findIndex((cp) => {
-    return cp.courseId.toString() === course._id.toString();
-  });
-  let newQuantity = 1;
-  const updatedCartItems = [...this.cart.items];
+userSchema.methods.createVerificationCode = async function () {
+  const verificationCode = crypto.randomBytes(3).toString("hex").toUpperCase();
+  const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes from now
 
-  if (cartcourseIndex >= 0) {
-    newQuantity = this.cart.items[cartcourseIndex].quantity + 1;
-    updatedCartItems[cartcourseIndex].quantity = newQuantity;
-  } else {
-    updatedCartItems.push({
-      courseId: course._id,
-      quantity: newQuantity,
-    });
-  }
-  const updatedCart = {
-    items: updatedCartItems,
-  };
-  this.cart = updatedCart;
-  return this.save();
+  const verificationCodeValidityMinutes = 10; // Set the validity duration for the verification code (in minutes)
+  const verificationUrl = `${URL_FRONTEND}/verification?code=${verificationCode}`;
+
+  const message = `
+    <html>
+      <body>
+        <h1>Verify Your Email</h1>
+        <p>Dear ${this.fname},</p>
+        <p>Thank you for signing up. To verify your email, please click on the following link:</p>
+        <a href="${verificationUrl}">${verificationUrl}</a>
+        <p>This link is valid for ${verificationCodeValidityMinutes} minutes.</p>
+        <p>Best regards,<br>The EduZone Team</p>
+      </body>
+    </html>
+  `;
+  
+  await sendEmail({
+    email: this.email,
+    subject: "Email Verification",
+    message :message,
+  });
+  this.emailVerificationCode = verificationCode;
+  this.emailVerificationExpiresAt = new Date(expirationTime);
+  return verificationCode;
 };
+userSchema.methods.checkVerificationCode = async function (enteredCode) {
+  const user = await this.constructor
+    .findById(this._id)
+    .select("+emailVerificationCode +emailVerificationExpiresAt")
+    .exec();
+
+  if (!user) {
+    return false; // User not found
+  }
+
+  const storedCode = user.emailVerificationCode;
+  const storedExpiration = user.emailVerificationExpiresAt;
+  if (!storedCode || !storedExpiration) {
+    return false; // Verification code or expiration not found
+  }
+
+  const isCodeValid = storedCode === enteredCode;
+  const isCodeExpired = storedExpiration <= Date.now();
+  user.emailVerificationCode = undefined;
+  user.emailVerificationExpiresAt = undefined;
+  await user.save({ validateBeforeSave: false });
+
+  return isCodeValid && !isCodeExpired;
+};
+
 userSchema.methods.calculateTotalPrice = async function () {
   await this.populate("cart");
   let totalPrice = 0;

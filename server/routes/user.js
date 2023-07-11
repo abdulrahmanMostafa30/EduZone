@@ -14,7 +14,9 @@ router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.resetPassword);
 
 router.use(authController.protect);
-
+router.get("/generate-verification-code", authController.generate_verification_code);
+router.post("/check-verification-code", authController.check_verification_code);
+router.use(authController.protectEmailVerified );
 router.patch("/updateMyPassword", authController.updatePassword);
 router.get("/me", userController.getMe, userController.getUser);
 router.patch("/updateMe", extractFile, userController.updateMe);

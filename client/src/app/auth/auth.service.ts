@@ -16,6 +16,8 @@ import { environment } from "../../environments/environment";
 @Injectable()
 export class AuthService {
   private isAuthenticated = false;
+  private isEmailVerified = false;
+
   private role: string | null = "";
   private token: string | null = "";
   private tokenTimer: any;
@@ -43,6 +45,15 @@ export class AuthService {
 
   getIsAuth() {
     return this.isAuthenticated;
+  }
+
+  getIsEmailVerified() {
+    return this.isEmailVerified;
+  }
+  setEmailVerified(isEmailVerified: boolean) {
+    localStorage.setItem("isEmailVerified", isEmailVerified.toString());
+
+    return (this.isEmailVerified = isEmailVerified);
   }
   isTokenExpired(): boolean {
     const token = localStorage.getItem("token");
@@ -81,7 +92,7 @@ export class AuthService {
   createUser(user: any): Observable<any> {
     let postData;
     if (user.imageGoogle) {
-      postData= user
+      postData = user;
     } else {
       postData = new FormData();
 
@@ -117,6 +128,7 @@ export class AuthService {
       if (this.checkToken(token)) {
         this.token = token;
         const role = response.data.user.role;
+        const isEmailVerified = response.data.user.isEmailVerified;
         this.role = role;
         const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
         if (expirationDate) {
@@ -133,7 +145,7 @@ export class AuthService {
             now.getTime() + expiresInDuration * 1000
           );
 
-          this.saveAuthData(token, newExpirationDate, role);
+          this.saveAuthData(token, role, isEmailVerified);
           return true;
         } else {
           this.isAuthenticated = false;
@@ -207,6 +219,7 @@ export class AuthService {
         this.token = authInformation.token;
         this.isAuthenticated = true;
         this.role = authInformation.role;
+        this.isEmailVerified = authInformation.isEmailVerified;
 
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
@@ -216,32 +229,6 @@ export class AuthService {
     } else {
       this.isAuthenticated = false;
     }
-  }
-
-  getFileFromUrl(
-    url: string,
-    name: string,
-    defaultType = "image/jpeg"
-  ): Observable<File> {
-    const headers = new HttpHeaders().set("Access-Control-Allow-Origin", "**");
-
-    return this.http
-      .get(url, {
-        headers: headers,
-        responseType: "blob",
-      })
-      .pipe(
-        map((response: Blob) => {
-          const blobData = new Blob([response]);
-          return new File([blobData], name, {
-            type: blobData.type || defaultType,
-          });
-        }),
-        catchError((error: any) => {
-          console.error("Error fetching image:", error);
-          throw error;
-        })
-      );
   }
 
   logout() {
@@ -266,21 +253,24 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, role: string) {
+  private saveAuthData(token: string, role: string, isEmailVerified: boolean) {
     localStorage.setItem("token", token);
     // localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("role", role);
+    localStorage.setItem("isEmailVerified", isEmailVerified.toString());
   }
 
   private clearAuthData() {
     localStorage.removeItem("token");
-    localStorage.removeItem("expiration");
     localStorage.removeItem("role");
+    localStorage.removeItem("isEmailVerified");
   }
 
   private getAuthData() {
     const token = localStorage.getItem("token");
-    // const expirationDate = localStorage.getItem("expiration");
+    console.log(localStorage.getItem("isEmailVerified"));
+    const isEmailVerified: boolean =
+      localStorage.getItem("isEmailVerified") === "true";
     const role = localStorage.getItem("role");
 
     if (!token || !role) {
@@ -288,9 +278,23 @@ export class AuthService {
     }
     return {
       token: token,
-      // expirationDate: new Date(expirationDate),
+      isEmailVerified: isEmailVerified,
       role: role,
     };
+  }
+  verifyEmail(verificationCode: string): Observable<any> {
+    return this.http
+      .post<any>(this.apiUrl + "/check-verification-code", { verificationCode })
+      .pipe(
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
+  }
+  resendVerificationEmail(): Observable<any> {
+    return this.http
+      .get<any>(this.apiUrl + "/generate-verification-code")
+      .pipe(
+        catchError((error) => this.errorHandlingService.handleError(error))
+      );
   }
 
   // private apiUrl = 'http://localhost:5000/api/users/auth'; // Replace with your actual API URL

@@ -8,13 +8,14 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // Initialize S
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+
 // Set up PayPal configuration
 paypal.configure({
   mode: "sandbox", // Change to "live" for production environment
-  client_id:
-    "AZ1pef0q2Bt30xoYFzn57qSAZ2RhEOFlRIYhNHttUjNKDkejojqRJxhWqEPAxUJlqvcVyUIYzJU0p5g2",
-  client_secret:
-    "EOaxtxJrChOxw8y2n7D9UHXVTibw9lWr2BfHj_bLOZzdNjLR9YQFLAjPmGWNc0msJbeC3WgVa6LiueHt",
+  client_id: PAYPAL_CLIENT_ID,
+  client_secret: PAYPAL_CLIENT_SECRET,
 });
 
 // Create Payment
@@ -33,10 +34,6 @@ const createPayment = catchAsync(async (req, res) => {
       intent: "sale",
       payer: {
         payment_method: "paypal",
-      },
-      redirect_urls: {
-        return_url: "http://localhost:3000/success",
-        cancel_url: "http://localhost:3000/cancel",
       },
       transactions: [
         {
@@ -79,7 +76,6 @@ const createPayment = catchAsync(async (req, res) => {
           isPaid: false,
           courseIds: courseIds,
         });
-        user.confirmPassword = user.password; // Assign the same value as the password to confirmPassword
         await user.save({ validateBeforeSave: false });
 
         for (let i = 0; i < payment.links.length; i++) {
@@ -104,60 +100,21 @@ const createPayment = catchAsync(async (req, res) => {
 });
 
 // Execute Payment
-const executePayment = catchAsync(async (req, res) => {
+const executePayment = catchAsync(async (req, res, next) => {
   const payerId = req.query.payerId;
   const paymentId = req.query.paymentId;
-  const payment = req.user.payments.find(p => p.paymentId === paymentId);
+  const payment = req.user.payments.find((p) => p.paymentId === paymentId);
   const courseIds = payment.courseIds;
 
   const execute_payment_json = {
     payer_id: payerId,
   };
-  // const capture = await paypal.capturePayment(paymentId);
-
-  // try {
-
-  //   paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
-  //     if (error) {
-  //       throw error;
-  //     } else {
-  //       // Handle the captured payment response
-  //       console.log(payment);
-  //     }
-  //   });
-  // } catch (error) {
-  //   // Handle any errors that occurred during payment capture
-  //   console.error(error);
-  // }
-
-  // try {
-  //   // Capture the payment using PayPal APIs
-  //   const response = await paypal.payment.execute(paymentId, { payer_id: payerId});
-
-  //   if (capture.status === 'COMPLETED') {
-  //     // Payment is captured successfully
-  //     // Update the payment status in your database or perform any other necessary actions
-  //     // Return a success response
-  //     res.status(200).json({ message: 'Payment captured successfully.' });
-  //   } else {
-  //     // Payment capture failed
-  //     // Return an error response
-  //     res.status(400).json({ error: 'Payment capture failed.' });
-  //   }
-  // } catch (error) {
-  //   // Handle any errors that occurred during payment capture
-  //   console.error(error);
-  //   res.status(500).json({ error: 'Failed to capture payment.' });
-  // }
   paypal.payment.execute(
     paymentId,
     execute_payment_json,
     async (error, payment) => {
       if (error) {
-        console.error(error);
-        return res
-          .status(500)
-          .json({ error: "Failed to execute PayPal payment." });
+        return next(new AppError("Failed to execute PayPal payment.", 500));
       }
 
       if (payment.state === "approved") {
@@ -169,7 +126,7 @@ const executePayment = catchAsync(async (req, res) => {
               $set: { "payments.$.isPaid": true },
               $push: {
                 purchasedCourses: {
-                  $each: courseIds.map(courseId => ({
+                  $each: courseIds.map((courseId) => ({
                     orderId: paymentId,
                     courseId: courseId,
                   })),
@@ -178,22 +135,19 @@ const executePayment = catchAsync(async (req, res) => {
             }
           );
           if (!updatedUser) {
-            return res
-              .status(404)
-              .json({ error: "User not found or payment not found." });
+            return next(
+              new AppError("User not found or payment not found.", 404)
+            );
           }
           updatedUser.cart = [];
           await updatedUser.save({ validateBeforeSave: false });
-
           return res.status(200).json({ message: "Payment successful." });
-
-          // res.render("success"); // Render success page
         } catch (error) {
           console.error(error);
-          res.status(500).json({ error: "Failed to update payment status." });
+          return next(new AppError("Failed to update payment status.", 500));
         }
       } else {
-        res.status(400).json({ error: "Payment not approved." });
+        return next(new AppError("Payment not approved.", 400));
       }
     }
   );

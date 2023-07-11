@@ -3,7 +3,7 @@ import { baseEnvironment } from "./config";
 
 const environment = {
   PRODUCTION: false,
-  API_URL: "https://eduzone-om33.onrender.com",
+  API_URL: "http://localhost:5000",
   ...baseEnvironment,
 };
 

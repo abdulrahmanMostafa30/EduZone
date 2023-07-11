@@ -6,7 +6,6 @@ import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { AuthGuard } from "../auth/auth.guard";
 import { SecurityComponent } from "./security/security.component";
 import { MyCoursesComponent } from "./my-courses/my-courses.component";
-import { HomeComponent } from "../home/home.component";
 
 const routes: Routes = [
   {

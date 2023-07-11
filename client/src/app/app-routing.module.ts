@@ -15,12 +15,15 @@ import { AuthService } from "./auth/auth.service";
 import { ForgetPasswordComponent } from "./forget-password/forget-password.component";
 import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 import { environment } from "../environments/environment";
+import { VerificationComponent } from "./verification/verification.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginFormComponent },
   { path: "forget-password", component: ForgetPasswordComponent },
   { path: "reset-password/:token", component: ResetPasswordComponent },
+  { path: "verification", component: VerificationComponent , canActivate: [AuthGuard] },
+
   { path: "signup", component: SignUpComponent },
   { path: "contact", component: ContactComponent },
   {
