@@ -4,11 +4,11 @@ const multer = require("multer");
 const fs = require("fs");
 const axios = require("axios");
 
-const dir = "./uploads";
+// const dir = "./uploads";
 
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
-}
+// if (!fs.existsSync(dir)) {
+//   fs.mkdirSync(dir);
+// }
 const expirationDate = new Date();
 expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Set expiration to 10 years from now
 

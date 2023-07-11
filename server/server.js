@@ -42,12 +42,9 @@ const format = json(
 
 app.use(morgan(format));
 app.use(express.json());
-app.use("/images", express.static(path.join("./uploads")));
+// app.use("/images", express.static(path.join("./uploads")));
 // app.use("/images", express.static(path.join("images")));
-app.use((req, res, next) => {
-  res.setHeader('Permissions-Policy', '');
-  next();
-});
+
 app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
 app.use("/api/cart", cartRoute);

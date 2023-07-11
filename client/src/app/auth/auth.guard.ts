@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
     const isAuth = this.authService.getIsAuth();
     const isTokenExpired = this.authService.isTokenExpired();
     const isEmailVerified = this.authService.getIsEmailVerified();
-    console.log(isAuth, isEmailVerified)
     if (!isAuth) {
       this.router.navigate(["/login"]);
     } else {

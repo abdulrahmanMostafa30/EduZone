@@ -56,7 +56,28 @@ exports.getItems = catchAsync(async (req, res, next) => {
 
 exports.add = catchAsync(async (req, res, next) => {
   const { courseId } = req.body;
+  const user = await User.findOne({
+    _id: req.user._id,
+    $or: [
+      { purchasedCourses: { $elemMatch: { courseId } } },
+      { cart: courseId },
+    ],
+  });
 
+  if (user) {
+    if (user.purchasedCourses.some(course => course.courseId.equals(courseId))) {
+      return res.status(400).json({
+        status: "error",
+        message: "The course is already purchased.",
+      });
+    }
+
+    return res.status(400).json({
+      status: "error",
+      message: "The course is already in the cart.",
+    });
+  }
+  
   const updatedUser = await User.findOneAndUpdate(
     { _id: req.user._id },
     { $addToSet: { cart: courseId } },

@@ -17,10 +17,12 @@ module.exports.getPurchasedCourses = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
 
   // Retrieve the user from the database
-  const user = await User.findById(userId).populate('purchasedCourses.courseId');
+  const user = await User.findById(userId).populate(
+    "purchasedCourses.courseId"
+  );
 
   if (!user) {
-    return res.status(404).json({ error: 'User not found.' });
+    return res.status(404).json({ error: "User not found." });
   }
   response.status(200).json({
     status: "success",
@@ -28,36 +30,31 @@ module.exports.getPurchasedCourses = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports.getAllCourses = (request, response, next) => {
-  const isAuthenticated = request.isAuthenticated; // Assuming you're using a session-based authentication
+module.exports.getAllCourses = catchAsync(async (request, response, next) => {
+  const isAuthenticated = request.isAuthenticated;
   if (!isAuthenticated) {
-    Course.find({ active: true })
-      .then((data) => {
-        response.status(200).json(data);
-      })
-      .catch((error) => next(error));
+    const courses = await Course.find({ active: true });
+    return response.status(200).json(courses);
   } else {
     const userRole = request.user.role;
     const query = userRole === "admin" ? {} : { active: true };
-    Course.find(query)
-      .then((data) => {
-        response.status(200).json(data);
-      })
-      .catch((error) => next(error));
+    const courses = await Course.find(query);
+    return response.status(200).json(courses);
   }
-};
-
-module.exports.updateCourseStatus = (request, response, next) => {
-  const { courseId } = request.params;
-  const { active } = request.body;
-
-  Course.findByIdAndUpdate(courseId, { active }, { new: true })
-    .then((updatedCourse) => {
-      response.status(200).json(updatedCourse);
-    })
-    .catch((error) => next(error));
-};
-module.exports.addCourse = (request, response, next) => {
+});
+module.exports.updateCourseStatus = catchAsync(
+  async (request, response, next) => {
+    const { courseId } = request.params;
+    const { active } = request.body;
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId,
+      { active },
+      { new: true }
+    );
+    return response.status(200).json(updatedCourse);
+  }
+);
+module.exports.addCourse = catchAsync(async (request, response, next) => {
   let image = request.body.image;
   if (request.file) {
     image = request.file.imageUrl;
@@ -86,7 +83,7 @@ module.exports.addCourse = (request, response, next) => {
       });
     })
     .catch((error) => next(error));
-};
+});
 
 module.exports.updateCourse = catchAsync(async (request, response, next) => {
   let image = request.body.imagePath;
@@ -103,8 +100,8 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
     "category",
     "price",
     "vid",
-    'comments',
-    'active',
+    "comments",
+    "active"
   );
   filteredBody["image"] = image;
   const updatedCourse = await Course.findByIdAndUpdate(
@@ -124,7 +121,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
   });
 });
 
-module.exports.getCourseById = (request, response, next) => {
+module.exports.getCourseById = catchAsync(async (request, response, next) => {
   Course.findOne({ _id: new ObjectId(request.params.id) })
     .then((data) => {
       if (data == null) throw new Error("Course doesn't exists");
@@ -132,7 +129,7 @@ module.exports.getCourseById = (request, response, next) => {
       response.status(200).json(data);
     })
     .catch((error) => next(error));
-};
+});
 
 module.exports.addComment = catchAsync(async (request, response, next) => {
   const { id, comment, rating } = request.body;
@@ -155,7 +152,7 @@ module.exports.addComment = catchAsync(async (request, response, next) => {
     name: `${request.user.fname} ${request.user.lname}`,
     comment: comment,
     rating: rating,
-    imageUserPath: request.user.imagePath
+    imageUserPath: request.user.imagePath,
   };
 
   course.comments.push(newComment);
@@ -168,13 +165,15 @@ module.exports.addComment = catchAsync(async (request, response, next) => {
     },
   });
 });
-module.exports.delelteCourseById = (request, response, next) => {
-  Course.findOneAndRemove(new ObjectId(request.params.id))
-    .then((data) => {
-      response.status(201).json({
-        message: "Done",
-        data: data,
-      });
-    })
-    .catch((error) => next(error));
-};
+module.exports.deleteCourseById = catchAsync(
+  async (request, response, next) => {
+    Course.findOneAndRemove(new ObjectId(request.params.id))
+      .then((data) => {
+        response.status(201).json({
+          message: "Done",
+          data: data,
+        });
+      })
+      .catch((error) => next(error));
+  }
+);

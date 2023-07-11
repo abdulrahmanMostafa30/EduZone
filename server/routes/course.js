@@ -34,7 +34,7 @@ router
   .delete(
     authController.protect,
     authController.restrictTo("admin"),
-    courseController.delelteCourseById
+    courseController.deleteCourseById
   )
   .patch(
     authController.protect,

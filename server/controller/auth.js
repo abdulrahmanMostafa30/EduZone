@@ -207,14 +207,13 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
   if (token) {
-    try {
-      const currentUser = await verifyToken(token);
-      req.user = currentUser;
-      req.isAuthenticated = true;
-      next();
-    } catch (error) {
-      return next(new AppError(error));
-    }
+    const currentUser = await verifyToken(token);
+    req.user = currentUser;
+    req.isAuthenticated = true;
+    next();
+  }
+  else{
+    next();
   }
 });
 exports.protectEmailVerified = catchAsync(async (req, res, next) => {
