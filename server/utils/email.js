@@ -3,13 +3,13 @@ const { google } = require('googleapis');
 
 // These id's and secrets should come from .env file.
 const CLIENT_ID = process.env.EMAIL_CLIENT_ID
-const CLEINT_SECRET = process.env.EMAIL_CLEINT_SECRET
+const CLIENT_SECRET = process.env.EMAIL_CLIENT_SECRET
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const REFRESH_TOKEN = process.env.EMAIL_REFRESH_TOKEN
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
-  CLEINT_SECRET,
+  CLIENT_SECRET,
   REDIRECT_URI
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
@@ -23,7 +23,7 @@ const sendEmail = async (options) => {
       type: 'OAuth2',
       user: process.env.EMAIL_USERNAME,
       clientId: CLIENT_ID,
-      clientSecret: CLEINT_SECRET,
+      clientSecret: CLIENT_SECRET,
       refreshToken: REFRESH_TOKEN,
       accessToken: accessToken,
     },
