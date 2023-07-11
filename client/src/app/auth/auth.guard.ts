@@ -19,8 +19,7 @@ export class AuthGuard implements CanActivate {
   ): boolean | Observable<boolean> | Promise<boolean> {
     const isAuth = this.authService.getIsAuth();
     const isTokenExpired = this.authService.isTokenExpired();
-    const isEmailVerified = this.authService.getIsAuth();
-
+    const isEmailVerified = this.authService.getIsEmailVerified();
     if (!isAuth) {
       this.router.navigate(["/login"]);
     } else {
@@ -34,10 +33,9 @@ export class AuthGuard implements CanActivate {
           return true;
         }
 
-        if (isEmailVerified) {
+        if (isEmailVerified === true) {
           return true;
         } else {
-          console.log(isEmailVerified)
           this.router.navigate(["/verification"]);
           return false;
         }

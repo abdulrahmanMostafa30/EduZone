@@ -51,8 +51,8 @@ export class AuthService {
     return this.isEmailVerified;
   }
   setEmailVerified(isEmailVerified: boolean) {
-    localStorage.setItem("isEmailVerified", isEmailVerified.toString());
     this.isEmailVerified = isEmailVerified
+    localStorage.setItem("isEmailVerified", isEmailVerified.toString());
 
   }
   isTokenExpired(): boolean {
@@ -220,7 +220,6 @@ export class AuthService {
         this.isAuthenticated = true;
         this.role = authInformation.role;
         this.isEmailVerified = authInformation.isEmailVerified;
-
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
       } else {
@@ -269,9 +268,7 @@ export class AuthService {
 
   private getAuthData() {
     const token = localStorage.getItem("token");
-    console.log(localStorage.getItem("isEmailVerified"));
-    const isEmailVerified: boolean =
-      localStorage.getItem("isEmailVerified") === "true";
+    const isEmailVerified: boolean = localStorage.getItem("isEmailVerified") === "true";
     const role = localStorage.getItem("role");
 
     if (!token || !role) {
