@@ -10,6 +10,7 @@ const AppError = require("./../utils/appError");
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const URL_FRONTEND = process.env.URL_FRONTEND;
 
 // Set up PayPal configuration
 paypal.configure({
@@ -34,6 +35,10 @@ const createPayment = catchAsync(async (req, res) => {
       intent: "sale",
       payer: {
         payment_method: "paypal",
+      },
+      redirect_urls: {
+        return_url: "/success",
+        cancel_url: "/cancel",
       },
       transactions: [
         {
@@ -60,16 +65,13 @@ const createPayment = catchAsync(async (req, res) => {
     paypal.payment.create(create_payment_json, async (error, payment) => {
       if (error) {
         console.error(error);
-        return res
-          .status(500)
-          .json({ error: "Failed to create PayPal payment." });
+        return next(new AppError("Failed to create PayPal payment.", 500));
       }
 
       try {
         if (!user.payments) {
           user.payments = [];
         }
-        // Save the payment information in the user's data
         user.payments.push({
           paymentId: payment.id,
           amount: total,
@@ -88,14 +90,12 @@ const createPayment = catchAsync(async (req, res) => {
         }
       } catch (error) {
         console.error(error);
-        return res
-          .status(500)
-          .json({ error: "Failed to save payment information." });
+        return next(new AppError("Failed to save payment information.", 500));
       }
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to create PayPal payment." });
+    return next(new AppError("Failed to create PayPal payment.", 500));
   }
 });
 
@@ -119,7 +119,6 @@ const executePayment = catchAsync(async (req, res, next) => {
 
       if (payment.state === "approved") {
         try {
-          // Update the payment status in the user's data
           const updatedUser = await User.findOneAndUpdate(
             { "payments.paymentId": paymentId },
             {
