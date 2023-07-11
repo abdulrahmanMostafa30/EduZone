@@ -43,11 +43,7 @@ const courseSchema = new Schema({
       imageUserPath: {
         type: String,
         required: true,
-      },
-      course_content_length: {
-        type: String,
-        required: true,
-      },
+      }
     },
   ],
   vid: [],
