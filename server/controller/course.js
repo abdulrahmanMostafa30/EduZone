@@ -36,6 +36,7 @@ module.exports.getAllCourses = catchAsync(async (request, response, next) => {
     const courses = await Course.find({ active: true });
     return response.status(200).json(courses);
   } else {
+    console.log(isAuthenticated)
     const userRole = request.user.role;
     const query = userRole === "admin" ? {} : { active: true };
     const courses = await Course.find(query);

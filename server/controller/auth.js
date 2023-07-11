@@ -206,21 +206,25 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  if (token) {
-    const currentUser = await verifyToken(token);
-    req.user = currentUser;
-    req.isAuthenticated = true;
+  if (!token) {
     next();
   }
-  else{
-    next();
+  if (token) {
+    try {
+      const currentUser = await verifyToken(token);
+      req.user = currentUser;
+      req.isAuthenticated = true;
+      next();
+    } catch (error) {
+      return next(new AppError(error));
+    }
   }
 });
 exports.protectEmailVerified = catchAsync(async (req, res, next) => {
   if (req.user.isEmailVerified) {
     next();
   } else {
-    return next(new AppError("You need to Verifiy Email First!"));
+    return next(new AppError("You need to Verify Email First!"));
   }
 });
 
