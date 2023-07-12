@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, catchError, throwError } from "rxjs";
+import { BehaviorSubject, Observable, catchError, throwError } from "rxjs";
 import { ErrorHandlingService } from "./error-handling.service";
 import { environment } from '../../environments/environment';
 
@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class CartService {
   private apiUrl = environment.API_URL + '/api/cart';
+  private cartItemsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public cartItems: Observable<any[]> = this.cartItemsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -37,5 +39,8 @@ export class CartService {
       .pipe(
         catchError((error) => this.errorHandlingService.handleError(error))
       );
+  }
+  updateCartItems(items: any[]) {
+    this.cartItemsSubject.next(items);
   }
 }

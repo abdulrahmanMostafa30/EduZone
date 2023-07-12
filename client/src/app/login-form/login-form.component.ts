@@ -10,6 +10,7 @@ import {
 import { GoogleAuthService } from "../services/google-auth.service";
 import { Subscription } from "rxjs";
 import { ReCaptchaV3Service } from "ng-recaptcha";
+import { CartService } from "../services/cart.service";
 
 @Component({
   selector: "app-login-form",
@@ -33,7 +34,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private socialAuthService: SocialAuthService,
     private googleAuthService: GoogleAuthService,
-    private recaptchaV3Service: ReCaptchaV3Service
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private cartService: CartService,
+
   ) {
     this.loginForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
@@ -83,6 +86,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
                 this.isLogged = true;
                 this.haveError = false;
                 this.errorMessage = "";
+                this.cartService.getCartItems().subscribe((response) => {
+                  this.cartService.updateCartItems(response.data);
+                });
                 setTimeout(() => {
                   this.router.navigate(["/"]);
                 }, 500);

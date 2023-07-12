@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 import { catchError, map } from "rxjs/operators";
 import { ErrorHandlingService } from "../services/error-handling.service";
 import { environment } from "../../environments/environment";
+import { CartService } from "../services/cart.service";
 
 @Injectable()
 export class AuthService {
@@ -31,7 +32,10 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private errorHandlingService: ErrorHandlingService,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
+    private cartService: CartService,
+
+
   ) {}
   setRole(role: string) {
     this.role = role;
@@ -231,6 +235,8 @@ export class AuthService {
   }
 
   logout() {
+    this.cartService.updateCartItems([]);
+
     this.socialAuthService
       .signOut()
       .then(() => {})

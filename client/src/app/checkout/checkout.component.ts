@@ -80,6 +80,7 @@ export class CheckoutComponent implements OnInit {
             (response: any) => {
               // Handle the success response
               this.paymentStatus = true;
+              this.cartService.updateCartItems([]);
               // Redirect or show success message to the user
             },
             (error: any) => {

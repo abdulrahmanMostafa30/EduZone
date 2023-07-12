@@ -11,11 +11,25 @@
       <!-- // h,w 100 = books -->
       EduZone
     </a>
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="link-ul-cart">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/shopping-cart"> <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i></a>
-      </li>
-    </ul>
+    <!-- <li class="nav-item">
+      <a class="nav-link" routerLink="/shopping-cart"> <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i></a>
+    </li>
+  </ul> -->
+  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-item" id="link-ul-cart">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/shopping-cart"> <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i></a>
+    </li>
+    <li class="nav-item">
+      <span class="cart-item-count" id="cart-counter" *ngIf="cartItemCount != 0">{{ cartItemCount }}</span>
+    </li>
+  </ul>
+
+    <!-- <a class="nav-link" routerLink="/shopping-cart">
+      <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i>
+    </a> -->
+
+
+
   </div>
 </nav>
 <nav class="navbar navbar-expand-lg">

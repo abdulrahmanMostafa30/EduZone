@@ -98,3 +98,24 @@ input:valid~label {
 #link-ul-cart i:hover{
   color: rgb(189, 154, 122);
 }
+.item {
+  width: 100%;
+  height: 50px;
+  display: block;
+}
+
+.count-item {
+  padding-left: 13px;
+  padding-right: 13px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  margin-bottom: 100%;
+  margin-right: 18px;
+  margin-top: 8px;
+
+  color: black;
+  background-color: rgb(189, 154, 122);
+  border-radius: 5px;
+  float: left;
+}

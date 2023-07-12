@@ -67,6 +67,9 @@ export class EnrollCourseComponent implements OnInit {
         this.cartService.add(this.course._id).subscribe({
           next: (response) => {
             this.buttonLabel = "Go to cart";
+            this.cartService.getCartItems().subscribe((response) => {
+              this.cartService.updateCartItems(response.data);
+            });
           },
           error: (error) => {
           },

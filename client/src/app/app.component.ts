@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./auth/auth.service";
 import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from "@angular/router";
+import { CartService } from "./services/cart.service";
 
 @Component({
   selector: "app-root",
@@ -14,7 +15,9 @@ export class AppComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private socialAuthService: SocialAuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService,
+
   ) {}
   ngOnInit() {
     this.authService.autoAuthUser();
@@ -23,6 +26,9 @@ export class AppComponent implements OnInit {
         if (user) {
           this.authService.loginGoogle(user.idToken).subscribe({
             next: (response) => {
+              this.cartService.getCartItems().subscribe((response) => {
+                this.cartService.updateCartItems(response.data);
+              });
               this.router.navigate(["/"]);
             },
             error: (error) => {

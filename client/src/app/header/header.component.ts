@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from "@angular/core";
 import { AuthService } from "../auth/auth.service";
 import { Subscription } from "rxjs";
+import { CartService } from "../services/cart.service";
 
 @Component({
   selector: "app-header",
@@ -12,8 +13,8 @@ export class HeaderComponent implements OnDestroy {
   role: string | null = "";
   private authListenerSubs: Subscription | any;
   private roleChangedSubscription: Subscription;
-
-  constructor(private authService: AuthService) {
+  cartItemCount = 0
+  constructor(private authService: AuthService, private cartService: CartService) {
     this.roleChangedSubscription = this.authService.roleChanged.subscribe(
       (role: string) => {
         this.role = role;
@@ -37,6 +38,9 @@ export class HeaderComponent implements OnDestroy {
         // Handle the role change in your component
       }
     );
+    this.cartService.cartItems.subscribe(items => {
+      this.cartItemCount = items.length;
+    });
   }
 
   onLogout() {
