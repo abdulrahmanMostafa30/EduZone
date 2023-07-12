@@ -220,12 +220,16 @@ export class AuthService {
       const expiresIn = expirationDate.getTime() - now.getTime();
 
       if (expiresIn > 0) {
+
         this.token = authInformation.token;
         this.isAuthenticated = true;
         this.role = authInformation.role;
         this.isEmailVerified = authInformation.isEmailVerified;
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
+        this.cartService.getCartItems().subscribe((response) => {
+          this.cartService.updateCartItems(response.data);
+        });
       } else {
         this.isAuthenticated = false;
       }
