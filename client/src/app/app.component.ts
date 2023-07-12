@@ -16,8 +16,7 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private socialAuthService: SocialAuthService,
     private router: Router,
-    private cartService: CartService,
-
+    private cartService: CartService
   ) {}
   ngOnInit() {
     this.authService.autoAuthUser();
