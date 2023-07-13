@@ -61,7 +61,10 @@
           <div class="col-md-8">
             <div class="w-100 d-grid">
               <p class="pb-2 payment-header">Pay for purchasing course</p>
-              <p class="item float-start mb-0 pb-0" *ngFor="let course of courses; let i = index">
+              <p
+                class="item float-start mb-0 pb-0"
+                *ngFor="let course of courses; let i = index"
+              >
                 <span class="count-item">{{i + 1}}</span>
                 <span class="item-title"
                   >{{course.title}}
@@ -70,8 +73,13 @@
                 <span class="by-owner"> {{course.category}} </span>
               </p>
             </div>
-            <div class="w-100 float-start mt-4 indicated-price" *ngIf="totalPrice != 0">
-              <div class="float-end total-price">${{this.totalPrice | number: '1.0-2'}}</div>
+            <div
+              class="w-100 float-start mt-4 indicated-price"
+              *ngIf="totalPrice != 0"
+            >
+              <div class="float-end total-price">
+                ${{this.totalPrice | number: '1.0-2'}}
+              </div>
               <div class="float-end total">Total</div>
             </div>
             <div class="w-100 float-start">
@@ -82,7 +90,8 @@
                 *ngIf="gatewaySelected == 'stripe'"
                 class="gateway stripe-gateway payment-button float-end mb-3"
                 id="stripePayButton"
-                (click)="makePayment()">
+                (click)="makePayment()"
+              >
                 Pay with stripe
               </button>
               <div
@@ -99,36 +108,23 @@
                     class="zoid-outlet"
                     style="transition: all 0.5s ease-in-out 0.3s;"
                   >
-                    <!-- <iframe
-                      class="zoid-component-frame zoid-visible"
-                      frameborder="0"
-                      allowtransparency="true"
-                      title="PayPal"
-                      scrolling="no"
-                      allowpaymentrequest="allowpaymentrequest"
-                      src="https://www.paypal.com/smart/button?env=production&amp;style.label=paypal&amp;style.size=large&amp;style.shape=rect&amp;style.color=blue&amp;style.tagline=true&amp;commit=true&amp;"
-                      style="background-color: transparent;"
-                    ></iframe> -->
-                      <ngx-paypal [config]="payPalConfig">
-                      </ngx-paypal>
+                    <ngx-paypal [config]="payPalConfig"> </ngx-paypal>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
-          <!-- Success message -->
-    <div *ngIf="paymentStatus" class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="alert alert-success mt-4" role="alert">
-          Payment successful! Thank you for your purchase.
-          Go to Your Profile section to enjoy and learn with Our Courses.
+      <!-- Success message -->
+      <div *ngIf="paymentStatus" class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="alert alert-success mt-4" role="alert">
+            Payment successful! Thank you for your purchase. Go to Your Profile
+            section to enjoy and learn with Our Courses.
+          </div>
         </div>
       </div>
     </div>
-    </div>
-
   </div>
 </div>

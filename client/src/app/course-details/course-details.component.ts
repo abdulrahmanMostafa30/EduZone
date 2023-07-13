@@ -35,6 +35,18 @@ export class CourseDetailsComponent implements OnInit, DoCheck {
       rating: ['', Validators.required]
     });
   }
+   previousVideo() {
+    if (this.currentVideoIndex > 0) {
+      this.setCurrentVideo(this.currentVideoIndex - 1);
+    }
+  }
+
+  // Function to navigate to the next video
+  nextVideo() {
+    if (this.currentVideoIndex < this.course.vid.length - 1) {
+      this.setCurrentVideo(this.currentVideoIndex + 1);
+    }
+  }
   setRating(rating: number) {
     // Set the selected rating
     if(rating != 5){

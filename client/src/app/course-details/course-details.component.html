@@ -64,7 +64,13 @@
           {{ vid.title }}
         </li>
       </ul>
+      <div class="d-flex justify-content-between mt-3">
+        <button class="btn btn-primary" (click)="previousVideo()" [disabled]="currentVideoIndex === 0">Previous</button>
+        <button class="btn btn-primary" (click)="nextVideo()" [disabled]="currentVideoIndex === course.vid.length - 1">Next</button>
+
+      </div>
     </div>
+
   </div>
 </section>
 
