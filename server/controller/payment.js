@@ -5,8 +5,8 @@ const Course = require("../models/course");
 const paypal = require("paypal-rest-sdk");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // Initialize Stripe with your secret key
 
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
@@ -20,7 +20,7 @@ paypal.configure({
 });
 
 // Create Payment
-const createPayment = catchAsync(async (req, res) => {
+const paypalCreatePayment = catchAsync(async (req, res) => {
   const userId = req.user.id; // Get the user ID from req.user
   try {
     // Retrieve the user from the database
@@ -100,7 +100,7 @@ const createPayment = catchAsync(async (req, res) => {
 });
 
 // Execute Payment
-const executePayment = catchAsync(async (req, res, next) => {
+const paypalExecutePayment = catchAsync(async (req, res, next) => {
   const payerId = req.query.payerId;
   const paymentId = req.query.paymentId;
   const payment = req.user.payments.find((p) => p.paymentId === paymentId);
@@ -153,6 +153,6 @@ const executePayment = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
-  createPayment,
-  executePayment,
+  paypalCreatePayment,
+  paypalExecutePayment,
 };

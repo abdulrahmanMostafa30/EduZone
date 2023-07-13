@@ -20,7 +20,7 @@ const courseRoute = require('./routes/course')
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
 const contactRoute = require('./routes/contact')
-const purchaseRoute = require('./routes/purchase')
+const paymentRoute = require('./routes/payment')
 
 const globalErrorHandler = require('./controller/error');
 
@@ -49,7 +49,7 @@ app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/contact", contactRoute);
-app.use("/api/purchase", purchaseRoute);
+app.use("/api/payments", paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
