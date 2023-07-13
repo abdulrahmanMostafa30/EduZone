@@ -21,9 +21,8 @@ paypal.configure({
 
 // Create Payment
 const paypalCreatePayment = catchAsync(async (req, res) => {
-  const userId = req.user.id; // Get the user ID from req.user
+  const userId = req.user.id;
   try {
-    // Retrieve the user from the database
     const user = await User.findById(userId).populate("cart");
     if (!user) {
       return res.status(404).json({ error: "User not found." });
@@ -152,7 +151,102 @@ const paypalExecutePayment = catchAsync(async (req, res, next) => {
   );
 });
 
+const stripeCreatePayment = catchAsync(async (req, res, next) => {
+  const userId = req.user.id; // Get the user ID from req.user
+  try {
+    // Retrieve the user from the database
+    const user = await User.findById(userId).populate("cart");
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+    const courseIds = user.cart.map((course) => course._id);
+
+    const total = await user.calculateTotalPrice();
+    console.log(total);
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(total * 100),
+      currency: "usd",
+      description: "Hat for the best team ever",
+      payment_method_types: ["card"], 
+      capture_method: "manual",
+    });
+
+    if (!user.payments) {
+      user.payments = [];
+    }
+    user.payments.push({
+      paymentId: paymentIntent.id,
+      amount: total,
+      isPaid: false,
+      courseIds: courseIds,
+    });
+    await user.save({ validateBeforeSave: false });
+
+    return res.json({
+      paymentIntent: paymentIntent.id,
+    });
+  } catch (error) {
+    console.error(error);
+    return next(new AppError("Failed to create Stripe payment.", 500));
+  }
+});
+
+const stripeCompletePayment = catchAsync(async (req, res, next) => {
+  const paymentId = req.body.paymentIntentId;
+  const payment = req.user.payments.find((p) => p.paymentId === paymentId);
+  const courseIds = payment.courseIds;
+  const paymentMethodId = req.body.paymentMethodId;
+
+  let paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+
+  if (paymentIntent.status === "requires_payment_method") {
+    paymentIntent = await stripe.paymentIntents.confirm(paymentId, {
+      payment_method_data: {
+        type: "card",
+        card: {
+          token: paymentMethodId,
+        },
+      },
+    });
+  }
+
+  if (paymentIntent.status === "requires_capture") {
+    paymentIntent = await stripe.paymentIntents.capture(paymentId);
+  }
+
+  if (paymentIntent.status === "succeeded") {
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { "payments.paymentId": paymentId },
+        {
+          $set: { "payments.$.isPaid": true },
+          $push: {
+            purchasedCourses: {
+              $each: courseIds.map((courseId) => ({
+                orderId: paymentId,
+                courseId: courseId,
+              })),
+            },
+          },
+        }
+      );
+      if (!updatedUser) {
+        return next(new AppError("User not found or payment not found.", 404));
+      }
+      updatedUser.cart = [];
+      await updatedUser.save({ validateBeforeSave: false });
+      return res.status(200).json({ message: "Payment successful." });
+    } catch (error) {
+      console.error(error);
+      return next(new AppError("Failed to update payment status.", 500));
+    }
+  }
+
+  return next(new AppError("Payment not successful.", 400));
+});
 module.exports = {
   paypalCreatePayment,
   paypalExecutePayment,
+  stripeCreatePayment,
+  stripeCompletePayment,
 };
