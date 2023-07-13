@@ -75,6 +75,7 @@ const loginGoogle = async (req, res, next, token) => {
     console.log("User ID:", verifiedToken.sub);
     createSendToken(user, 201, res);
   } catch (err) {
+    console.log(err)
     return next(new AppError(err, 400));
   }
 };
