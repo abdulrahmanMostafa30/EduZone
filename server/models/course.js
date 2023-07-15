@@ -1,26 +1,27 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const SchemaTypeOptions = mongoose.SchemaTypeOptions;
+
 const courseSchema = new Schema({
   title: {
     type: String,
-    required: [true, "Please tell us title!"],
+    required: [true, "Please tell us the title!"],
   },
   description: {
     type: String,
-    required: [true, "Please tell us description!"],
+    required: [true, "Please tell us the description!"],
   },
   category: {
-    type: String,
-    required: [true, "Please tell us category!"],
+    type: Schema.Types.ObjectId,
+    ref: "Category", // Reference to the Category schema
+    required: [true, "Please tell us the category!"],
   },
   price: {
     type: Number,
-    required: [true, "Please tell us price!"],
+    required: [true, "Please tell us the price!"],
   },
   image: {
     type: String,
-    required: [true, "Please tell us image!"],
+    required: [true, "Please tell us the image!"],
   },
   comments: [
     {

@@ -38,20 +38,23 @@
           </div>
         </div>
       </div>
-
       <div class="form-group p-10 row">
         <div class="col-sm-3">
           <label for="category" class="p-t-b-10">Category<span class="requiredStar">*</span></label>
         </div>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="category" required maxlength="255" [(ngModel)]="editCourseForm.category" name="category" #category="ngModel">
+          <select class="form-control" id="category" required [(ngModel)]="editCourseForm.category" name="category" #category="ngModel">
+            <option value="" disabled>Select a category</option>
+            <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+          </select>
           <div *ngIf="category.errors && isSubmitted" class="alert alert-danger validationError">
             <div [hidden]="!category.errors['required']">
-              category is required
+              Category is required
             </div>
           </div>
         </div>
       </div>
+
 
       <div class="form-group p-10 row">
         <div class="col-sm-3">

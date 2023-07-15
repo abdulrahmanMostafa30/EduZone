@@ -5,11 +5,20 @@ const AppError = require("../utils/appError");
 const User = require("./../models/user");
 
 exports.getItems = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user.id).populate("cart").exec();
-
+  const user = await User.findById(req.user.id).populate({
+    path: "cart",
+    populate: {
+      path: "category",
+      model: "Category", // Replace with the actual name of your Category model
+    },
+  });
+  const cartWithCategoryAsName = user.cart.map((course) => ({
+    ...course.toObject(),
+    category: course.category.name,
+  }));
   res.status(200).json({
     status: "success",
-    data: user.cart,
+    data: cartWithCategoryAsName,
   });
 
   // User.findById(req.user.id)

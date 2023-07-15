@@ -13,6 +13,8 @@ export class UsersComponent {
   openDropdowns: { [userId: string]: boolean } = {};
   user: any;
   constructor(private userService: UserService, private router: Router, private authService: AuthService) {}
+  currentPage = 1;
+  pageSize = 5; // Set the number of items per page here
 
   ngOnInit() {
     this.getUserMe()

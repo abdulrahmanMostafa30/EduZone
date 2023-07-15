@@ -1,139 +1,103 @@
 <div class="container-fluid p-5">
-    <div class="row mb-2">
-        <div class="col text-center">
-            <h2 class="heading-text">Courses</h2>
-            <h6 style="color: rgb(189, 154, 122)">you can find here a major of different categories</h6>
-        </div>
+  <div class="row mb-2">
+    <div class="col text-center">
+      <h2 class="heading-text">Courses</h2>
+      <h6 style="color: rgb(189, 154, 122)">you can find here a major of different categories</h6>
     </div>
-    <div class="row py-3">
-        <div class="col text-center">
-            <form role="search">
-                <div class="input-group justify-content-center">
-                    <input class="me-2 d-block text-center col-12 col-md-6" placeholder="Search for courses" required=""
-                        type="text" name="search" id="search-input" [(ngModel)]="searchQuery" (keyup)="searchCourses()">
-                    <!-- <label class="search-label">Search for courses</label> -->
-                </div>
-            </form>
+  </div>
+  <div class="row py-3">
+    <div class="col text-center">
+      <form role="search">
+        <div class="input-group justify-content-center">
+          <input class="me-2 d-block text-center col-12 col-md-6" placeholder="Search for courses" required=""
+            type="text" name="search" id="search-input" [(ngModel)]="searchQuery" (keyup)="searchCourses()">
         </div>
+      </form>
     </div>
-    <div class="row mb-2 d-flex justify-content-around">
-        <div id="cat-btns" class="col-12 text-center py-3">
-            <div>
-                <button Class="mb-3 btn cat-btn" (click)="loadJSON()">
-                    All</button>
-                <div class=" d-inline" *ngFor="let category of getUniqueCategories()">
-                    <button Class="mb-3 btn cat-btn" (click)="filterCourses(category)">
-                        {{category}}</button>
-                </div>
-            </div>
+  </div>
+  <div class="row mb-2 d-flex justify-content-around">
+    <div id="cat-btns" class="col-12 text-center py-3">
+      <div>
+        <button Class="mb-3 btn cat-btn" (click)="loadJSON()">
+          All</button>
+        <div class=" d-inline" *ngFor="let category of getUniqueCategories()">
+          <button Class="mb-3 btn cat-btn" (click)="filterCourses(category)">
+            {{category}}</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <ng-container *ngIf="filteredCourses; else noCourses">
+      <div class="col-12 col-sm-6 col-lg-4 mb-3" *ngFor="let course of filteredCourses  | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+        <div class="card h-100">
+          <div class="card-img h-65 text-center">
+            <img style="object-fit: contain; height: 300px; max-width: 100%;" [src]="course.image" alt="{{course.title}}">
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
+            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
+            <a [routerLink]="['/course/', course._id]" class="btn view-btn mt-auto">View Course</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noCourses>
+      <div class="col-12 col-md-4 mb-3" *ngFor="let course of courses  | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+        <div class="card h-100">
+          <div class="card-img h-65 text-center">
+            <img style="object-fit: contain; height: 300px; max-width: 100%;" [src]="course.image" alt="{{course.title}}">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
+            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
+            <a href="#" class="btn view-btn">View Courses</a>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="text-center mb-5">
+
+  <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
     </div>
 
-    <div class="row mb-3">
-        <ng-container *ngIf="filteredCourses; else noCourses">
-            <ng-container *ngFor="let course of filteredCourses; let i = index;">
-                <div class="col-12 col-sm-6 col-lg-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-img h-65 text-center">
-                            <img style="object-fit: contain; height: 300px; max-width: 100%;"
-                                [src]="course.image" alt="{{course.title}}">
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
-                            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
-                            <a [routerLink]="['/course/', course._id]" class="btn view-btn mt-auto">View Course</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Close the row and start a new row after every third card -->
-                <div class="clearfix d-md-none" *ngIf="(i + 1) % 3 === 0"></div>
-                <div class="clearfix d-none d-md-block" *ngIf="(i + 1) % 3 === 0"></div>
-            </ng-container>
-        </ng-container>
-        <ng-template #noCourses>
-            <ng-container *ngFor="let course of courses; let i = index;">
-                <div class="col-12 col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-img h-65 text-center">
-                            <img style="object-fit: contain; height: 300px; max-width: 100%;"
-                                [src]="course.image" alt="{{course.title}}">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">{{ course.title.split(" ",2).join(" ")+" .." }}</h4>
-                            <p class="card-text">{{ course.description.split(" ",5).join(" ")+" .." }}</p>
-                            <a href="#" class="btn view-btn">View Courses</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Close the row and start a new row after every third card -->
-                <div class="clearfix d-md-none" *ngIf="(i + 1) % 3 === 0"></div>
-                <div class="clearfix d-none d-md-block" *ngIf="(i + 1) % 3 === 0"></div>
-            </ng-container>
-        </ng-template>
-    </div>
-</div>
 
 <div style="background-color: #fafafa;" class="container mb-5">
-    <div class="row">
-        <div class="col text-center">
-            <h2 class="heading-text" style="color: rgb(40, 86, 110)">
-                Best-Selling Courses
-            </h2>
-            <h6 style="color: rgb(189, 154, 122)" class="p-2">our hosting Best-Selling Courses. choose the right Course for you</h6>
-        </div>
+  <div class="row">
+    <div class="col text-center">
+      <h2 class="heading-text" style="color: rgb(40, 86, 110)">
+        Best-Selling Courses
+      </h2>
+      <h6 style="color: rgb(189, 154, 122)" class="p-2">our hosting Best-Selling Courses. choose the right Course for you</h6>
     </div>
+  </div>
 
-    <div class="row " *ngIf="courses">
-        <div class="container mb-3 col-lg-6 rounded-4 d-flex justify-content-center algin-item-center">
-            <div class="card mb-3 w-100">
-                <div class="row g-0">
-                    <div class="col-md-5 d-flex text-center align-item-center">
-                        <img [src]="courses[7].image" style="object-fit: contain;"
-                            class="w-100 rounded-start " alt="...">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <div class="star">
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-half"></i></span>
-                            </div>
-                            <h5 class="card-title">{{courses[7].title}}</h5>
-                            <p class="card-text">
-                                {{courses[7].description}}
-                            </p>
-                            <p class="card-text"> {{courses[7].price}} <s>80.00</s></p>
-                        </div>
-                    </div>
-                </div>
+  <div class="row" *ngIf="courses">
+    <div class="container mb-3 col-lg-6 rounded-4 d-flex justify-content-center algin-item-center" *ngFor="let bestSellingCourse of bestSellingCourses">
+      <div class="card mb-3 w-100">
+        <div class="row g-0">
+          <div class="col-md-5 d-flex text-center align-item-center">
+            <img [src]="bestSellingCourse.image" style="object-fit: contain;" class="w-100 rounded-start" alt="...">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="star">
+                <span><i class="bi bi-star-fill"></i></span>
+                <span><i class="bi bi-star-fill"></i></span>
+                <span><i class="bi bi-star-fill"></i></span>
+                <span><i class="bi bi-star-half"></i></span>
+              </div>
+              <h5 class="card-title">{{bestSellingCourse.title}}</h5>
+              <p class="card-text">
+                {{bestSellingCourse.description}}
+              </p>
+              <p class="card-text"> {{bestSellingCourse.price}} <s>80.00</s></p>
             </div>
+          </div>
         </div>
-
-        <div class="container mb-3 col-lg-6 rounded-4 d-flex justify-content-center algin-item-center">
-            <div class="card mb-3 w-100">
-                <div class="row g-0">
-                    <div class="col-md-5 d-flex text-center align-item-center">
-                        <img [src]="courses[4].image" style="object-fit: contain;"
-                            class="w-100 rounded-start " alt="...">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <div class="star">
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-fill"></i></span>
-                                <span><i class="bi bi-star-half"></i></span>
-                            </div>
-                            <h5 class="card-title">{{courses[4].title}}</h5>
-                            <p class="card-text">
-                                {{courses[4].description}}
-                            </p>
-                            <p class="card-text"> {{courses[4].price}} <s>100.00</s></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>

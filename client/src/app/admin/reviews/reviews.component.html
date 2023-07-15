@@ -19,7 +19,7 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let course of courses">
-                <tr *ngFor="let comment of course.comments; let i = index">
+                <tr *ngFor="let comment of course.comments | paginate: { itemsPerPage: pageSize, currentPage: currentPage }; let i = index">
                   <td>{{ course.title }}</td>
                   <td>{{ comment.name }}</td>
                   <td>{{ comment.comment }}</td>
@@ -36,6 +36,8 @@
               </ng-container>
             </tbody>
           </table>
+          <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+
         </div>
       </div>
     </div>

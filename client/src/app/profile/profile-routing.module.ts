@@ -34,7 +34,7 @@ const routes: Routes = [
       },
       {
         path: "",
-        redirectTo: "edit",
+        redirectTo: "courses",
         pathMatch: "full",
       },
     ],

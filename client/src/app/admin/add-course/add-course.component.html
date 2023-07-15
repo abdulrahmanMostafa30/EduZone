@@ -19,11 +19,15 @@
 
   <div class="mb-3">
     <label for="category" class="form-label">Category:</label>
-    <input type="text" id="category" formControlName="category" class="form-control" required>
+    <select id="category" formControlName="category" class="form-control" required>
+      <option value="" disabled>Select a category</option>
+      <option *ngFor="let category of categories" [value]="category._id">{{ category.name }}</option>
+    </select>
     <div class="alert alert-danger mt-2" *ngIf="courseForm.get('category').invalid && courseForm.get('category').touched">
       Category is required.
     </div>
   </div>
+
 
   <div class="mb-3">
     <label for="price" class="form-label">Price:</label>

@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CourseService } from "../../services/course.service";
+import { CategoryService } from "src/app/services/category.service";
 
 @Component({
   selector: "app-edit-course",
@@ -24,14 +25,35 @@ export class EditCourseComponent {
   courseId: any;
   errorMessage: any;
   touchedVideos: boolean[] = [];
-
+  categories: any;
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private categoryService: CategoryService
   ) {}
+  getCategories() {
+    this.categoryService.getCategories().subscribe(
+      (categories) => {
+        this.categories = categories;
+        console.log(this.editCourseForm.category);
+        const defaultCategory = this.categories.find(
+          (category: any) => category.name === this.editCourseForm.category
+        );
+        if (defaultCategory) {
+          this.editCourseForm.category = defaultCategory.name;
+        } else {
+          this.editCourseForm.category =
+            this.categories.length > 0 ? this.categories[0].name : "";
+        }
+      },
+      (error) => {
+        console.error("Error fetching categories:", error);
+      }
+    );
+  }
   handleImageUpload(event: any) {
     this.selectedFile = event.target.files[0];
   }
@@ -69,16 +91,26 @@ export class EditCourseComponent {
           this.editCourseForm.image = resultData.image;
           this.editCourseForm.course_content_length =
             resultData.course_content_length;
+          this.getCategories();
         }
       },
       (error: any) => {}
     );
+  }
+  getCategoryIdByName(categoryName: string): string {
+    const category = this.categories.find((cat: any) => cat.name === categoryName);
+    return category ? category._id : '';
   }
 
   EditCourse(isValid: any) {
     this.isSubmitted = true;
 
     if (isValid) {
+        // Get the category name by ID using getCategoryNameById function
+      const categoryId = this.getCategoryIdByName(this.editCourseForm.category);
+      // Now you have the category name, you can include it in the updatedCourse object
+      this.editCourseForm.category = categoryId;
+
       this.courseService
         .updateCourseById(this.courseId, this.editCourseForm, this.selectedFile)
         .subscribe({
@@ -107,7 +139,6 @@ export class EditCourseComponent {
   isVideoTitleInvalid(index: number): boolean {
     return this.touchedVideos[index] && !this.editCourseForm.vid[index].title;
   }
-
 
   isVideoUrlInvalid(url: string, index: number): boolean {
     const urlPattern = /^(?:https?:\/\/www\.youtube\.com\/(?:watch\?v=|embed\/))(.*)$/;

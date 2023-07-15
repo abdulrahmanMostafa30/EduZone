@@ -50,6 +50,7 @@ import { environment } from "src/environments/environment";
 import { SharedModule } from "./shared/shared.module";
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { VerificationComponent } from './verification/verification.component';
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { VerificationComponent } from './verification/verification.component';
     SocialLoginModule,
     SharedModule,
     RecaptchaV3Module,
+    NgxPaginationModule,
     AppRoutingModule,
 
   ],

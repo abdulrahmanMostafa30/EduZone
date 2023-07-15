@@ -17,6 +17,8 @@ require("dotenv").config({ path: "./config.env" });
 require("dotenv").config({ path: "/etc/secrets/config.env" });
 
 const courseRoute = require('./routes/course')
+const categoryRoute = require('./routes/category')
+
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
 const contactRoute = require('./routes/contact')
@@ -47,6 +49,8 @@ app.use(express.json());
 
 app.use("/api/users/auth", userRoute);
 app.use("/api/course", courseRoute);
+app.use("/api/category", categoryRoute);
+
 app.use("/api/cart", cartRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/payments", paymentRoute);

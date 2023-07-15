@@ -25,6 +25,7 @@ export class CourseService {
       );
   }
 
+
   updateCourseStatus(courseId: string, active: boolean): Observable<any> {
     const url = `${this.apiUrl}/${courseId}/status`;
 

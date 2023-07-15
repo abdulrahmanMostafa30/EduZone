@@ -1,4 +1,6 @@
 const Course = require("../models/course");
+const Category = require("../models/category");
+
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const factory = require("./handlerFactory");
@@ -32,15 +34,19 @@ module.exports.getPurchasedCourses = catchAsync(async (req, res, next) => {
 
 module.exports.getAllCourses = catchAsync(async (request, response, next) => {
   const isAuthenticated = request.isAuthenticated;
+  let courses;
   if (!isAuthenticated) {
-    const courses = await Course.find({ active: true });
-    return response.status(200).json(courses);
+    courses = await Course.find({ active: true }).populate("category");
   } else {
     const userRole = request.user.role;
     const query = userRole === "admin" ? {} : { active: true };
-    const courses = await Course.find(query);
-    return response.status(200).json(courses);
+    courses = await Course.find(query).populate("category");
   }
+  const coursesWithCategory = courses.map((course) => {
+    const categoryName = course?.category?.name || null;
+    return { ...course.toObject(), category: categoryName };
+  });
+  return response.status(200).json(coursesWithCategory);
 });
 module.exports.updateCourseStatus = catchAsync(
   async (request, response, next) => {
@@ -50,7 +56,8 @@ module.exports.updateCourseStatus = catchAsync(
       courseId,
       { active },
       { new: true }
-    );
+    ).populate("category");
+
     return response.status(200).json(updatedCourse);
   }
 );
@@ -111,7 +118,7 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
       new: true,
       runValidators: true,
     }
-  );
+  ).populate("category");
 
   response.status(200).json({
     status: "success",
@@ -121,21 +128,32 @@ module.exports.updateCourse = catchAsync(async (request, response, next) => {
   });
 });
 
-module.exports.getCourseById = catchAsync(async (request, response, next) => {
-  Course.findOne({ _id: new ObjectId(request.params.id) })
-    .then((data) => {
-      if (data == null) throw new Error("Course doesn't exists");
 
-      response.status(200).json(data);
-    })
-    .catch((error) => next(error));
+module.exports.getCourseById = catchAsync(async (request, response, next) => {
+  const course = await Course.findOne({
+    _id: new ObjectId(request.params.id),
+  }).populate("category");
+
+  const categoryName = course.category ? course.category.name : "";
+
+  // Create a new object without modifying the original course object
+  const courseWithCategory = {
+    ...course.toObject(),
+    category: categoryName,
+  };
+
+  if (!courseWithCategory) {
+    throw new Error("Course doesn't exist");
+  }
+
+  response.status(200).json(courseWithCategory);
 });
 
 module.exports.addComment = catchAsync(async (request, response, next) => {
   const { id, comment, rating } = request.body;
   const user = request.user;
   // console.log(id, comment, user)
-  const course = await Course.findById(id);
+  const course = await Course.findById(id).populate("category");
 
   if (!course) {
     return next(new AppError("Course not found.", 401));

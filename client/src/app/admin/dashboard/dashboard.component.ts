@@ -12,6 +12,14 @@ export class DashboardComponent {
   courses: ICourse[] = [];
   errorMessage: any;
   constructor(private courseService: CourseService, private router: Router) {}
+  currentPage = 1;
+  pageSize = 5; // Set the number of items per page here
+
+
+  onPageChange(pageNumber: number): void {
+    this.currentPage = pageNumber;
+  }
+
   ngOnInit() {
     this.getCourses()
   }

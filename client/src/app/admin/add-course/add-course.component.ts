@@ -10,6 +10,7 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
+import { CategoryService } from "src/app/services/category.service";
 import { CourseService } from "src/app/services/course.service";
 
 @Component({
@@ -19,7 +20,7 @@ import { CourseService } from "src/app/services/course.service";
 })
 export class AddCourseComponent implements OnInit {
   subscriptions: Subscription[] = [];
-
+  categories:any
   // courseForm: FormGroup;
   // videos: FormArray;
   courseForm: FormGroup | any;
@@ -27,11 +28,13 @@ export class AddCourseComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private categoryService: CategoryService
   ) {}
 
   selectedFile: File | undefined;
   ngOnInit() {
+    this.getCategories()
     this.courseForm = this.formBuilder.group({
       title: ["", Validators.required],
       description: ["", Validators.required],
@@ -45,8 +48,25 @@ export class AddCourseComponent implements OnInit {
   errorMessage: any;
   courseAdded = false;
 
+  getCategories() {
+    this.categoryService.getCategories().subscribe(
+      (categories) => {
+        this.categories = categories;
+      },
+      (error) => {
+        console.error("Error fetching categories:", error);
+      }
+    );
+  }
+  getCategoryIdByName(categoryName: string): string {
+    const category = this.categories.find((cat: any) => cat.name === categoryName);
+    return category ? category._id : '';
+  }
+
   addCourse() {
     if (this.selectedFile) {
+
+
       this.courseService
         .addCourse(this.courseForm, this.selectedFile)
         .subscribe({

@@ -1,39 +1,9 @@
 <nav class="navbar navbar-expand-lg">
-  <div class="container-fluid pt-1">
+  <div class="container-fluid">
     <a class="navbar-brand logo ps-3" href="#">
-      <img
-        src="/assets/images/knowledgePlanet.png"
-        alt="Logo"
-        width="100"
-        height="100"
-        class="d-inline-block"
-      />
-      <!-- // h,w 100 = books -->
+      <img src="/assets/images/knowledgePlanet.png" alt="Logo" width="50" height="50" class="d-inline-block" />
       EduZone
     </a>
-    <!-- <li class="nav-item">
-      <a class="nav-link" routerLink="/shopping-cart"> <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i></a>
-    </li>
-  </ul> -->
-  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-item" id="link-ul-cart">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/shopping-cart"> <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i></a>
-    </li>
-    <li class="nav-item">
-      <span class="cart-item-count" id="cart-counter" *ngIf="cartItemCount != 0">{{ cartItemCount }}</span>
-    </li>
-  </ul>
-
-    <!-- <a class="nav-link" routerLink="/shopping-cart">
-      <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i>
-    </a> -->
-
-
-
-  </div>
-</nav>
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid pb-3">
     <button
       class="navbar-toggler ms-auto"
       type="button"
@@ -56,37 +26,32 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact">Contact us</a>
         </li>
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Category
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Cat #1</a></li>
-            <li><a class="dropdown-item" href="#">Cat #2</a></li>
-            <li><a class="dropdown-item" href="#">Cat #3</a></li>
-            <li><a class="dropdown-item" href="#">Cat #4</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">All Courses</a></li>
-          </ul>
-        </li> -->
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="link-ul">
-        <li class="nav-item" *ngIf="!userIsAuthenticated">
-          <a class="nav-link" routerLink="/login">Log in</a>
-        </li>
-        <li class="nav-item" *ngIf="!userIsAuthenticated">
-          <a class="nav-link" routerLink="/signup">Register</a>
-        </li>
-        <li class="nav-item" *ngIf="role == 'user'">
-          <a class="nav-link" routerLink="/profile">Profile</a>
-        </li>
-        <li class="nav-item" *ngIf="role == 'admin'">
-          <a class="nav-link" routerLink="/profile/admin">Admin</a>
-        </li>
-        <li class="nav-item" *ngIf="userIsAuthenticated">
-          <a class="nav-link" (click)="onLogout()" routerLink="/">Logout</a>
+        <ng-container *ngIf="!userIsAuthenticated; else authenticatedOptions">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Log in</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/signup">Register</a>
+          </li>
+        </ng-container>
+        <ng-template #authenticatedOptions>
+          <li class="nav-item" *ngIf="role == 'user'">
+            <a class="nav-link" routerLink="/profile">{{ user.fname }}</a>
+          </li>
+          <li class="nav-item" *ngIf="role == 'admin'">
+            <a class="nav-link" routerLink="/profile/admin">Admin</a>
+          </li>
+          <li class="nav-item" *ngIf="userIsAuthenticated">
+            <a class="nav-link" (click)="onLogout()" routerLink="/">Logout</a>
+          </li>
+        </ng-template>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shopping-cart">
+            <i class="fa-solid fa-cart-shopping fa-beat fa-xl"></i>
+            <span class="cart-item-count" id="cart-counter" *ngIf="cartItemCount != 0">{{ cartItemCount }}</span>
+          </a>
         </li>
       </ul>
     </div>

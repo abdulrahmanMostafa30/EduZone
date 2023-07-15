@@ -2,6 +2,7 @@ import { Component, OnDestroy } from "@angular/core";
 import { AuthService } from "../auth/auth.service";
 import { Subscription } from "rxjs";
 import { CartService } from "../services/cart.service";
+import { UserService } from "../services/user.service";
 
 @Component({
   selector: "app-header",
@@ -11,19 +12,41 @@ import { CartService } from "../services/cart.service";
 export class HeaderComponent implements OnDestroy {
   userIsAuthenticated = false;
   role: string | null = "";
+  user: any;
   private authListenerSubs: Subscription | any;
   private roleChangedSubscription: Subscription;
-  cartItemCount = 0
-  constructor(private authService: AuthService, private cartService: CartService) {
+  cartItemCount = 0;
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService,
+    private userService: UserService
+  ) {
     this.roleChangedSubscription = this.authService.roleChanged.subscribe(
       (role: string) => {
         this.role = role;
       }
     );
   }
-
+  getUserMe() {
+    this.userService.getUserMe().subscribe({
+      next: (response) => {
+        if ((response.status = "success")) {
+          this.user = response.data.data;
+        }
+      },
+      error: (error) => (this.user = null),
+    });
+  }
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    if (this.userIsAuthenticated) {
+      this.user = this.getUserMe();
+    } else {
+      this.user = null;
+    }
+    this.userService.userChanged.subscribe(() => {
+      this.user = this.getUserMe();
+    });
     this.role = this.authService.getRole();
 
     this.authListenerSubs = this.authService
@@ -31,6 +54,11 @@ export class HeaderComponent implements OnDestroy {
       .subscribe((isAuthenticated) => {
         this.role = this.authService.getRole();
         this.userIsAuthenticated = isAuthenticated;
+        if (isAuthenticated) {
+          this.user = this.getUserMe();
+        } else {
+          this.user = null;
+        }
       });
     this.roleChangedSubscription = this.authService.roleChanged.subscribe(
       (role: string) => {
@@ -38,7 +66,7 @@ export class HeaderComponent implements OnDestroy {
         // Handle the role change in your component
       }
     );
-    this.cartService.cartItems.subscribe(items => {
+    this.cartService.cartItems.subscribe((items) => {
       this.cartItemCount = items.length;
     });
   }

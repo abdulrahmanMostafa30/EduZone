@@ -9,6 +9,9 @@ import { CourseService } from "src/app/services/course.service";
   styleUrls: ["./reviews.component.scss"],
 })
 export class ReviewsComponent implements OnInit {
+  currentPage = 1;
+  pageSize = 5; // Set the number of items per page here
+
   courses: any[] = [];
   errorMessage: any;
   constructor(private courseService: CourseService, private router: Router) {}

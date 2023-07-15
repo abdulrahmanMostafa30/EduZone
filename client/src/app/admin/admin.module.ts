@@ -9,8 +9,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EditCourseComponent } from "./edit-course/edit-course.component";
 import { ContactUsAdminComponent } from "./contact-us-admin/contact-us-admin.component";
 import { UserDetailsComponent } from "./user-details/user-details.component";
-import { ReviewsComponent } from './reviews/reviews.component';
+import { ReviewsComponent } from "./reviews/reviews.component";
 import { SharedModule } from "../shared/shared.module";
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,13 @@ import { SharedModule } from "../shared/shared.module";
     UserDetailsComponent,
     ReviewsComponent,
   ],
-  imports: [CommonModule, FormsModule, SharedModule, AdminRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SharedModule,
+    NgxPaginationModule,
+    AdminRoutingModule,
+    ReactiveFormsModule,
+  ],
 })
 export class AdminModule {}

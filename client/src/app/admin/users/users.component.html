@@ -4,7 +4,7 @@
     <table class="table table-striped">
       <!-- Table content -->
       <tbody>
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of users | paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
           <td>{{ user.fullName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.role }}</td>
@@ -28,5 +28,7 @@
         </tr>
       </tbody>
     </table>
+    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+
   </div>
 </div>

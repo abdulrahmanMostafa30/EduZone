@@ -1,18 +1,19 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, tap } from "rxjs/operators";
 import { IUser, IUserResponse } from "../profile/user";
 import { ErrorHandlingService } from "./error-handling.service";
-import { environment } from '../../environments/environment';
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  private apiUrl = environment.API_URL + '/api/users/auth';
+  private apiUrl = environment.API_URL + "/api/users/auth";
 
   public childToParentEvent = new EventEmitter<any>();
+  public userChanged = new EventEmitter<void>();
 
   constructor(
     private http: HttpClient,
@@ -76,10 +77,13 @@ export class UserService {
     } else {
       form_data = user;
     }
-    return this.http
-      .patch<any>(this.apiUrl + "/updateMe", form_data)
-      .pipe(
-        catchError((error) => this.errorHandlingService.handleError(error))
-      );
+    return this.http.patch<any>(this.apiUrl + "/updateMe", form_data).pipe(
+      tap((response) => {
+        this.userChanged.emit();
+      }),
+      catchError((error) => {
+        return this.errorHandlingService.handleError(error);
+      })
+    );
   }
 }
