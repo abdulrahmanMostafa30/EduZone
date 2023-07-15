@@ -69,8 +69,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
           // Proceed with login action
           if (this.loginForm.valid) {
-            // Send the form data (including the reCAPTCHA token) to the server for authentication
-            console.log("Form data:", this.loginForm.value);
 
             const email = this.loginForm.get("email")?.value;
             const password = this.loginForm.get("password")?.value;

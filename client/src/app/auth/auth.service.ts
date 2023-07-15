@@ -199,11 +199,11 @@ export class AuthService {
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
-    console.log(authInformation);
 
     if (!authInformation) {
       return;
     }
+    console.log(authInformation);
 
     const isTokenExpired = this.jwtHelper.isTokenExpired(authInformation.token);
     if (isTokenExpired) {

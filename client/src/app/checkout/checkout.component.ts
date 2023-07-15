@@ -110,7 +110,6 @@ export class CheckoutComponent implements OnInit {
       },
 
       onError: (err: any) => {
-        console.log(err);
       },
     };
   }
@@ -125,7 +124,6 @@ export class CheckoutComponent implements OnInit {
 
 
     this.stripeService.createPayment().subscribe((response: any) => {
-      console.log(response);
 
       const paymentHandler = (<any>window).StripeCheckout.configure({
         key: environment.STRIPE_PUBLISHABLE_KEY,

@@ -40,7 +40,6 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 const verifyGoogleToken = async (token) => {
-  console.log(token)
   const response = await axios.get("https://oauth2.googleapis.com/tokeninfo", {
     params: {
       id_token: token,
@@ -71,8 +70,8 @@ const loginGoogle = async (req, res, next, token) => {
     if (!user) {
       return next(new AppError("Email does not exist", 400));
     }
-    console.log("Token is valid");
-    console.log("User ID:", verifiedToken.sub);
+    // console.log("Token is valid");
+    // console.log("User ID:", verifiedToken.sub);
     createSendToken(user, 201, res);
   } catch (err) {
     console.log(err)

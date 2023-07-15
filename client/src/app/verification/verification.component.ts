@@ -50,7 +50,7 @@ export class VerificationComponent implements OnInit {
       () => {
         this.isSendEmail =true
         // Handle success scenarios
-        console.log("Verification email sent");
+        // console.log("Verification email sent");
       },
       (error) => {
         console.error(error);

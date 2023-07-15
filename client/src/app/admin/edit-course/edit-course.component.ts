@@ -38,7 +38,6 @@ export class EditCourseComponent {
     this.categoryService.getCategories().subscribe(
       (categories) => {
         this.categories = categories;
-        console.log(this.editCourseForm.category);
         const defaultCategory = this.categories.find(
           (category: any) => category.name === this.editCourseForm.category
         );

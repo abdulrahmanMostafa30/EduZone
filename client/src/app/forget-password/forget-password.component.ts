@@ -39,7 +39,6 @@ export class ForgetPasswordComponent implements OnInit {
         this.isEmailSent = true
       },
       (error) => {
-        console.log("Error sending password reset email:", error);
       }
     );
   }
