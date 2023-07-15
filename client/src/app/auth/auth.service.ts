@@ -13,6 +13,7 @@ import { catchError, map } from "rxjs/operators";
 import { ErrorHandlingService } from "../services/error-handling.service";
 import { environment } from "../../environments/environment";
 import { CartService } from "../services/cart.service";
+import { UserService } from "../services/user.service";
 
 @Injectable()
 export class AuthService {
@@ -34,8 +35,7 @@ export class AuthService {
     private errorHandlingService: ErrorHandlingService,
     private socialAuthService: SocialAuthService,
     private cartService: CartService,
-
-
+    private userService: UserService
   ) {}
   setRole(role: string) {
     this.role = role;
@@ -55,9 +55,8 @@ export class AuthService {
     return this.isEmailVerified;
   }
   setEmailVerified(isEmailVerified: boolean) {
-    this.isEmailVerified = isEmailVerified
+    this.isEmailVerified = isEmailVerified;
     localStorage.setItem("isEmailVerified", isEmailVerified.toString());
-
   }
   isTokenExpired(): boolean {
     const token = localStorage.getItem("token");
@@ -135,9 +134,7 @@ export class AuthService {
         const isEmailVerified = response.data.user.isEmailVerified;
         this.setEmailVerified(isEmailVerified);
 
-
-
-        console.log('authToken :' , isEmailVerified)
+        console.log("authToken :", isEmailVerified);
         this.role = role;
         const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
         if (expirationDate) {
@@ -220,7 +217,6 @@ export class AuthService {
       const expiresIn = expirationDate.getTime() - now.getTime();
 
       if (expiresIn > 0) {
-
         this.token = authInformation.token;
         this.isAuthenticated = true;
         this.role = authInformation.role;
@@ -248,7 +244,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.role = null;
-    this.isEmailVerified = false
+    this.isEmailVerified = false;
 
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
@@ -278,7 +274,8 @@ export class AuthService {
 
   private getAuthData() {
     const token = localStorage.getItem("token");
-    const isEmailVerified: boolean = localStorage.getItem("isEmailVerified") === "true";
+    const isEmailVerified: boolean =
+      localStorage.getItem("isEmailVerified") === "true";
     const role = localStorage.getItem("role");
 
     if (!token || !role) {

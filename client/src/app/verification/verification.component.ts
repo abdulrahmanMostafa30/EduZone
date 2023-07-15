@@ -16,7 +16,9 @@ export class VerificationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
+
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,9 @@ export class VerificationComponent implements OnInit {
         // Handle success scenarios
         this.isVerified = true;
         this.authService.setEmailVerified(true);
+        this.userService.getUserMe().subscribe({
+          
+        })
       },
       (error) => {
         console.error(error);
