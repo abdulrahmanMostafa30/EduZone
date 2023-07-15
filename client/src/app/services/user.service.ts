@@ -62,7 +62,7 @@ export class UserService {
       .get<any>(this.apiUrl + "/me")
       .pipe(
         tap((response) => {
-          this.userChanged.emit();
+          // this.userChanged.emit();
         }),
         catchError((error) => this.errorHandlingService.handleError(error))
       );

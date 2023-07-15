@@ -40,9 +40,7 @@ export class VerificationComponent implements OnInit {
         // Handle success scenarios
         this.isVerified = true;
         this.authService.setEmailVerified(true);
-        this.userService.getUserMe().subscribe({
-          
-        })
+        this.userService.userChanged.emit();
       },
       (error) => {
         console.error(error);
