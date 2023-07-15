@@ -38,7 +38,7 @@
         </ng-container>
         <ng-template #authenticatedOptions>
           <li class="nav-item" *ngIf="role == 'user'">
-            <a class="nav-link" routerLink="/profile">{{ user.fname }}</a>
+            <a class="nav-link" routerLink="/profile">{{ fname }}</a>
           </li>
           <li class="nav-item" *ngIf="role == 'admin'">
             <a class="nav-link" routerLink="/profile/admin">Admin</a>

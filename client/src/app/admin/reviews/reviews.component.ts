@@ -39,7 +39,7 @@ export class ReviewsComponent implements OnInit {
     if (course) {
       course.comments.splice(reviewIndex, 1);
     }
-    this.courseService.updateCourseById(courseId, course).subscribe({
+    this.courseService.updateCourseById(courseId, {'comments': course['comments']}).subscribe({
       next: (data) => {
         this.getCourses()
       },

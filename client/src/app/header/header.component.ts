@@ -13,6 +13,7 @@ export class HeaderComponent implements OnDestroy {
   userIsAuthenticated = false;
   role: string | null = "";
   user: any;
+  fname: string = "Profile";
   private authListenerSubs: Subscription | any;
   private roleChangedSubscription: Subscription;
   cartItemCount = 0;
@@ -32,9 +33,13 @@ export class HeaderComponent implements OnDestroy {
       next: (response) => {
         if ((response.status = "success")) {
           this.user = response.data.data;
+          this.fname = this.user.fname;
         }
       },
-      error: (error) => (this.user = null),
+      error: (error) => {
+        this.user = null;
+        this.fname = "Profile";
+      },
     });
   }
   ngOnInit() {
